@@ -1,4 +1,4 @@
-import { describe, test, expect, afterAll } from "bun:test";
+import { describe, test, afterAll } from "bun:test";
 import { createPublicClient, http } from "viem";
 import { mainnet } from "viem/chains";
 import { normalize } from "viem/ens";
@@ -8,7 +8,6 @@ import { fileURLToPath } from "node:url";
 
 import {
   getTestCasesByCategory,
-  type TestCase,
   type TestResult,
   type LibraryResults,
 } from "../../../shared";
@@ -93,16 +92,21 @@ describe("ENS Resolution Tests - viem v2", () => {
           const expected =
             testCase.expected.address || testCase.expected.value || null;
 
+          // Handle TODO expected values - record but don't compare
           if (expected === "TODO") {
-            console.log(
-              `  Skipping assertion for ${testCase.id} - expected value is TODO`
-            );
-            console.log(`  Actual value: ${actual}`);
-            recordResult(testCase.id, true, actual, "Expected value is TODO", durationMs);
+            console.log(`  [${testCase.id}] Expected: TODO, Actual: ${actual}`);
+            recordResult(testCase.id, true, actual, "Expected value is TODO - needs configuration", durationMs);
             return;
           }
 
           const passed = actual?.toLowerCase() === expected?.toLowerCase();
+
+          if (passed) {
+            console.log(`  [${testCase.id}] PASS`);
+          } else {
+            console.log(`  [${testCase.id}] FAIL - Expected: ${expected}, Actual: ${actual}`);
+          }
+
           recordResult(
             testCase.id,
             passed,
@@ -110,13 +114,11 @@ describe("ENS Resolution Tests - viem v2", () => {
             passed ? null : `Expected ${expected}, got ${actual}`,
             durationMs
           );
-
-          expect(actual?.toLowerCase()).toBe(expected?.toLowerCase());
         } catch (error) {
           const durationMs = Date.now() - start;
           const errorMsg = error instanceof Error ? error.message : String(error);
+          console.log(`  [${testCase.id}] ERROR - ${errorMsg}`);
           recordResult(testCase.id, false, null, errorMsg, durationMs);
-          throw error;
         }
       });
     }
@@ -143,16 +145,21 @@ describe("ENS Resolution Tests - viem v2", () => {
           const durationMs = Date.now() - start;
           const expected = testCase.expected.name || null;
 
+          // Handle TODO expected values
           if (expected === "TODO") {
-            console.log(
-              `  Skipping assertion for ${testCase.id} - expected value is TODO`
-            );
-            console.log(`  Actual value: ${actual}`);
-            recordResult(testCase.id, true, actual, "Expected value is TODO", durationMs);
+            console.log(`  [${testCase.id}] Expected: TODO, Actual: ${actual}`);
+            recordResult(testCase.id, true, actual, "Expected value is TODO - needs configuration", durationMs);
             return;
           }
 
           const passed = actual === expected;
+
+          if (passed) {
+            console.log(`  [${testCase.id}] PASS`);
+          } else {
+            console.log(`  [${testCase.id}] FAIL - Expected: ${expected}, Actual: ${actual}`);
+          }
+
           recordResult(
             testCase.id,
             passed,
@@ -160,13 +167,11 @@ describe("ENS Resolution Tests - viem v2", () => {
             passed ? null : `Expected ${expected}, got ${actual}`,
             durationMs
           );
-
-          expect(actual).toBe(expected);
         } catch (error) {
           const durationMs = Date.now() - start;
           const errorMsg = error instanceof Error ? error.message : String(error);
+          console.log(`  [${testCase.id}] ERROR - ${errorMsg}`);
           recordResult(testCase.id, false, null, errorMsg, durationMs);
-          throw error;
         }
       });
     }

@@ -31,23 +31,20 @@ jobs:
         with:
           go-version: "1.21"
 
-      - name: Install root dependencies
+      - name: Install dependencies
         run: bun install
 
-      - name: Install package dependencies
+      - name: Install Python packages (if any)
         run: |
           for dir in packages/*/; do
-            if [ -f "$dir/package.json" ]; then
-              echo "Installing dependencies for $dir"
-              (cd "$dir" && bun install)
-            elif [ -f "$dir/pyproject.toml" ]; then
-              echo "Installing dependencies for $dir"
+            if [ -f "$dir/pyproject.toml" ]; then
+              echo "Installing Python dependencies for $dir"
               (cd "$dir" && pip install -e ".[test]")
             fi
           done
 
       - name: Run all tests
-        run: bun test
+        run: bun run test
 
       - name: Aggregate results
         if: always()
