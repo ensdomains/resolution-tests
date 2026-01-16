@@ -99,7 +99,7 @@ describe("ENS Resolution Tests - viem v2", () => {
             return;
           }
 
-          const passed = actual?.toLowerCase() === expected?.toLowerCase();
+          const passed = actual === expected;
 
           if (passed) {
             console.log(`  [${testCase.id}] PASS`);
