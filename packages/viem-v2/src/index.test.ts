@@ -1,5 +1,5 @@
 import { describe, test, afterAll } from "bun:test";
-import { createPublicClient, http } from "viem";
+import { Address, createPublicClient, getAddress, http } from "viem";
 import { mainnet } from "viem/chains";
 import { normalize } from "viem/ens";
 import { writeFileSync } from "node:fs";
@@ -67,16 +67,13 @@ describe("ENS Resolution Tests - viem v2", () => {
           if (testCase.method === "addr") {
             const coinType = testCase.params.coinType as number;
 
-            if (coinType === 60) {
-              actual = await client.getEnsAddress({
-                name: normalize(testCase.input.name!),
-              });
-            } else {
-              actual = await client.getEnsAddress({
-                name: normalize(testCase.input.name!),
-                coinType,
-              });
-            }
+            actual = await client.getEnsAddress({
+              name: normalize(testCase.input.name!),
+              coinType: BigInt(coinType),
+            });
+            
+            // Checksum
+            actual = getAddress(actual as Address);
           } else if (testCase.method === "text") {
             const key = testCase.params.key as string;
             actual = await client.getEnsText({

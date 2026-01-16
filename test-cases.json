@@ -17,7 +17,7 @@
         "name": "integration-tests.eth"
       },
       "expected": {
-        "address": "0xa66E90D515F576f49Af2dF40952476D56F72A420"
+        "address": "0xeE9eeaAB0Bb7D9B969D701f6f8212609EDeA252E"
       },
       "method": "addr",
       "params": {
@@ -33,7 +33,7 @@
         "name": "integration-tests.eth"
       },
       "expected": {
-        "address": "TODO"
+        "address": "0xeE9eeaAB0Bb7D9B969D701f6f8212609EDeA252E"
       },
       "method": "addr",
       "params": {
@@ -46,10 +46,10 @@
       "description": "Resolution of offchain L2 address (Base) via CCIP-Read",
       "status": "pending-setup",
       "input": {
-        "name": "offchain.integration-tests.eth"
+        "name": "greg.offchaindemo.eth"
       },
       "expected": {
-        "address": "0xbBbBBBBbbBBBbbbBbbBbbbbBBbBbbbbBbBbbBBbB"
+        "address": "0x8764f2939aE6ed4EcB5baD2cdB7e2B81aA153bd1"
       },
       "method": "addr",
       "params": {
@@ -59,13 +59,13 @@
     {
       "id": "forward-text-avatar",
       "category": "forward",
-      "description": "Resolution of avatar text record",
+      "description": "Resolution of onchain avatar text record",
       "status": "ready",
       "input": {
-        "name": "integration-tests.eth"
+        "name": "gregskril.eth"
       },
       "expected": {
-        "value": "TODO"
+        "value": "eip155:1/erc721:0x4a4f4a202c840f7247cfcb429e1b41a5509176d8/19"
       },
       "method": "text",
       "params": {
@@ -73,31 +73,15 @@
       }
     },
     {
-      "id": "forward-text-url",
-      "category": "forward",
-      "description": "Resolution of url text record",
-      "status": "ready",
-      "input": {
-        "name": "integration-tests.eth"
-      },
-      "expected": {
-        "value": "TODO"
-      },
-      "method": "text",
-      "params": {
-        "key": "url"
-      }
-    },
-    {
       "id": "forward-text-description",
       "category": "forward",
-      "description": "Resolution of description text record",
+      "description": "Resolution of offchain description text record",
       "status": "ready",
       "input": {
-        "name": "integration-tests.eth"
+        "name": "gtest.eth"
       },
       "expected": {
-        "value": "TODO"
+        "value": "This name uses a hybrid resolver. Some records (ETH address, location text record) are stored onchain while others (this description, Base address, contenthash) are stored offchain."
       },
       "method": "text",
       "params": {
@@ -110,10 +94,10 @@
       "description": "Resolution of content hash record",
       "status": "ready",
       "input": {
-        "name": "integration-tests.eth"
+        "name": "gregskril.eth"
       },
       "expected": {
-        "value": "TODO"
+        "value": "ipfs://bafybeihqxu6v2zzmmgl5gqlzpozu2ss6gh53idcdp7vnq5lccnjcxf3o3e"
       },
       "method": "contenthash",
       "params": {}
@@ -124,10 +108,10 @@
       "description": "Reverse resolution of ETH address with onchain primary name",
       "status": "ready",
       "input": {
-        "address": "0xa66E90D515F576f49Af2dF40952476D56F72A420"
+        "address": "0xeE9eeaAB0Bb7D9B969D701f6f8212609EDeA252E"
       },
       "expected": {
-        "name": "integration-tests.eth"
+        "name": "devrel.enslabs.eth"
       },
       "method": "reverse",
       "params": {}
@@ -138,10 +122,10 @@
       "description": "Reverse resolution of ETH address with offchain primary name (CCIP-Read)",
       "status": "pending-setup",
       "input": {
-        "address": "TODO"
+        "address": "0x779981590E7Ccc0CFAe8040Ce7151324747cDb97"
       },
       "expected": {
-        "name": "TODO"
+        "name": "burner.offchaindemo.eth"
       },
       "method": "reverse",
       "params": {}
@@ -152,11 +136,11 @@
       "description": "L2 reverse resolution of Base address (via L1)",
       "status": "pending-setup",
       "input": {
-        "address": "TODO",
+        "address": "0x179A862703a4adfb29896552DF9e307980D19285",
         "chainId": 8453
       },
       "expected": {
-        "name": "TODO"
+        "name": "greg.base.eth"
       },
       "method": "reverse-l2",
       "params": {
