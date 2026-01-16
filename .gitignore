@@ -1,0 +1,40 @@
+# Environment
+.env
+.env.local
+
+# Dependencies
+node_modules/
+__pycache__/
+*.pyc
+target/
+vendor/
+
+# Build outputs
+dist/
+build/
+*.js.map
+
+# Test results (generated)
+results/*.md
+results/*.csv
+**/results.json
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+
+# Logs
+*.log
+npm-debug.log*
+
+# Rust
+Cargo.lock
+
+# Python
+*.egg-info/
+.pytest_cache/
+.venv/
+venv/

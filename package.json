@@ -1,0 +1,20 @@
+{
+  "name": "ens-resolution-tests",
+  "version": "1.0.0",
+  "description": "Comprehensive test suite for ENS name resolution across multiple libraries",
+  "private": true,
+  "type": "module",
+  "workspaces": ["packages/*"],
+  "scripts": {
+    "test": "bun run scripts/run-tests.ts",
+    "test:typescript": "bun run scripts/run-tests.ts typescript",
+    "test:python": "bun run scripts/run-tests.ts python",
+    "test:rust": "bun run scripts/run-tests.ts rust",
+    "test:go": "bun run scripts/run-tests.ts go",
+    "aggregate": "bun run scripts/aggregate-results.ts"
+  },
+  "devDependencies": {
+    "@types/bun": "latest",
+    "typescript": "^5.3.0"
+  }
+}
