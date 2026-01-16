@@ -51,10 +51,6 @@ import {
 - `ready` - Test case is configured and can be run
 - `pending-setup` - Needs contract/infrastructure configuration
 
-## Test Philosophy
-
-Tests record pass/fail results but don't fail CI. The purpose is to surface which libraries support which features, not to assert everything passes. Failures are expected data points.
-
 ## Environment
 
 - `RPC_URL` - Required, Ethereum mainnet RPC endpoint

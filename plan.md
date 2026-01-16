@@ -15,7 +15,6 @@ A comprehensive test suite for ENS name resolution across multiple programming l
 - [x] Shared types and helpers (`shared/`)
 - [x] Reference implementation (viem-v2)
 - [x] Results aggregation script
-- [x] GitHub Actions workflow
 - [x] Test cases configured with real expected values
 
 ### In Progress
@@ -85,12 +84,9 @@ resolution-tests/
 │   └── aggregate-results.ts
 ├── results/
 │   └── .gitkeep
-├── packages/
-│   ├── viem-v2/                 # Reference implementation
-│   └── ...
-└── .github/
-    └── workflows/
-        └── test.yml
+└── packages/
+    ├── viem-v2/                 # Reference implementation
+    └── ...
 ```
 
 ### Data Flow
@@ -99,7 +95,6 @@ resolution-tests/
 3. Each library package reads test cases and runs tests
 4. Each package outputs `results.json` in standardized format
 5. `scripts/aggregate-results.ts` combines all results into markdown/CSV
-6. GitHub Actions prints results to job summary
 
 ### Environment Variables
 - `RPC_URL` - Ethereum mainnet RPC endpoint (required)

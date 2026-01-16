@@ -1,4 +1,4 @@
-import { describe, test, afterAll } from "bun:test";
+import { describe, test, expect, afterAll } from "bun:test";
 import { Address, createPublicClient, getAddress, http } from "viem";
 import { mainnet } from "viem/chains";
 import { normalize } from "viem/ens";
@@ -71,9 +71,11 @@ describe("ENS Resolution Tests - viem v2", () => {
               name: normalize(testCase.input.name!),
               coinType: BigInt(coinType),
             });
-            
+
             // Checksum
-            actual = getAddress(actual as Address);
+            if (actual) {
+              actual = getAddress(actual as Address);
+            }
           } else if (testCase.method === "text") {
             const key = testCase.params.key as string;
             actual = await client.getEnsText({
@@ -89,21 +91,7 @@ describe("ENS Resolution Tests - viem v2", () => {
           const expected =
             testCase.expected.address || testCase.expected.value || null;
 
-          // Handle TODO expected values - record but don't compare
-          if (expected === "TODO") {
-            console.log(`  [${testCase.id}] Expected: TODO, Actual: ${actual}`);
-            recordResult(testCase.id, true, actual, "Expected value is TODO - needs configuration", durationMs);
-            return;
-          }
-
           const passed = actual === expected;
-
-          if (passed) {
-            console.log(`  [${testCase.id}] PASS`);
-          } else {
-            console.log(`  [${testCase.id}] FAIL - Expected: ${expected}, Actual: ${actual}`);
-          }
-
           recordResult(
             testCase.id,
             passed,
@@ -111,11 +99,13 @@ describe("ENS Resolution Tests - viem v2", () => {
             passed ? null : `Expected ${expected}, got ${actual}`,
             durationMs
           );
+
+          expect(actual).toBe(expected);
         } catch (error) {
           const durationMs = Date.now() - start;
           const errorMsg = error instanceof Error ? error.message : String(error);
-          console.log(`  [${testCase.id}] ERROR - ${errorMsg}`);
           recordResult(testCase.id, false, null, errorMsg, durationMs);
+          throw error;
         }
       });
     }
@@ -142,21 +132,7 @@ describe("ENS Resolution Tests - viem v2", () => {
           const durationMs = Date.now() - start;
           const expected = testCase.expected.name || null;
 
-          // Handle TODO expected values
-          if (expected === "TODO") {
-            console.log(`  [${testCase.id}] Expected: TODO, Actual: ${actual}`);
-            recordResult(testCase.id, true, actual, "Expected value is TODO - needs configuration", durationMs);
-            return;
-          }
-
           const passed = actual === expected;
-
-          if (passed) {
-            console.log(`  [${testCase.id}] PASS`);
-          } else {
-            console.log(`  [${testCase.id}] FAIL - Expected: ${expected}, Actual: ${actual}`);
-          }
-
           recordResult(
             testCase.id,
             passed,
@@ -164,11 +140,13 @@ describe("ENS Resolution Tests - viem v2", () => {
             passed ? null : `Expected ${expected}, got ${actual}`,
             durationMs
           );
+
+          expect(actual).toBe(expected);
         } catch (error) {
           const durationMs = Date.now() - start;
           const errorMsg = error instanceof Error ? error.message : String(error);
-          console.log(`  [${testCase.id}] ERROR - ${errorMsg}`);
           recordResult(testCase.id, false, null, errorMsg, durationMs);
+          throw error;
         }
       });
     }

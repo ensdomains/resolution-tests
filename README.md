@@ -82,11 +82,10 @@ resolution-tests/
 │   ├── run-tests.ts         # Test runner (auto-discovers packages)
 │   └── aggregate-results.ts # Results aggregator
 ├── results/                 # Generated results
-├── packages/                # Library test implementations
-│   ├── viem-v2/
-│   ├── ethers-v6/
-│   └── ...
-└── .github/workflows/       # CI that runs tests and prints results
+└── packages/                # Library test implementations
+    ├── viem-v2/
+    ├── ethers-v6/
+    └── ...
 ```
 
 ## Adding a New TypeScript Library

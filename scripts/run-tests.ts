@@ -79,8 +79,6 @@ function runTests(pkg: PackageInfo): boolean {
     env: process.env,
   });
 
-  // Return true if the test runner executed successfully
-  // (exit code 0 means tests ran, regardless of pass/fail results)
   return result.status === 0;
 }
 
@@ -90,8 +88,6 @@ function main() {
 
   console.log("ENS Resolution Tests Runner");
   console.log("===========================\n");
-  console.log("Note: This suite reports which tests pass/fail across libraries.");
-  console.log("Failures are expected - they indicate missing library support.\n");
 
   const packages = discoverPackages(filterLanguage);
 
@@ -106,31 +102,29 @@ function main() {
   console.log(`Found ${packages.length} package(s) to test:`);
   packages.forEach((p) => console.log(`  - ${p.name} (${p.language})`));
 
-  const results: { pkg: PackageInfo; ran: boolean }[] = [];
+  const results: { pkg: PackageInfo; passed: boolean }[] = [];
 
   for (const pkg of packages) {
-    const ran = runTests(pkg);
-    results.push({ pkg, ran });
+    const passed = runTests(pkg);
+    results.push({ pkg, passed });
   }
 
   // Summary
   console.log(`\n${"=".repeat(60)}`);
-  console.log("TEST RUNNER SUMMARY");
+  console.log("SUMMARY");
   console.log("=".repeat(60));
 
-  const succeeded = results.filter((r) => r.ran).length;
-  const failed = results.filter((r) => !r.ran).length;
+  const passed = results.filter((r) => r.passed).length;
+  const failed = results.filter((r) => !r.passed).length;
 
-  for (const { pkg, ran } of results) {
-    const status = ran ? "\u2705 Ran" : "\u274c Error";
-    console.log(`${status} - ${pkg.name}`);
+  for (const { pkg, passed } of results) {
+    const status = passed ? "\u2705" : "\u274c";
+    console.log(`${status} ${pkg.name}`);
   }
 
-  console.log(`\n${succeeded} package(s) ran successfully, ${failed} had errors`);
-  console.log("\nRun 'bun run aggregate' to see detailed pass/fail results.");
+  console.log(`\n${passed} passed, ${failed} failed`);
 
-  // Always exit 0 - the purpose is to collect results, not assert all pass
-  process.exit(0);
+  process.exit(failed > 0 ? 1 : 0);
 }
 
 main();
