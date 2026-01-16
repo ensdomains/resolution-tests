@@ -16,7 +16,7 @@ Comprehensive test suite for ENS name resolution across multiple programming lan
 
 ```bash
 bun install                 # Install all workspace dependencies
-bun test                    # Run all tests
+bun run test                # Run all tests
 bun run test:typescript     # Run TypeScript tests only
 bun run aggregate           # Generate results/latest.md and results/latest.csv
 ```
@@ -48,10 +48,13 @@ import {
 
 ## Test Case Status
 
-- `ready` - Test case has known expected values
+- `ready` - Test case is configured and can be run
 - `pending-setup` - Needs contract/infrastructure configuration
+
+## Test Philosophy
+
+Tests record pass/fail results but don't fail CI. The purpose is to surface which libraries support which features, not to assert everything passes. Failures are expected data points.
 
 ## Environment
 
 - `RPC_URL` - Required, Ethereum mainnet RPC endpoint
-- All test names/addresses owned by `devrel.enslabs.eth`

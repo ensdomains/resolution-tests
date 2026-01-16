@@ -16,16 +16,17 @@ A comprehensive test suite for ENS name resolution across multiple programming l
 - [x] Reference implementation (viem-v2)
 - [x] Results aggregation script
 - [x] GitHub Actions workflow
+- [x] Test cases configured with real expected values
 
 ### In Progress
 - [ ] Gateway setup for CCIP-Read tests
-- [ ] Update test-cases.json with correct expected values
 
 ### Pending Setup (Requires Contract Configuration)
-- [ ] Deploy/configure CCIP-Read resolver for `offchain.integration-tests.eth`
-- [ ] Configure gateway URL in resolver to point to GitHub raw files
-- [ ] Set up wildcard resolver on `integration-tests.eth`
-- [ ] Identify DNS name with DNSSEC for testing
+- [ ] `forward-base-offchain` - CCIP-Read resolver for offchain Base address
+- [ ] `reverse-eth-offchain` - CCIP-Read reverse resolution
+- [ ] `reverse-l2-base` - L2 reverse resolution via L1
+- [ ] `forward-wildcard` - Wildcard resolver on `integration-tests.eth`
+- [ ] `forward-dns` - DNS name with DNSSEC
 
 ### Pending Library Implementations
 - [ ] viem-v1
@@ -46,18 +47,17 @@ A comprehensive test suite for ENS name resolution across multiple programming l
 
 | ID | Category | Status | Input | Expected |
 |----|----------|--------|-------|----------|
-| `forward-eth-onchain` | Forward | Ready | `integration-tests.eth` | TBD |
-| `forward-base-onchain` | Forward | Ready | `integration-tests.eth` | TBD |
-| `forward-base-offchain` | Forward | Pending Setup | `offchain.integration-tests.eth` | `0xbBbBBBBbbBBBbbbBbbBbbbbBBbBbbbbBbBbbBBbB` |
-| `forward-text-avatar` | Forward | Ready | `integration-tests.eth` | TBD |
-| `forward-text-url` | Forward | Ready | `integration-tests.eth` | TBD |
-| `forward-text-description` | Forward | Ready | `integration-tests.eth` | TBD |
-| `forward-contenthash` | Forward | Ready | `integration-tests.eth` | TBD |
-| `reverse-eth-onchain` | Reverse | Ready | TBD | `integration-tests.eth` |
-| `reverse-eth-offchain` | Reverse | Pending Setup | TBD | TBD |
-| `reverse-l2-base` | Reverse | Pending Setup | TBD | TBD |
-| `forward-wildcard` | Forward | Pending Setup | `*.integration-tests.eth` | TBD |
-| `forward-dns` | Forward | Pending Setup | TBD | TBD |
+| `forward-eth-onchain` | Forward | Ready | `integration-tests.eth` | `0xeE9eeaAB0Bb7D9B969D701f6f8212609EDeA252E` |
+| `forward-base-onchain` | Forward | Ready | `integration-tests.eth` | `0xeE9eeaAB0Bb7D9B969D701f6f8212609EDeA252E` |
+| `forward-base-offchain` | Forward | Pending | `greg.offchaindemo.eth` | `0x8764f2939aE6d4EcB5baD2cdB7e2B81aA153bd1` |
+| `forward-text-avatar` | Forward | Ready | `gregskril.eth` | NFT avatar |
+| `forward-text-description` | Forward | Ready | `gtest.eth` | Hybrid resolver description |
+| `forward-contenthash` | Forward | Ready | `gregskril.eth` | `ipfs://bafybei...` |
+| `reverse-eth-onchain` | Reverse | Ready | `0xeE9eeaAB0Bb7D9B969D701f6f8212609EDeA252E` | `devrel.enslabs.eth` |
+| `reverse-eth-offchain` | Reverse | Pending | `0x779981590E7Ccc0CFAe8040Ce7151324747cDb97` | `burner.offchaindemo.eth` |
+| `reverse-l2-base` | Reverse | Pending | `0x179A862703a4adfb29896552DF9e307980D19285` | `greg.base.eth` |
+| `forward-wildcard` | Forward | Pending | `*.integration-tests.eth` | TBD |
+| `forward-dns` | Forward | Pending | TBD | TBD |
 
 ---
 
@@ -123,19 +123,10 @@ Each response file contains:
 ```
 
 ### Setup Steps
-1. Deploy or configure CCIP-Read resolver for `offchain.integration-tests.eth`
+1. Deploy or configure CCIP-Read resolver for offchain test names
 2. Set gateway URL to point to this repo's `gateway/` folder
 3. Pre-compute calldata for each offchain test case
 4. Create corresponding JSON files with ABI-encoded responses
-
----
-
-## Questions to Resolve
-
-1. **Gateway URL template**: What format does the resolver use? `{sender}/{data}` or custom?
-2. **Wildcard resolver**: Is one already configured on `integration-tests.eth`?
-3. **DNS name**: Which DNSSEC-enabled domain should we use?
-4. **Expected values**: Need to populate test-cases.json with actual on-chain values
 
 ---
 
@@ -146,7 +137,7 @@ Each response file contains:
 bun install
 
 # Run all tests
-bun test
+bun run test
 
 # Run specific language
 bun run test:typescript

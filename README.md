@@ -8,19 +8,19 @@ This repository provides a stable, reproducible set of test cases for validating
 
 ## Test Cases
 
-| Category | Test ID | Description |
-|----------|---------|-------------|
-| Forward | `forward-eth-onchain` | ETH address resolution via Universal Resolver |
-| Forward | `forward-base-onchain` | Base address resolution (cointype 2147492101) |
-| Forward | `forward-base-offchain` | Base address via CCIP-Read |
-| Forward | `forward-text-avatar` | Avatar text record |
-| Forward | `forward-text-url` | URL text record |
-| Forward | `forward-contenthash` | Content hash resolution |
-| Reverse | `reverse-eth-onchain` | Primary name from ETH address |
-| Reverse | `reverse-eth-offchain` | Primary name via CCIP-Read |
-| Reverse | `reverse-l2-base` | L2 reverse resolution (Base) |
-| Forward | `forward-wildcard` | Wildcard resolver resolution |
-| Forward | `forward-dns` | DNS name with DNSSEC |
+| Category | Test ID | Description | Status |
+|----------|---------|-------------|--------|
+| Forward | `forward-eth-onchain` | ETH address resolution via Universal Resolver | Ready |
+| Forward | `forward-base-onchain` | Base address resolution (cointype 2147492101) | Ready |
+| Forward | `forward-base-offchain` | Base address via CCIP-Read | Pending |
+| Forward | `forward-text-avatar` | Avatar text record | Ready |
+| Forward | `forward-text-description` | Description text record (offchain) | Ready |
+| Forward | `forward-contenthash` | Content hash resolution | Ready |
+| Reverse | `reverse-eth-onchain` | Primary name from ETH address | Ready |
+| Reverse | `reverse-eth-offchain` | Primary name via CCIP-Read | Pending |
+| Reverse | `reverse-l2-base` | L2 reverse resolution (Base via L1) | Pending |
+| Forward | `forward-wildcard` | Wildcard resolver resolution | Pending |
+| Forward | `forward-dns` | DNS name with DNSSEC | Pending |
 
 See `test-cases.json` for full details and expected values.
 
@@ -60,7 +60,7 @@ cp .env.example .env
 bun install
 
 # Run all tests
-bun test
+bun run test
 
 # Run tests for specific language
 bun run test:typescript
@@ -75,9 +75,9 @@ bun run aggregate
 resolution-tests/
 ├── test-cases.json          # Single source of truth for all tests
 ├── shared/                  # Shared types and helpers for TS packages
-│   ├── types.ts             # Type definitions
-│   └── index.ts             # Helpers (loadTestCases, getReadyTestCases, etc.)
-├── gateway/                 # Static CCIP-Read responses
+│   ├── types.ts
+│   └── index.ts
+├── gateway/                 # Static CCIP-Read responses (future)
 ├── scripts/
 │   ├── run-tests.ts         # Test runner (auto-discovers packages)
 │   └── aggregate-results.ts # Results aggregator
@@ -114,7 +114,7 @@ Each library must output a `results.json` file:
     {
       "caseId": "forward-eth-onchain",
       "passed": true,
-      "actual": "0xee9eeaab0bb7d9b969d701f6f8212609edea252e",
+      "actual": "0xeE9eeaAB0Bb7D9B969D701f6f8212609EDeA252E",
       "error": null,
       "durationMs": 150
     }
@@ -130,8 +130,8 @@ Each library must output a `results.json` file:
 
 ## Operational Notes
 
-- All `.eth` names and addresses used in tests are owned by the ENS DevRel team Safe (`devrel.enslabs.eth`)
-- The DevRel team Safe has `coldwallet.ens.eth` as a recoverer
+- Test names use various `.eth` names owned by ENS DevRel team or known stable names
+- The DevRel team Safe (`devrel.enslabs.eth`) has `coldwallet.ens.eth` as a recoverer
 - Test data is designed to remain stable over time
 
 ## License
