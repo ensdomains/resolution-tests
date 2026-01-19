@@ -6,6 +6,8 @@ A comprehensive test suite for ENS name resolution across multiple programming l
 
 This repository provides a stable, reproducible set of test cases for validating ENS resolution implementations. Library maintainers and integrators can use these tests to ensure their ENS support is complete and correct.
 
+> **Note:** These resolution tests are specifically for testing usage of the Universal Resolver for ENS V2 readiness.
+
 ## Test Cases
 
 | Category | Test ID | Description | Status |
