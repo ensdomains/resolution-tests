@@ -16,9 +16,8 @@ Comprehensive test suite for ENS name resolution across multiple programming lan
 
 ```bash
 bun install                 # Install all workspace dependencies
-bun run test                # Run all tests
+bun run test                # Run all tests (outputs feature table to results/latest.md)
 bun run test:typescript     # Run TypeScript tests only
-bun run aggregate           # Generate results/latest.md and results/latest.csv
 ```
 
 ## Workspace Setup

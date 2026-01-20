@@ -66,10 +66,9 @@ bun run test
 
 # Run tests for specific language
 bun run test:typescript
-
-# Aggregate results into markdown/CSV
-bun run aggregate
 ```
+
+After tests complete, a feature support table is displayed showing pass/fail status for each test case across all libraries. Results are automatically saved to `results/latest.md`.
 
 ## Project Structure
 
@@ -81,9 +80,9 @@ resolution-tests/
 │   └── index.ts
 ├── gateway/                 # Static CCIP-Read responses (future)
 ├── scripts/
-│   ├── run-tests.ts         # Test runner (auto-discovers packages)
-│   └── aggregate-results.ts # Results aggregator
-├── results/                 # Generated results
+│   └── run-tests.ts         # Test runner (auto-discovers packages)
+├── results/
+│   └── latest.md            # Auto-generated feature support table
 └── packages/                # Library test implementations
     ├── viem-v2/
     ├── ethers-v6/

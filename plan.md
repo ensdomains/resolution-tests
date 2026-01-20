@@ -94,7 +94,7 @@ resolution-tests/
 2. `shared/` provides types and helpers for TypeScript packages
 3. Each library package reads test cases and runs tests
 4. Each package outputs `results.json` in standardized format
-5. `scripts/aggregate-results.ts` combines all results into markdown/CSV
+5. `scripts/run-tests.ts` generates feature support table to `results/latest.md`
 
 ### Environment Variables
 - `RPC_URL` - Ethereum mainnet RPC endpoint (required)
@@ -131,16 +131,13 @@ Each response file contains:
 # Install dependencies (workspace)
 bun install
 
-# Run all tests
+# Run all tests (generates results/latest.md)
 bun run test
 
 # Run specific language
 bun run test:typescript
 bun run test:python
 bun run test:rust
-
-# Aggregate results
-bun run aggregate
 ```
 
 ---
