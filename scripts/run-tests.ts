@@ -1,7 +1,8 @@
-import { readdirSync, existsSync } from "node:fs";
+import { readdirSync, existsSync, readFileSync, writeFileSync } from "node:fs";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 import { spawnSync } from "node:child_process";
+import type { TestCase, TestCasesFile, LibraryResults } from "../shared/types";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, "..");
@@ -82,6 +83,119 @@ function runTests(pkg: PackageInfo): boolean {
   return result.status === 0;
 }
 
+function loadTestCases(): TestCase[] {
+  const testCasesPath = join(ROOT, "test-cases.json");
+  const content = readFileSync(testCasesPath, "utf-8");
+  const data = JSON.parse(content) as TestCasesFile;
+  return data.cases;
+}
+
+function loadLibraryResults(pkgPath: string): LibraryResults | null {
+  const resultsPath = join(pkgPath, "results.json");
+  if (!existsSync(resultsPath)) {
+    return null;
+  }
+  const content = readFileSync(resultsPath, "utf-8");
+  return JSON.parse(content) as LibraryResults;
+}
+
+function generateFeatureTable(
+  packages: PackageInfo[],
+  testCases: TestCase[]
+): { console: string; markdown: string } {
+  // Load results for each package
+  const allResults: { pkg: PackageInfo; results: LibraryResults | null }[] = [];
+  for (const pkg of packages) {
+    allResults.push({ pkg, results: loadLibraryResults(pkg.path) });
+  }
+
+  // Filter to only "ready" test cases
+  const readyCases = testCases.filter((tc) => tc.status === "ready");
+
+  // Calculate column widths for console output
+  const idWidth = Math.max(
+    "Test Case".length,
+    ...readyCases.map((tc) => tc.id.length)
+  );
+  const libWidth = Math.max(6, ...packages.map((p) => p.name.length));
+
+  const consoleLines: string[] = [];
+  const mdLines: string[] = [];
+
+  // Console header
+  const headerCols = [
+    "Test Case".padEnd(idWidth),
+    ...packages.map((p) => p.name.padEnd(libWidth)),
+  ];
+  consoleLines.push(headerCols.join(" | "));
+  consoleLines.push(headerCols.map((col) => "-".repeat(col.length)).join("-+-"));
+
+  // Markdown header
+  mdLines.push("# ENS Resolution Test Results\n");
+  mdLines.push(`Generated: ${new Date().toISOString()}\n`);
+  mdLines.push("## Feature Support\n");
+  mdLines.push("| Test Case | " + packages.map((p) => p.name).join(" | ") + " |");
+  mdLines.push("|-----------|" + packages.map(() => ":---:").join("|") + "|");
+
+  // Each test case row
+  for (const testCase of readyCases) {
+    const consoleRow = [testCase.id.padEnd(idWidth)];
+    const mdRow = [testCase.id];
+
+    for (const { results } of allResults) {
+      if (!results) {
+        consoleRow.push("-".padEnd(libWidth));
+        mdRow.push("-");
+      } else {
+        const result = results.results.find((r) => r.caseId === testCase.id);
+        if (!result) {
+          consoleRow.push("-".padEnd(libWidth));
+          mdRow.push("-");
+        } else if (result.passed) {
+          consoleRow.push("✅".padEnd(libWidth - 1));
+          mdRow.push("✅");
+        } else {
+          consoleRow.push("❌".padEnd(libWidth - 1));
+          mdRow.push("❌");
+        }
+      }
+    }
+
+    consoleLines.push(consoleRow.join(" | "));
+    mdLines.push("| " + mdRow.join(" | ") + " |");
+  }
+
+  // Totals row
+  consoleLines.push(headerCols.map((col) => "-".repeat(col.length)).join("-+-"));
+  const consoleTotals = ["TOTAL".padEnd(idWidth)];
+  const mdTotals = ["**TOTAL**"];
+
+  for (const { results } of allResults) {
+    if (!results) {
+      consoleTotals.push("-".padEnd(libWidth));
+      mdTotals.push("-");
+    } else {
+      const passed = results.results.filter((r) => r.passed).length;
+      const total = results.results.length;
+      consoleTotals.push(`${passed}/${total}`.padEnd(libWidth));
+      mdTotals.push(`**${passed}/${total}**`);
+    }
+  }
+  consoleLines.push(consoleTotals.join(" | "));
+  mdLines.push("| " + mdTotals.join(" | ") + " |");
+
+  // Markdown legend
+  mdLines.push("\n### Legend\n");
+  mdLines.push("- ✅ Pass");
+  mdLines.push("- ❌ Fail");
+  mdLines.push("- `-` Not tested");
+
+  return {
+    console: consoleLines.join("\n"),
+    markdown: mdLines.join("\n"),
+  };
+}
+
 function main() {
   const args = process.argv.slice(2);
   const filterLanguage = args[0];
@@ -111,19 +225,24 @@ function main() {
 
   // Summary
   console.log(`\n${"=".repeat(60)}`);
-  console.log("SUMMARY");
+  console.log("FEATURE SUPPORT TABLE");
   console.log("=".repeat(60));
 
-  const passed = results.filter((r) => r.passed).length;
+  const testCases = loadTestCases();
+  const featureTable = generateFeatureTable(
+    results.map((r) => r.pkg),
+    testCases
+  );
+
+  console.log(featureTable.console);
+  console.log("\nLegend: ✅ Pass | ❌ Fail | - Not tested");
+
+  // Save markdown to results/latest.md
+  const resultsPath = join(ROOT, "results", "latest.md");
+  writeFileSync(resultsPath, featureTable.markdown);
+  console.log(`\nResults saved to: results/latest.md`);
+
   const failed = results.filter((r) => !r.passed).length;
-
-  for (const { pkg, passed } of results) {
-    const status = passed ? "\u2705" : "\u274c";
-    console.log(`${status} ${pkg.name}`);
-  }
-
-  console.log(`\n${passed} passed, ${failed} failed`);
-
   process.exit(failed > 0 ? 1 : 0);
 }
 

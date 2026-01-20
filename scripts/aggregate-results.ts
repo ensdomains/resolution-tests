@@ -1,36 +1,10 @@
 import { readFileSync, writeFileSync, readdirSync, existsSync } from "node:fs";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
+import type { TestCase, TestCasesFile, LibraryResults } from "../shared/types";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, "..");
-
-interface TestResult {
-  caseId: string;
-  passed: boolean;
-  actual: string | null;
-  error: string | null;
-  durationMs: number;
-}
-
-interface LibraryResults {
-  library: string;
-  version: string;
-  language: string;
-  timestamp: string;
-  results: TestResult[];
-}
-
-interface TestCase {
-  id: string;
-  category: string;
-  description: string;
-  status: string;
-}
-
-interface TestCasesFile {
-  cases: TestCase[];
-}
 
 function findResultsFiles(): string[] {
   const packagesDir = join(ROOT, "packages");
