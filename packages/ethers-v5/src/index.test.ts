@@ -64,15 +64,9 @@ describe("ENS Resolution Tests - ethers v5", () => {
             const coinType = testCase.params.coinType as number;
             const name = testCase.input.name!;
 
-            if (coinType === 60) {
-              // ETH address - can use resolveName directly
-              actual = await provider.resolveName(name);
-            } else {
-              // Multi-coin - need to use resolver
-              const resolver = await provider.getResolver(name);
-              if (resolver) {
-                actual = await resolver.getAddress(coinType);
-              }
+            const resolver = await provider.getResolver(name);
+            if (resolver) {
+              actual = await resolver.getAddress(coinType);
             }
 
             // Checksum address
