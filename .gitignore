@@ -38,3 +38,7 @@ Cargo.lock
 .pytest_cache/
 .venv/
 venv/
+
+# Compiler files
+cache/
+out/

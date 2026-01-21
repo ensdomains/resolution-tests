@@ -16,6 +16,7 @@ A comprehensive test suite for ENS name resolution across multiple programming l
 - [x] Reference implementation (viem-v2)
 - [x] Results aggregation script
 - [x] Test cases configured with real expected values
+- [x] Foundry project setup for resolver contracts (`contracts/`)
 
 ### In Progress
 - [ ] Gateway setup for CCIP-Read tests
@@ -73,10 +74,16 @@ resolution-tests/
 ├── package.json                 # Workspace root
 ├── tsconfig.json                # Root TS config
 ├── tsconfig.base.json           # Shared TS config for packages
+├── foundry.toml                 # Foundry configuration
 ├── test-cases.json              # Single source of truth
 ├── shared/                      # Shared TS types and helpers
 │   ├── types.ts
 │   └── index.ts
+├── contracts/                   # ENS resolver contracts (Foundry)
+│   ├── src/                     # Resolver implementations
+│   ├── test/                    # Solidity tests
+│   ├── script/                  # Deployment scripts
+│   └── lib/                     # Dependencies (forge-std)
 ├── gateway/                     # Static CCIP-Read responses
 │   └── README.md
 ├── scripts/
@@ -138,6 +145,19 @@ bun run test
 bun run test:typescript
 bun run test:python
 bun run test:rust
+```
+
+---
+
+## Smart Contracts
+
+The `contracts/` directory contains Foundry-based ENS resolver contracts. These are applied to the names in `test-cases.json` to test various resolution scenarios.
+
+### Commands
+```bash
+forge build                 # Compile contracts
+forge test                  # Run Solidity tests
+forge script <script>       # Run deployment scripts
 ```
 
 ---

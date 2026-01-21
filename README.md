@@ -26,6 +26,15 @@ This repository provides a stable, reproducible set of test cases for validating
 
 See `test-cases.json` for full details and expected values.
 
+## Smart Contracts
+
+The `contracts/` directory contains Foundry-based ENS resolver contracts used for testing. These resolvers are deployed and configured for the names in `test-cases.json` to test various resolution scenarios including:
+
+- Standard onchain resolution
+- CCIP-Read (offchain) resolution
+- Wildcard resolution
+- Text records and contenthash
+
 ## Supported Libraries
 
 ### TypeScript
@@ -66,6 +75,12 @@ bun run test
 
 # Run tests for specific language
 bun run test:typescript
+
+# Build contracts
+forge build
+
+# Run contract tests
+forge test
 ```
 
 After tests complete, a feature support table is displayed showing pass/fail status for each test case across all libraries. Results are automatically saved to `results/latest.md`.
@@ -78,6 +93,11 @@ resolution-tests/
 ├── shared/                  # Shared types and helpers for TS packages
 │   ├── types.ts
 │   └── index.ts
+├── contracts/               # Foundry project for ENS resolvers
+│   ├── src/                 # Resolver contracts
+│   ├── test/                # Solidity tests
+│   ├── script/              # Deployment scripts
+│   └── lib/                 # Dependencies (forge-std)
 ├── gateway/                 # Static CCIP-Read responses (future)
 ├── scripts/
 │   └── run-tests.ts         # Test runner (auto-discovers packages)

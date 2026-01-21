@@ -8,6 +8,7 @@ Comprehensive test suite for ENS name resolution across multiple programming lan
 
 - `test-cases.json` - Single source of truth for all test cases
 - `shared/` - Shared TypeScript types and helpers
+- `contracts/` - Foundry project with ENS resolver contracts for test names
 - `plan.md` - Project roadmap and status tracking
 - `scripts/run-tests.ts` - Discovers and runs all package tests
 - `scripts/aggregate-results.ts` - Combines results into markdown/CSV
@@ -18,11 +19,25 @@ Comprehensive test suite for ENS name resolution across multiple programming lan
 bun install                 # Install all workspace dependencies
 bun run test                # Run all tests (outputs feature table to results/latest.md)
 bun run test:typescript     # Run TypeScript tests only
+
+# Contracts (Foundry)
+forge build                 # Build contracts
+forge test                  # Run contract tests
+forge script <script>       # Run deployment script
 ```
 
 ## Workspace Setup
 
 This is a bun workspace monorepo. TypeScript packages in `packages/` are auto-discovered and share dependencies from root `node_modules/`.
+
+## Contracts
+
+The `contracts/` directory contains Foundry-based ENS resolver contracts applied to the names in `test-cases.json`. These test various resolution functionality:
+
+- `contracts/src/` - Resolver contract implementations
+- `contracts/test/` - Solidity tests
+- `contracts/script/` - Deployment scripts
+- `contracts/lib/` - Dependencies (forge-std)
 
 ## Adding TypeScript Tests
 
