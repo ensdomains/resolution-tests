@@ -7,7 +7,9 @@ libs = ["node_modules", "contracts/lib"]
 cache_path = "contracts/cache"
 broadcast = "contracts/broadcast"
 remappings = [
-  "@openzeppelin=contracts/lib/openzeppelin-contracts/contracts"
+  "forge-std=contracts/lib/forge-std/src",
+  "@ensdomains=contracts/lib/ens-contracts/contracts",
+  "@openzeppelin=contracts/lib/openzeppelin-contracts"
 ]
 
 # See more config options https://github.com/foundry-rs/foundry/blob/master/crates/config/README.md#all-options
