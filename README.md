@@ -29,23 +29,23 @@ See `test-cases.json` for full details and expected values.
 ## Supported Libraries
 
 ### TypeScript
-- `viem` v2.x
-- `viem` v1.x
-- `ethers` v6.x
-- `ethers` v5.x
-- `@ensdomains/ensjs` v3.x
-- `web3.js` v4.x
+- [x] `viem` v2.x
+- [ ] `viem` v1.x
+- [ ] `ethers` v6.x
+- [x] `ethers` v5.x
+- [ ] `@ensdomains/ensjs` v3.x
+- [ ] `web3.js` v4.x
 
 ### Python
-- `web3.py`
-- `ens-py`
+- [ ] `web3.py`
+- [ ] `ens-py`
 
 ### Rust
-- `alloy`
-- `ethers-rs`
+- [ ] `alloy`
+- [ ] `ethers-rs`
 
 ### Go
-- `go-ens`
+- [ ] `go-ens`
 
 ## Quick Start
 
