@@ -6,7 +6,6 @@ import {Multicallable} from "@ensdomains/resolvers/Multicallable.sol";
 import {AddrResolver} from "@ensdomains/resolvers/profiles/AddrResolver.sol";
 import {ContentHashResolver} from "@ensdomains/resolvers/profiles/ContentHashResolver.sol";
 import {TextResolver} from "@ensdomains/resolvers/profiles/TextResolver.sol";
-import {ExtendedResolver} from "@ensdomains/resolvers/profiles/ExtendedResolver.sol";
 import {IUniversalResolver} from "@ensdomains/universalResolver/IUniversalResolver.sol";
 
 interface IProxy {
@@ -14,7 +13,7 @@ interface IProxy {
 }
 
 /// @dev ENS resolver that only returns data when called via the Universal Resolver. Useful for integration testing.
-contract URTestResolver is Multicallable, AddrResolver, ContentHashResolver, TextResolver, ExtendedResolver {
+contract URTestResolver is Multicallable, AddrResolver, ContentHashResolver, TextResolver {
     IENS public constant ENS = IENS(0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e);
     address public constant UNIVERSAL_RESOLVER = 0xeEeEEEeE14D718C2B47D9923Deab1335E144EeEe;
 
@@ -52,8 +51,7 @@ contract URTestResolver is Multicallable, AddrResolver, ContentHashResolver, Tex
         override(Multicallable, AddrResolver, ContentHashResolver, TextResolver)
         returns (bool)
     {
-        return interfaceID == 0x9061b923 // ExtendedResolver.resolve
-            || super.supportsInterface(interfaceID);
+        return super.supportsInterface(interfaceID);
     }
 
     /// @dev Does not support wrapped names.
