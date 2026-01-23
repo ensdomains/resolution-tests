@@ -6,7 +6,7 @@ import {Multicallable} from "@ensdomains/resolvers/Multicallable.sol";
 import {AddrResolver} from "@ensdomains/resolvers/profiles/AddrResolver.sol";
 import {ContentHashResolver} from "@ensdomains/resolvers/profiles/ContentHashResolver.sol";
 import {TextResolver} from "@ensdomains/resolvers/profiles/TextResolver.sol";
-import {IExtendedResolver} from "@ensdomains/resolvers/profiles/IExtendedResolver.sol";
+import {ExtendedResolver} from "@ensdomains/resolvers/profiles/ExtendedResolver.sol";
 import {IUniversalResolver} from "@ensdomains/universalResolver/IUniversalResolver.sol";
 
 interface IProxy {
@@ -14,22 +14,9 @@ interface IProxy {
 }
 
 /// @dev ENS resolver that only returns data when called via the Universal Resolver. Useful for integration testing.
-contract URTestResolver is Multicallable, AddrResolver, ContentHashResolver, TextResolver, IExtendedResolver {
+contract URTestResolver is Multicallable, AddrResolver, ContentHashResolver, TextResolver, ExtendedResolver {
     IENS public constant ENS = IENS(0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e);
     address public constant UNIVERSAL_RESOLVER = 0xeEeEEEeE14D718C2B47D9923Deab1335E144EeEe;
-
-    function resolve(
-        bytes calldata,
-        /* name */
-        bytes memory data
-    )
-        external
-        view
-        returns (bytes memory)
-    {
-        (, bytes memory result) = address(this).staticcall(data);
-        return result;
-    }
 
     function text(bytes32 node, string calldata key) external view override returns (string memory) {
         if (msg.sender != _ur()) {
@@ -65,7 +52,8 @@ contract URTestResolver is Multicallable, AddrResolver, ContentHashResolver, Tex
         override(Multicallable, AddrResolver, ContentHashResolver, TextResolver)
         returns (bool)
     {
-        return interfaceID == type(IExtendedResolver).interfaceId || super.supportsInterface(interfaceID);
+        return interfaceID == 0x9061b923 // ExtendedResolver.resolve
+            || super.supportsInterface(interfaceID);
     }
 
     /// @dev Does not support wrapped names.
