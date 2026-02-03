@@ -103,7 +103,8 @@ describe("ENS Resolution Tests - viem v2", () => {
           expect(actual).toBe(expected);
         } catch (error) {
           const durationMs = Date.now() - start;
-          const errorMsg = error instanceof Error ? error.message : String(error);
+          const errorMsg =
+            error instanceof Error ? error.message : String(error);
           recordResult(testCase.id, false, null, errorMsg, durationMs);
           throw error;
         }
@@ -144,7 +145,8 @@ describe("ENS Resolution Tests - viem v2", () => {
           expect(actual).toBe(expected);
         } catch (error) {
           const durationMs = Date.now() - start;
-          const errorMsg = error instanceof Error ? error.message : String(error);
+          const errorMsg =
+            error instanceof Error ? error.message : String(error);
           recordResult(testCase.id, false, null, errorMsg, durationMs);
           throw error;
         }

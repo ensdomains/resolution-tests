@@ -1,183 +1,173 @@
-{
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "version": "1.0.0",
-  "description": "ENS Resolution Test Cases - Single source of truth for all test implementations",
-  "metadata": {
-    "maintainer": "ENS DevRel Team",
-    "safe": "devrel.enslabs.eth",
-    "recoverer": "coldwallet.ens.eth"
-  },
-  "cases": [
-    {
-      "id": "forward-eth-onchain",
-      "category": "forward",
-      "description": "Resolution of onchain ETH address via Universal Resolver",
-      "status": "ready",
-      "input": {
-        "name": "integration-tests.eth"
-      },
-      "expected": {
-        "address": "0xeE9eeaAB0Bb7D9B969D701f6f8212609EDeA252E"
-      },
-      "method": "addr",
-      "params": {
-        "coinType": 60
-      }
+[
+  {
+    "id": "forward-eth-onchain",
+    "category": "forward",
+    "description": "Resolution of onchain ETH address via Universal Resolver",
+    "status": "ready",
+    "input": {
+      "name": "integration-tests.eth"
     },
-    {
-      "id": "forward-base-onchain",
-      "category": "forward",
-      "description": "Resolution of onchain L2 address (Base) via Universal Resolver",
-      "status": "ready",
-      "input": {
-        "name": "integration-tests.eth"
-      },
-      "expected": {
-        "address": "0xeE9eeaAB0Bb7D9B969D701f6f8212609EDeA252E"
-      },
-      "method": "addr",
-      "params": {
-        "coinType": 2147492101
-      }
+    "expected": {
+      "address": "0xeE9eeaAB0Bb7D9B969D701f6f8212609EDeA252E"
     },
-    {
-      "id": "forward-base-offchain",
-      "category": "forward",
-      "description": "Resolution of offchain L2 address (Base) via CCIP-Read",
-      "status": "pending-setup",
-      "input": {
-        "name": "greg.offchaindemo.eth"
-      },
-      "expected": {
-        "address": "0x8764f2939aE6ed4EcB5baD2cdB7e2B81aA153bd1"
-      },
-      "method": "addr",
-      "params": {
-        "coinType": 2147492101
-      }
-    },
-    {
-      "id": "forward-text-avatar",
-      "category": "forward",
-      "description": "Resolution of onchain avatar text record",
-      "status": "ready",
-      "input": {
-        "name": "gregskril.eth"
-      },
-      "expected": {
-        "value": "eip155:1/erc721:0x4a4f4a202c840f7247cfcb429e1b41a5509176d8/19"
-      },
-      "method": "text",
-      "params": {
-        "key": "avatar"
-      }
-    },
-    {
-      "id": "forward-text-description",
-      "category": "forward",
-      "description": "Resolution of offchain description text record",
-      "status": "ready",
-      "input": {
-        "name": "gtest.eth"
-      },
-      "expected": {
-        "value": "This name uses a hybrid resolver. Some records (ETH address, location text record) are stored onchain while others (this description, Base address, contenthash) are stored offchain."
-      },
-      "method": "text",
-      "params": {
-        "key": "description"
-      }
-    },
-    {
-      "id": "forward-contenthash",
-      "category": "forward",
-      "description": "Resolution of content hash record",
-      "status": "ready",
-      "input": {
-        "name": "gregskril.eth"
-      },
-      "expected": {
-        "value": "ipfs://bafybeihqxu6v2zzmmgl5gqlzpozu2ss6gh53idcdp7vnq5lccnjcxf3o3e"
-      },
-      "method": "contenthash",
-      "params": {}
-    },
-    {
-      "id": "reverse-eth-onchain",
-      "category": "reverse",
-      "description": "Reverse resolution of ETH address with onchain primary name",
-      "status": "ready",
-      "input": {
-        "address": "0xeE9eeaAB0Bb7D9B969D701f6f8212609EDeA252E"
-      },
-      "expected": {
-        "name": "devrel.enslabs.eth"
-      },
-      "method": "reverse",
-      "params": {}
-    },
-    {
-      "id": "reverse-eth-offchain",
-      "category": "reverse",
-      "description": "Reverse resolution of ETH address with offchain primary name (CCIP-Read)",
-      "status": "pending-setup",
-      "input": {
-        "address": "0x779981590E7Ccc0CFAe8040Ce7151324747cDb97"
-      },
-      "expected": {
-        "name": "burner.offchaindemo.eth"
-      },
-      "method": "reverse",
-      "params": {}
-    },
-    {
-      "id": "reverse-l2-base",
-      "category": "reverse",
-      "description": "L2 reverse resolution of Base address (via L1)",
-      "status": "pending-setup",
-      "input": {
-        "address": "0x179A862703a4adfb29896552DF9e307980D19285",
-        "chainId": 8453
-      },
-      "expected": {
-        "name": "greg.base.eth"
-      },
-      "method": "reverse-l2",
-      "params": {
-        "chainId": 8453
-      }
-    },
-    {
-      "id": "forward-wildcard",
-      "category": "forward",
-      "description": "Resolution via wildcard resolver",
-      "status": "pending-setup",
-      "input": {
-        "name": "anything.wildcard.integration-tests.eth"
-      },
-      "expected": {
-        "address": "TODO"
-      },
-      "method": "addr",
-      "params": {
-        "coinType": 60
-      }
-    },
-    {
-      "id": "forward-dns",
-      "category": "forward",
-      "description": "Resolution of DNS name with DNSSEC",
-      "status": "pending-setup",
-      "input": {
-        "name": "TODO"
-      },
-      "expected": {
-        "address": "TODO"
-      },
-      "method": "addr",
-      "params": {
-        "coinType": 60
-      }
+    "method": "addr",
+    "params": {
+      "coinType": 60
     }
-  ]
-}
+  },
+  {
+    "id": "forward-base-onchain",
+    "category": "forward",
+    "description": "Resolution of onchain L2 address (Base) via Universal Resolver",
+    "status": "ready",
+    "input": {
+      "name": "integration-tests.eth"
+    },
+    "expected": {
+      "address": "0xeE9eeaAB0Bb7D9B969D701f6f8212609EDeA252E"
+    },
+    "method": "addr",
+    "params": {
+      "coinType": 2147492101
+    }
+  },
+  {
+    "id": "forward-base-offchain",
+    "category": "forward",
+    "description": "Resolution of offchain L2 address (Base) via CCIP-Read",
+    "status": "pending-setup",
+    "input": {
+      "name": "greg.offchaindemo.eth"
+    },
+    "expected": {
+      "address": "0x8764f2939aE6ed4EcB5baD2cdB7e2B81aA153bd1"
+    },
+    "method": "addr",
+    "params": {
+      "coinType": 2147492101
+    }
+  },
+  {
+    "id": "forward-text-avatar",
+    "category": "forward",
+    "description": "Resolution of onchain avatar text record",
+    "status": "ready",
+    "input": {
+      "name": "gregskril.eth"
+    },
+    "expected": {
+      "value": "eip155:1/erc721:0x4a4f4a202c840f7247cfcb429e1b41a5509176d8/19"
+    },
+    "method": "text",
+    "params": {
+      "key": "avatar"
+    }
+  },
+  {
+    "id": "forward-text-description",
+    "category": "forward",
+    "description": "Resolution of offchain description text record",
+    "status": "ready",
+    "input": {
+      "name": "gtest.eth"
+    },
+    "expected": {
+      "value": "This name uses a hybrid resolver. Some records (ETH address, location text record) are stored onchain while others (this description, Base address, contenthash) are stored offchain."
+    },
+    "method": "text",
+    "params": {
+      "key": "description"
+    }
+  },
+  {
+    "id": "forward-contenthash",
+    "category": "forward",
+    "description": "Resolution of content hash record",
+    "status": "ready",
+    "input": {
+      "name": "gregskril.eth"
+    },
+    "expected": {
+      "value": "ipfs://bafybeihqxu6v2zzmmgl5gqlzpozu2ss6gh53idcdp7vnq5lccnjcxf3o3e"
+    },
+    "method": "contenthash",
+    "params": {}
+  },
+  {
+    "id": "reverse-eth-onchain",
+    "category": "reverse",
+    "description": "Reverse resolution of ETH address with onchain primary name",
+    "status": "ready",
+    "input": {
+      "address": "0xeE9eeaAB0Bb7D9B969D701f6f8212609EDeA252E"
+    },
+    "expected": {
+      "name": "devrel.enslabs.eth"
+    },
+    "method": "reverse",
+    "params": {}
+  },
+  {
+    "id": "reverse-eth-offchain",
+    "category": "reverse",
+    "description": "Reverse resolution of ETH address with offchain primary name (CCIP-Read)",
+    "status": "pending-setup",
+    "input": {
+      "address": "0x779981590E7Ccc0CFAe8040Ce7151324747cDb97"
+    },
+    "expected": {
+      "name": "burner.offchaindemo.eth"
+    },
+    "method": "reverse",
+    "params": {}
+  },
+  {
+    "id": "reverse-l2-base",
+    "category": "reverse",
+    "description": "L2 reverse resolution of Base address (via L1)",
+    "status": "pending-setup",
+    "input": {
+      "address": "0x179A862703a4adfb29896552DF9e307980D19285",
+      "chainId": 8453
+    },
+    "expected": {
+      "name": "greg.base.eth"
+    },
+    "method": "reverse-l2",
+    "params": {
+      "chainId": 8453
+    }
+  },
+  {
+    "id": "forward-wildcard",
+    "category": "forward",
+    "description": "Resolution via wildcard resolver",
+    "status": "pending-setup",
+    "input": {
+      "name": "anything.wildcard.integration-tests.eth"
+    },
+    "expected": {
+      "address": "TODO"
+    },
+    "method": "addr",
+    "params": {
+      "coinType": 60
+    }
+  },
+  {
+    "id": "forward-dns",
+    "category": "forward",
+    "description": "Resolution of DNS name with DNSSEC",
+    "status": "pending-setup",
+    "input": {
+      "name": "TODO"
+    },
+    "expected": {
+      "address": "TODO"
+    },
+    "method": "addr",
+    "params": {
+      "coinType": 60
+    }
+  }
+]

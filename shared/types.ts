@@ -24,18 +24,6 @@ export interface TestCase {
   params: Record<string, unknown>;
 }
 
-// Root test cases file structure
-export interface TestCasesFile {
-  version: string;
-  description: string;
-  metadata: {
-    maintainer: string;
-    safe: string;
-    recoverer: string;
-  };
-  cases: TestCase[];
-}
-
 // Individual test result
 export interface TestResult {
   caseId: string;

@@ -1,7 +1,7 @@
 import { readFileSync, writeFileSync, readdirSync, existsSync } from "node:fs";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
-import type { TestCase, TestCasesFile, LibraryResults } from "../shared/types";
+import type { TestCase, LibraryResults } from "../shared/types";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, "..");
@@ -34,8 +34,8 @@ function loadResults(files: string[]): LibraryResults[] {
 function loadTestCases(): TestCase[] {
   const testCasesPath = join(ROOT, "test-cases.json");
   const content = readFileSync(testCasesPath, "utf-8");
-  const data = JSON.parse(content) as TestCasesFile;
-  return data.cases;
+  const data = JSON.parse(content) as TestCase[];
+  return data;
 }
 
 function generateMarkdown(
