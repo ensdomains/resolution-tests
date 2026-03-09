@@ -1,5 +1,8 @@
 # ENS Resolution Tests
 
+> [!WARNING]
+> This repository is not yet ready for use. It is a work in progress.
+
 A comprehensive test suite for ENS name resolution across multiple programming languages and libraries.
 
 ## Overview
