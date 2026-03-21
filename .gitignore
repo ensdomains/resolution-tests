@@ -29,6 +29,7 @@ results/*.csv
 # Logs
 *.log
 npm-debug.log*
+contracts/broadcast/
 
 # Rust
 Cargo.lock
