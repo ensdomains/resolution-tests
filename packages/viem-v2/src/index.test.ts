@@ -105,7 +105,9 @@ describe("ENS Resolution Tests - viem v2", () => {
           const durationMs = Date.now() - start;
           const errorMsg =
             error instanceof Error ? error.message : String(error);
-          recordResult(testCase.id, false, null, errorMsg, durationMs);
+          if (!results.some((r) => r.caseId === testCase.id)) {
+            recordResult(testCase.id, false, null, errorMsg, durationMs);
+          }
           throw error;
         }
       });
@@ -147,7 +149,9 @@ describe("ENS Resolution Tests - viem v2", () => {
           const durationMs = Date.now() - start;
           const errorMsg =
             error instanceof Error ? error.message : String(error);
-          recordResult(testCase.id, false, null, errorMsg, durationMs);
+          if (!results.some((r) => r.caseId === testCase.id)) {
+            recordResult(testCase.id, false, null, errorMsg, durationMs);
+          }
           throw error;
         }
       });

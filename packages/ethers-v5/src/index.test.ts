@@ -96,7 +96,12 @@ describe("ENS Resolution Tests - ethers v5", () => {
 
           // For contenthash, compare CIDs to handle v0/v1 differences
           let passed = actual === expected;
-          if (!passed && testCase.method === "contenthash" && actual && expected) {
+          if (
+            !passed &&
+            testCase.method === "contenthash" &&
+            actual &&
+            expected
+          ) {
             const v0Cid = CID.parse(actual.replace("ipfs://", ""));
             const v1Cid = v0Cid.toV1().toString();
             const expectedCid = expected.replace("ipfs://", "");
@@ -114,8 +119,11 @@ describe("ENS Resolution Tests - ethers v5", () => {
           expect(passed).toBe(true);
         } catch (error) {
           const durationMs = Date.now() - start;
-          const errorMsg = error instanceof Error ? error.message : String(error);
-          recordResult(testCase.id, false, null, errorMsg, durationMs);
+          const errorMsg =
+            error instanceof Error ? error.message : String(error);
+          if (!results.some((r) => r.caseId === testCase.id)) {
+            recordResult(testCase.id, false, null, errorMsg, durationMs);
+          }
           throw error;
         }
       });
@@ -154,8 +162,11 @@ describe("ENS Resolution Tests - ethers v5", () => {
           expect(actual).toBe(expected);
         } catch (error) {
           const durationMs = Date.now() - start;
-          const errorMsg = error instanceof Error ? error.message : String(error);
-          recordResult(testCase.id, false, null, errorMsg, durationMs);
+          const errorMsg =
+            error instanceof Error ? error.message : String(error);
+          if (!results.some((r) => r.caseId === testCase.id)) {
+            recordResult(testCase.id, false, null, errorMsg, durationMs);
+          }
           throw error;
         }
       });
