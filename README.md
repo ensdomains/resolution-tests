@@ -3,63 +3,47 @@
 > [!WARNING]
 > This repository is not yet ready for use. It is a work in progress.
 
-A comprehensive test suite for ENS name resolution across multiple programming languages and libraries.
-
-## Overview
-
 This repository provides a stable, reproducible set of test cases for validating ENS resolution implementations. Library maintainers and integrators can use these tests to ensure their ENS support is complete and correct.
 
 > **Note:** These resolution tests are specifically for testing usage of the Universal Resolver for ENS V2 readiness.
 
 ## Test Cases
 
-| Category | Test ID | Description | Status |
-|----------|---------|-------------|--------|
-| Forward | `forward-eth-onchain` | ETH address resolution via Universal Resolver | Ready |
-| Forward | `forward-base-onchain` | Base address resolution (cointype 2147492101) | Ready |
-| Forward | `forward-base-offchain` | Base address via CCIP-Read | Pending |
-| Forward | `forward-text-avatar` | Avatar text record | Ready |
-| Forward | `forward-text-description` | Description text record (offchain) | Ready |
-| Forward | `forward-contenthash` | Content hash resolution | Ready |
-| Reverse | `reverse-eth-onchain` | Primary name from ETH address | Ready |
-| Reverse | `reverse-eth-offchain` | Primary name via CCIP-Read | Pending |
-| Reverse | `reverse-l2-base` | L2 reverse resolution (Base via L1) | Pending |
-| Forward | `forward-wildcard` | Wildcard resolver resolution | Pending |
-| Forward | `forward-dns` | DNS name with DNSSEC | Pending |
+See [test-cases.json](test-cases.json) for full details and expected values. It tests various resolution scenarios including:
 
-See `test-cases.json` for full details and expected values.
+- Forward onchain resolution (address, text, contenthash)
+- Forward offchain resolution (CCIP-Read)
+- Reverse resolution (L1 and L2)
+- Support for all valid name types (.eth, DNS, Unicode, etc.)
 
-## Smart Contracts
+## Library Coverage
 
-The `contracts/` directory contains Foundry-based ENS resolver contracts used for testing. These resolvers are deployed and configured for the names in `test-cases.json` to test various resolution scenarios including:
-
-- Standard onchain resolution
-- CCIP-Read (offchain) resolution
-- Wildcard resolution
-- Text records and contenthash
-
-## Supported Libraries
+Any library and app can use the above tests. For organization, we also run the tests and report coverage for the following libraries.
 
 ### TypeScript
+
 - [x] `viem` v2.x
 - [ ] `viem` v1.x
-- [ ] `ethers` v6.x
+- [x] `ethers` v6.x
 - [x] `ethers` v5.x
 - [ ] `@ensdomains/ensjs` v3.x
 - [ ] `web3.js` v4.x
 
 ### Python
+
 - [ ] `web3.py`
 - [ ] `ens-py`
 
 ### Rust
+
 - [ ] `alloy`
 - [ ] `ethers-rs`
 
 ### Go
+
 - [ ] `go-ens`
 
-## Quick Start
+## Local Development
 
 ```bash
 # Clone the repo
@@ -78,41 +62,11 @@ bun run test
 
 # Run tests for specific language
 bun run test:typescript
-
-# Build contracts
-forge build
-
-# Run contract tests
-forge test
 ```
 
 After tests complete, a feature support table is displayed showing pass/fail status for each test case across all libraries. Results are automatically saved to `results/latest.md`.
 
-## Project Structure
-
-```
-resolution-tests/
-├── test-cases.json          # Single source of truth for all tests
-├── shared/                  # Shared types and helpers for TS packages
-│   ├── types.ts
-│   └── index.ts
-├── contracts/               # Foundry project for ENS resolvers
-│   ├── src/                 # Resolver contracts
-│   ├── test/                # Solidity tests
-│   ├── script/              # Deployment scripts
-│   └── lib/                 # Dependencies (forge-std)
-├── gateway/                 # Static CCIP-Read responses (future)
-├── scripts/
-│   └── run-tests.ts         # Test runner (auto-discovers packages)
-├── results/
-│   └── latest.md            # Auto-generated feature support table
-└── packages/                # Library test implementations
-    ├── viem-v2/
-    ├── ethers-v6/
-    └── ...
-```
-
-## Adding a New TypeScript Library
+### Adding a New TypeScript Library
 
 1. Create a new directory: `packages/{library-version}/`
 2. Add a `package.json` (will be auto-discovered by bun workspaces)
@@ -145,18 +99,8 @@ Each library must output a `results.json` file:
 }
 ```
 
-## Environment Variables
-
-| Variable | Required | Description |
-|----------|----------|-------------|
-| `RPC_URL` | Yes | Ethereum mainnet RPC endpoint |
-
 ## Operational Notes
 
 - Test names use various `.eth` names owned by ENS DevRel team or known stable names
 - The DevRel team Safe (`devrel.enslabs.eth`) has `coldwallet.ens.eth` as a recoverer
 - Test data is designed to remain stable over time
-
-## License
-
-MIT
