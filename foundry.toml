@@ -8,7 +8,7 @@ cache_path = "contracts/cache"
 broadcast = "contracts/broadcast"
 remappings = [
   "forge-std=contracts/lib/forge-std/src",
-  "@ensdomains=contracts/lib/ens-contracts/contracts",
+  "@ens=contracts/lib/ens-contracts/contracts",
   "@openzeppelin=contracts/lib/openzeppelin-contracts"
 ]
 
