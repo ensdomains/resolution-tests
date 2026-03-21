@@ -62,11 +62,14 @@ describe("ENS Resolution Tests - ethers v6", () => {
 
           if (testCase.method === "addr") {
             const coinType = testCase.params.coinType as number;
+            // ethers v6 getAddress() expects chain ID for EVM chains, not ENSIP-11 coinType
+            const chainId =
+              coinType >= 0x80000000 ? coinType & 0x7fffffff : coinType;
             const name = testCase.input.name!;
 
             const resolver = await provider.getResolver(name);
             if (resolver) {
-              actual = await resolver.getAddress(coinType);
+              actual = await resolver.getAddress(chainId);
             }
 
             // Checksum address
@@ -96,7 +99,12 @@ describe("ENS Resolution Tests - ethers v6", () => {
 
           // For contenthash, compare CIDs to handle v0/v1 differences
           let passed = actual === expected;
-          if (!passed && testCase.method === "contenthash" && actual && expected) {
+          if (
+            !passed &&
+            testCase.method === "contenthash" &&
+            actual &&
+            expected
+          ) {
             const v0Cid = CID.parse(actual.replace("ipfs://", ""));
             const v1Cid = v0Cid.toV1().toString();
             const expectedCid = expected.replace("ipfs://", "");
@@ -114,7 +122,8 @@ describe("ENS Resolution Tests - ethers v6", () => {
           expect(passed).toBe(true);
         } catch (error) {
           const durationMs = Date.now() - start;
-          const errorMsg = error instanceof Error ? error.message : String(error);
+          const errorMsg =
+            error instanceof Error ? error.message : String(error);
           if (!results.some((r) => r.caseId === testCase.id)) {
             recordResult(testCase.id, false, null, errorMsg, durationMs);
           }
@@ -156,7 +165,8 @@ describe("ENS Resolution Tests - ethers v6", () => {
           expect(actual).toBe(expected);
         } catch (error) {
           const durationMs = Date.now() - start;
-          const errorMsg = error instanceof Error ? error.message : String(error);
+          const errorMsg =
+            error instanceof Error ? error.message : String(error);
           if (!results.some((r) => r.caseId === testCase.id)) {
             recordResult(testCase.id, false, null, errorMsg, durationMs);
           }
