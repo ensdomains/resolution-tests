@@ -1,5 +1,11 @@
 import { describe, test, expect, afterAll } from "bun:test";
-import { Address, createPublicClient, getAddress, http } from "viem";
+import {
+  Address,
+  createPublicClient,
+  getAddress,
+  http,
+  toCoinType,
+} from "viem";
 import { mainnet } from "viem/chains";
 import { normalize } from "viem/ens";
 import { writeFileSync } from "node:fs";
@@ -124,13 +130,12 @@ describe("ENS Resolution Tests - viem v2", () => {
         try {
           let actual: string | null = null;
 
-          if (testCase.method === "reverse") {
-            actual = await client.getEnsName({
-              address: testCase.input.address as `0x${string}`,
-            });
-          } else if (testCase.method === "reverse-l2") {
-            actual = null;
-          }
+          actual = await client.getEnsName({
+            address: testCase.input.address as `0x${string}`,
+            coinType: testCase.input.chainId
+              ? toCoinType(Number(testCase.input.chainId))
+              : undefined,
+          });
 
           const durationMs = Date.now() - start;
           const expected = testCase.expected.name || null;
