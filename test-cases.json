@@ -1,6 +1,6 @@
 [
   {
-    "id": "forward-eth-onchain",
+    "id": "universal-resolver",
     "category": "forward",
     "description": "Resolution of an onchain ETH address via the Universal Resolver",
     "status": "ready",
@@ -82,10 +82,10 @@
   {
     "id": "forward-contenthash",
     "category": "forward",
-    "description": "Resolution of an onchain contenthash record via the Universal Resolver",
+    "description": "Resolution of an onchain contenthash record",
     "status": "ready",
     "input": {
-      "name": "ur.integration-tests.eth"
+      "name": "integration-tests.eth"
     },
     "expected": {
       "value": "ipfs://bafybeifx7yeb55armcsxwwitkymga5xf53dxiarykms3ygqic223w5sk3m"
