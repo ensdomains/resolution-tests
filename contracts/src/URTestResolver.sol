@@ -5,6 +5,7 @@ import {IExtendedResolver} from "@ens/resolvers/profiles/IExtendedResolver.sol";
 import {IAddressResolver} from "@ens/resolvers/profiles/IAddressResolver.sol";
 import {IAddrResolver} from "@ens/resolvers/profiles/IAddrResolver.sol";
 import {ITextResolver} from "@ens/resolvers/profiles/ITextResolver.sol";
+import {IContentHashResolver} from "@ens/resolvers/profiles/IContentHashResolver.sol";
 import {ENSIP19, COIN_TYPE_ETH} from "@ens/utils/ENSIP19.sol";
 
 interface IProxy {
@@ -12,20 +13,17 @@ interface IProxy {
 }
 
 /// @dev ENS resolver that returns different values if it's called from the Universal Resolver for integration testing.
-contract URTestResolver is IExtendedResolver, IAddressResolver, IAddrResolver, ITextResolver {
+contract URTestResolver is IExtendedResolver, IAddressResolver, IAddrResolver, ITextResolver, IContentHashResolver {
     error UnsupportedResolverProfile(bytes4);
 
-    address public immutable UR;
-
-    constructor(address ur) {
-        UR = ur;
-    }
+    address public constant UNIVERSAL_RESOLVER = 0xeEeEEEeE14D718C2B47D9923Deab1335E144EeEe;
 
     function supportsInterface(bytes4 interfaceId) external view returns (bool) {
-        return msg.sender == IProxy(UR).implementation()
+        return msg.sender == IProxy(UNIVERSAL_RESOLVER).implementation()
             ? interfaceId == type(IExtendedResolver).interfaceId
             : (interfaceId == type(IAddressResolver).interfaceId || interfaceId == type(IAddrResolver).interfaceId
-                    || interfaceId == type(ITextResolver).interfaceId);
+                    || interfaceId == type(ITextResolver).interfaceId
+                    || interfaceId == type(IContentHashResolver).interfaceId);
     }
 
     function addr(bytes32) external pure returns (address payable) {
@@ -40,6 +38,10 @@ contract URTestResolver is IExtendedResolver, IAddressResolver, IAddrResolver, I
         return _text(key, false);
     }
 
+    function contenthash(bytes32) external pure returns (bytes memory) {
+        return _contenthash(false);
+    }
+
     function resolve(bytes calldata, bytes calldata data) external pure returns (bytes memory) {
         if (bytes4(data) == IAddrResolver.addr.selector) {
             return abi.encode(_addr(true));
@@ -49,6 +51,8 @@ contract URTestResolver is IExtendedResolver, IAddressResolver, IAddrResolver, I
         } else if (bytes4(data) == ITextResolver.text.selector) {
             (, string memory key) = abi.decode(data[4:], (bytes32, string));
             return abi.encode(_text(key, true));
+        } else if (bytes4(data) == IContentHashResolver.contenthash.selector) {
+            return abi.encode(_contenthash(true));
         } else {
             revert UnsupportedResolverProfile(bytes4(data));
         }
@@ -74,5 +78,11 @@ contract URTestResolver is IExtendedResolver, IAddressResolver, IAddrResolver, I
         } else {
             return "";
         }
+    }
+
+    function _contenthash(bool ok) internal pure returns (bytes memory) {
+        // IPFS CID: bafybeifx7yeb55armcsxwwitkymga5xf53dxiarykms3ygqic223w5sk3m
+        bytes memory cid = hex"e30101701220b7fe081ef41160a57b591356186076e5eec77402385325bc1a0816b5bb764adb";
+        return ok ? cid : bytes("");
     }
 }
