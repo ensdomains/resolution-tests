@@ -35,9 +35,6 @@ export interface TestResult {
 
 // Library results output format
 export interface LibraryResults {
-  library: string;
-  version: string;
-  language: string;
   timestamp: string;
   results: TestResult[];
 }

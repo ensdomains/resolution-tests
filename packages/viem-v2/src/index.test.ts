@@ -48,9 +48,6 @@ function recordResult(
 describe("ENS Resolution Tests - viem v2", () => {
   afterAll(() => {
     const output: LibraryResults = {
-      library: "viem",
-      version: "2.21.0",
-      language: "typescript",
       timestamp: new Date().toISOString(),
       results,
     };

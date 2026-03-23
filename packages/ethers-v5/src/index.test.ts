@@ -38,9 +38,6 @@ function recordResult(
 describe("ENS Resolution Tests - ethers v5", () => {
   afterAll(() => {
     const output: LibraryResults = {
-      library: "ethers",
-      version: "5.7.2",
-      language: "typescript",
       timestamp: new Date().toISOString(),
       results,
     };

@@ -246,6 +246,10 @@ function main() {
   // Save markdown to results/latest.md
   const resultsPath = join(ROOT, "results", "latest.md");
   writeFileSync(resultsPath, featureTable.markdown);
+  spawnSync("npx", ["prettier", "--write", resultsPath], {
+    cwd: ROOT,
+    stdio: "ignore",
+  });
   console.log(`\nResults saved to: results/latest.md`);
 
   const failed = results.filter((r) => !r.passed).length;
