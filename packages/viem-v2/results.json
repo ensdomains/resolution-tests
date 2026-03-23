@@ -1,0 +1,68 @@
+{
+  "timestamp": "2026-03-23T06:41:45.448Z",
+  "results": [
+    {
+      "caseId": "universal-resolver",
+      "passed": true,
+      "actual": "0x2222222222222222222222222222222222222222",
+      "error": null,
+      "durationMs": 909
+    },
+    {
+      "caseId": "forward-base-onchain",
+      "passed": true,
+      "actual": "0xeE9eeaAB0Bb7D9B969D701f6f8212609EDeA252E",
+      "error": null,
+      "durationMs": 240
+    },
+    {
+      "caseId": "forward-eth-offchain",
+      "passed": true,
+      "actual": "0x779981590E7Ccc0CFAe8040Ce7151324747cDb97",
+      "error": null,
+      "durationMs": 1329
+    },
+    {
+      "caseId": "forward-text-onchain",
+      "passed": true,
+      "actual": "https://raw.githubusercontent.com/ensdomains/resolution-tests/refs/heads/main/assets/avatar.svg",
+      "error": null,
+      "durationMs": 229
+    },
+    {
+      "caseId": "forward-text-offchain",
+      "passed": true,
+      "actual": "asdflkjasdflkjasdf",
+      "error": null,
+      "durationMs": 702
+    },
+    {
+      "caseId": "forward-contenthash",
+      "passed": false,
+      "actual": null,
+      "error": "Expected ipfs://bafybeifx7yeb55armcsxwwitkymga5xf53dxiarykms3ygqic223w5sk3m, got null",
+      "durationMs": 0
+    },
+    {
+      "caseId": "forward-dns-offchain",
+      "passed": false,
+      "actual": null,
+      "error": "Number \"475411618940684652382658899876961866559843549903n\" is not in safe integer range (-9007199254740991 to 9007199254740991)\n\nVersion: viem@2.44.4",
+      "durationMs": 1180
+    },
+    {
+      "caseId": "reverse-eth",
+      "passed": true,
+      "actual": "devrel.enslabs.eth",
+      "error": null,
+      "durationMs": 303
+    },
+    {
+      "caseId": "reverse-l2",
+      "passed": true,
+      "actual": "greg.base.eth",
+      "error": null,
+      "durationMs": 2461
+    }
+  ]
+}

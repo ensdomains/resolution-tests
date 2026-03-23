@@ -14,11 +14,6 @@ dist/
 build/
 *.js.map
 
-# Test results (generated)
-results/*.md
-results/*.csv
-**/results.json
-
 # IDE
 .idea/
 .vscode/

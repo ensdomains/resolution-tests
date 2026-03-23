@@ -1,0 +1,12 @@
+test_case,ethers@5.7.2,viem@2.21.0
+forward-eth-onchain,pass,pass
+forward-base-onchain,fail,pass
+forward-base-offchain,,
+forward-text-avatar,pass,pass
+forward-text-description,pass,pass
+forward-contenthash,pass,fail
+reverse-eth-onchain,pass,pass
+reverse-eth-offchain,,
+reverse-l2-base,,
+forward-wildcard,,
+forward-dns,,

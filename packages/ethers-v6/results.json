@@ -1,0 +1,68 @@
+{
+  "timestamp": "2026-03-23T06:41:59.578Z",
+  "results": [
+    {
+      "caseId": "universal-resolver",
+      "passed": false,
+      "actual": "0x1111111111111111111111111111111111111111",
+      "error": "Expected 0x2222222222222222222222222222222222222222, got 0x1111111111111111111111111111111111111111",
+      "durationMs": 1578
+    },
+    {
+      "caseId": "forward-base-onchain",
+      "passed": true,
+      "actual": "0xeE9eeaAB0Bb7D9B969D701f6f8212609EDeA252E",
+      "error": null,
+      "durationMs": 1053
+    },
+    {
+      "caseId": "forward-eth-offchain",
+      "passed": true,
+      "actual": "0x779981590E7Ccc0CFAe8040Ce7151324747cDb97",
+      "error": null,
+      "durationMs": 2665
+    },
+    {
+      "caseId": "forward-text-onchain",
+      "passed": true,
+      "actual": "https://raw.githubusercontent.com/ensdomains/resolution-tests/refs/heads/main/assets/avatar.svg",
+      "error": null,
+      "durationMs": 1128
+    },
+    {
+      "caseId": "forward-text-offchain",
+      "passed": true,
+      "actual": "asdflkjasdflkjasdf",
+      "error": null,
+      "durationMs": 2117
+    },
+    {
+      "caseId": "forward-contenthash",
+      "passed": true,
+      "actual": "ipfs://Qmaisz6NMhDB51cCvNWa1GMS7LU1pAxdF4Ld6Ft9kZEP2a",
+      "error": null,
+      "durationMs": 1157
+    },
+    {
+      "caseId": "forward-dns-offchain",
+      "passed": true,
+      "actual": "0x534631Bcf33BDb069fB20A93d2fdb9e4D4dD42CF",
+      "error": null,
+      "durationMs": 2466
+    },
+    {
+      "caseId": "reverse-eth",
+      "passed": true,
+      "actual": "devrel.enslabs.eth",
+      "error": null,
+      "durationMs": 1831
+    },
+    {
+      "caseId": "reverse-l2",
+      "passed": false,
+      "actual": null,
+      "error": "Expected greg.base.eth, got null",
+      "durationMs": 0
+    }
+  ]
+}
