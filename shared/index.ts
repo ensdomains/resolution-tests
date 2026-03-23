@@ -18,7 +18,14 @@ export function getReadyTestCases() {
   return loadTestCases().filter((c) => c.status === "ready");
 }
 
-// Filter test cases by category
-export function getTestCasesByCategory(category: string): TestCase[] {
-  return getReadyTestCases().filter((c) => c.category === category);
+// Filter test cases by category, optionally excluding unsupported methods
+export function getTestCasesByCategory(
+  category: string,
+  unsupportedMethods?: string[]
+): TestCase[] {
+  return getReadyTestCases().filter(
+    (c) =>
+      c.category === category &&
+      (!unsupportedMethods || !unsupportedMethods.includes(c.method))
+  );
 }

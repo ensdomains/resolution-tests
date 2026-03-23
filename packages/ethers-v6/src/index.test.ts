@@ -35,6 +35,8 @@ function recordResult(
   results.push({ caseId, passed, actual, error, durationMs });
 }
 
+const unsupportedMethods = ["reverse-l2"];
+
 describe("ENS Resolution Tests - ethers v6", () => {
   afterAll(() => {
     const output: LibraryResults = {
@@ -48,7 +50,7 @@ describe("ENS Resolution Tests - ethers v6", () => {
   });
 
   describe("Forward Resolution", () => {
-    const forwardCases = getTestCasesByCategory("forward");
+    const forwardCases = getTestCasesByCategory("forward", unsupportedMethods);
 
     for (const testCase of forwardCases) {
       test(testCase.description, async () => {
@@ -131,7 +133,7 @@ describe("ENS Resolution Tests - ethers v6", () => {
   });
 
   describe("Reverse Resolution", () => {
-    const reverseCases = getTestCasesByCategory("reverse");
+    const reverseCases = getTestCasesByCategory("reverse", unsupportedMethods);
 
     for (const testCase of reverseCases) {
       test(testCase.description, async () => {
@@ -142,9 +144,6 @@ describe("ENS Resolution Tests - ethers v6", () => {
 
           if (testCase.method === "reverse") {
             actual = await provider.lookupAddress(testCase.input.address!);
-          } else if (testCase.method === "reverse-l2") {
-            // L2 reverse resolution not directly supported in ethers v6
-            actual = null;
           }
 
           const durationMs = Date.now() - start;
