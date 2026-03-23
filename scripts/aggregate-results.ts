@@ -80,8 +80,7 @@ function generateMarkdown(
     md += `Tested: ${pkg.data.timestamp}\n\n`;
 
     const passed = pkg.data.results.filter((r) => r.passed).length;
-    const total = pkg.data.results.length;
-    md += `**${passed}/${total} tests passed**\n\n`;
+    md += `**${passed}/${testCases.length} tests passed**\n\n`;
 
     const failures = pkg.data.results.filter((r) => !r.passed);
     if (failures.length > 0) {

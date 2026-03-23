@@ -1,68 +1,61 @@
 {
-  "timestamp": "2026-03-23T06:41:37.929Z",
+  "timestamp": "2026-03-23T07:07:45.805Z",
   "results": [
     {
       "caseId": "universal-resolver",
       "passed": false,
       "actual": "0x1111111111111111111111111111111111111111",
       "error": "Expected 0x2222222222222222222222222222222222222222, got 0x1111111111111111111111111111111111111111",
-      "durationMs": 2466
+      "durationMs": 2649
     },
     {
       "caseId": "forward-base-onchain",
       "passed": false,
       "actual": null,
       "error": "unsupported coin type: 2147492101 (operation=\"getAddress(2147492101)\", code=UNSUPPORTED_OPERATION, version=providers/5.8.0)",
-      "durationMs": 1597
+      "durationMs": 1604
     },
     {
       "caseId": "forward-eth-offchain",
       "passed": true,
       "actual": "0x779981590E7Ccc0CFAe8040Ce7151324747cDb97",
       "error": null,
-      "durationMs": 3391
+      "durationMs": 3597
     },
     {
       "caseId": "forward-text-onchain",
       "passed": true,
       "actual": "https://raw.githubusercontent.com/ensdomains/resolution-tests/refs/heads/main/assets/avatar.svg",
       "error": null,
-      "durationMs": 1578
+      "durationMs": 1642
     },
     {
       "caseId": "forward-text-offchain",
       "passed": true,
       "actual": "asdflkjasdflkjasdf",
       "error": null,
-      "durationMs": 2778
+      "durationMs": 2867
     },
     {
       "caseId": "forward-contenthash",
       "passed": true,
       "actual": "ipfs://Qmaisz6NMhDB51cCvNWa1GMS7LU1pAxdF4Ld6Ft9kZEP2a",
       "error": null,
-      "durationMs": 1600
+      "durationMs": 1616
     },
     {
       "caseId": "forward-dns-offchain",
       "passed": true,
       "actual": "0x534631Bcf33BDb069fB20A93d2fdb9e4D4dD42CF",
       "error": null,
-      "durationMs": 3353
+      "durationMs": 3549
     },
     {
       "caseId": "reverse-eth",
       "passed": true,
       "actual": "devrel.enslabs.eth",
       "error": null,
-      "durationMs": 2753
-    },
-    {
-      "caseId": "reverse-l2",
-      "passed": false,
-      "actual": null,
-      "error": "Expected greg.base.eth, got null",
-      "durationMs": 0
+      "durationMs": 3096
     }
   ]
 }

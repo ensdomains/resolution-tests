@@ -182,9 +182,8 @@ function generateFeatureTable(
       mdTotals.push("-");
     } else {
       const passed = results.results.filter((r) => r.passed).length;
-      const total = results.results.length;
-      consoleTotals.push(`${passed}/${total}`.padEnd(libWidth));
-      mdTotals.push(`**${passed}/${total}**`);
+      consoleTotals.push(`${passed}/${readyCases.length}`.padEnd(libWidth));
+      mdTotals.push(`**${passed}/${readyCases.length}**`);
     }
   }
   consoleLines.push(consoleTotals.join(" | "));

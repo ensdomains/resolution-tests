@@ -1,6 +1,6 @@
 # ENS Resolution Test Results
 
-Generated: 2026-03-23T06:41:59.600Z
+Generated: 2026-03-23T07:08:08.104Z
 
 ## Feature Support
 
@@ -11,9 +11,9 @@ Generated: 2026-03-23T06:41:59.600Z
 | forward-eth-offchain  |    ✅     |   ✅    |    ✅     |
 | forward-text-onchain  |    ✅     |   ✅    |    ✅     |
 | forward-text-offchain |    ✅     |   ✅    |    ✅     |
-| forward-contenthash   |    ✅     |   ❌    |    ✅     |
+| forward-contenthash   |    ✅     |    -    |    ✅     |
 | reverse-eth           |    ✅     |   ✅    |    ✅     |
-| reverse-l2            |    ❌     |   ✅    |    ❌     |
+| reverse-l2            |     -     |   ✅    |     -     |
 | forward-dns-offchain  |    ✅     |   ❌    |    ✅     |
 | **TOTAL**             |  **6/9**  | **7/9** |  **7/9**  |
 
