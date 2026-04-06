@@ -1,0 +1,13 @@
+[project]
+name = "ens-tests-web3py"
+version = "1.0.0"
+description = "ENS resolution tests for web3.py"
+requires-python = ">=3.10"
+dependencies = [
+    "web3>=7.14.0",
+    "pytest>=8.0.0",
+]
+
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"

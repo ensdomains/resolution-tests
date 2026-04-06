@@ -1,0 +1,68 @@
+{
+  "timestamp": "2026-04-06T10:49:41.000Z",
+  "results": [
+    {
+      "caseId": "universal-resolver",
+      "passed": false,
+      "actual": "0x1111111111111111111111111111111111111111",
+      "error": "Expected 0x2222222222222222222222222222222222222222, got 0x1111111111111111111111111111111111111111",
+      "durationMs": 1815
+    },
+    {
+      "caseId": "forward-base-onchain",
+      "passed": true,
+      "actual": "0xeE9eeaAB0Bb7D9B969D701f6f8212609EDeA252E",
+      "error": null,
+      "durationMs": 916
+    },
+    {
+      "caseId": "forward-eth-offchain",
+      "passed": false,
+      "actual": null,
+      "error": "Resolver for name `test.offchaindemo.eth` does not support the `addr(bytes32,uint256)` interface.",
+      "durationMs": 851
+    },
+    {
+      "caseId": "forward-text-onchain",
+      "passed": true,
+      "actual": "https://raw.githubusercontent.com/ensdomains/resolution-tests/refs/heads/main/assets/avatar.svg",
+      "error": null,
+      "durationMs": 865
+    },
+    {
+      "caseId": "forward-text-offchain",
+      "passed": false,
+      "actual": null,
+      "error": "Resolver for name `test.offchaindemo.eth` does not support the `text` interface.",
+      "durationMs": 885
+    },
+    {
+      "caseId": "forward-contenthash",
+      "passed": false,
+      "actual": null,
+      "error": "\nABI Not Found!\nNo element named `contenthash` with 0 argument(s).\nProvided argument types: ()\nProvided keyword argument types: {}\n\nTried to find a matching ABI element named `contenthash`, but encountered the following problems:\nSignature: contenthash(bytes32), type: function\nExpected 1 argument(s) but received 0 argument(s).\n",
+      "durationMs": 251
+    },
+    {
+      "caseId": "forward-dns-offchain",
+      "passed": false,
+      "actual": null,
+      "error": "Resolver for name `pokersback.com` does not support the `addr(bytes32,uint256)` interface.",
+      "durationMs": 841
+    },
+    {
+      "caseId": "reverse-eth",
+      "passed": true,
+      "actual": "devrel.enslabs.eth",
+      "error": null,
+      "durationMs": 1476
+    },
+    {
+      "caseId": "reverse-l2",
+      "passed": false,
+      "actual": null,
+      "error": "L2 reverse resolution not supported by web3.py",
+      "durationMs": 0
+    }
+  ]
+}
