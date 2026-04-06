@@ -1,0 +1,54 @@
+{
+  "timestamp": "2026-04-06T11:34:24.601Z",
+  "results": [
+    {
+      "caseId": "universal-resolver",
+      "passed": false,
+      "actual": "0x1111111111111111111111111111111111111111",
+      "error": "Expected 0x2222222222222222222222222222222222222222, got 0x1111111111111111111111111111111111111111",
+      "durationMs": 813
+    },
+    {
+      "caseId": "forward-eth-offchain",
+      "passed": false,
+      "actual": null,
+      "error": "[object Object]",
+      "durationMs": 391
+    },
+    {
+      "caseId": "forward-text-onchain",
+      "passed": true,
+      "actual": "https://raw.githubusercontent.com/ensdomains/resolution-tests/refs/heads/main/assets/avatar.svg",
+      "error": null,
+      "durationMs": 457
+    },
+    {
+      "caseId": "forward-text-offchain",
+      "passed": false,
+      "actual": null,
+      "error": "[object Object]",
+      "durationMs": 379
+    },
+    {
+      "caseId": "forward-dns-offchain",
+      "passed": false,
+      "actual": null,
+      "error": "[object Object]",
+      "durationMs": 368
+    },
+    {
+      "caseId": "reverse-eth",
+      "passed": true,
+      "actual": "devrel.enslabs.eth",
+      "error": null,
+      "durationMs": 368
+    },
+    {
+      "caseId": "reverse-l2",
+      "passed": true,
+      "actual": "greg.base.eth",
+      "error": null,
+      "durationMs": 1080
+    }
+  ]
+}
