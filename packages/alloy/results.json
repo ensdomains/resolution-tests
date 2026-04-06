@@ -1,0 +1,47 @@
+{
+  "timestamp": "2026-04-06T11:48:49.143133+00:00",
+  "results": [
+    {
+      "caseId": "universal-resolver",
+      "passed": false,
+      "actual": "0x1111111111111111111111111111111111111111",
+      "error": "Expected Some(\"0x2222222222222222222222222222222222222222\"), got Some(\"0x1111111111111111111111111111111111111111\")",
+      "durationMs": 787
+    },
+    {
+      "caseId": "forward-eth-offchain",
+      "passed": false,
+      "actual": null,
+      "error": "ENS resolver not found for name \"test.offchaindemo.eth\"",
+      "durationMs": 143
+    },
+    {
+      "caseId": "forward-text-onchain",
+      "passed": true,
+      "actual": "https://raw.githubusercontent.com/ensdomains/resolution-tests/refs/heads/main/assets/avatar.svg",
+      "error": null,
+      "durationMs": 261
+    },
+    {
+      "caseId": "forward-text-offchain",
+      "passed": false,
+      "actual": null,
+      "error": "ENS resolver not found for name \"test.offchaindemo.eth\"",
+      "durationMs": 137
+    },
+    {
+      "caseId": "reverse-eth",
+      "passed": true,
+      "actual": "devrel.enslabs.eth",
+      "error": null,
+      "durationMs": 261
+    },
+    {
+      "caseId": "forward-dns-offchain",
+      "passed": false,
+      "actual": null,
+      "error": "ENS resolver not found for name \"pokersback.com\"",
+      "durationMs": 109
+    }
+  ]
+}
