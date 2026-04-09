@@ -1,61 +1,68 @@
 {
-  "timestamp": "2026-03-23T07:07:54.149Z",
+  "timestamp": "2026-04-09T18:40:53.791Z",
   "results": [
     {
       "caseId": "universal-resolver",
       "passed": true,
       "actual": "0x2222222222222222222222222222222222222222",
       "error": null,
-      "durationMs": 886
+      "durationMs": 178
     },
     {
       "caseId": "forward-base-onchain",
       "passed": true,
       "actual": "0xeE9eeaAB0Bb7D9B969D701f6f8212609EDeA252E",
       "error": null,
-      "durationMs": 225
+      "durationMs": 31
+    },
+    {
+      "caseId": "forward-wildcard",
+      "passed": true,
+      "actual": "0x51050ec063d393217B436747617aD1C2285Aeeee",
+      "error": null,
+      "durationMs": 25
     },
     {
       "caseId": "forward-eth-offchain",
       "passed": true,
       "actual": "0x779981590E7Ccc0CFAe8040Ce7151324747cDb97",
       "error": null,
-      "durationMs": 1152
+      "durationMs": 310
     },
     {
       "caseId": "forward-text-onchain",
       "passed": true,
       "actual": "https://raw.githubusercontent.com/ensdomains/resolution-tests/refs/heads/main/assets/avatar.svg",
       "error": null,
-      "durationMs": 227
+      "durationMs": 29
     },
     {
       "caseId": "forward-text-offchain",
       "passed": true,
       "actual": "asdflkjasdflkjasdf",
       "error": null,
-      "durationMs": 762
+      "durationMs": 106
     },
     {
       "caseId": "forward-dns-offchain",
       "passed": false,
       "actual": null,
       "error": "Number \"475411618940684652382658899876961866559843549903n\" is not in safe integer range (-9007199254740991 to 9007199254740991)\n\nVersion: viem@2.44.4",
-      "durationMs": 1207
+      "durationMs": 201
     },
     {
       "caseId": "reverse-eth",
       "passed": true,
       "actual": "devrel.enslabs.eth",
       "error": null,
-      "durationMs": 227
+      "durationMs": 28
     },
     {
       "caseId": "reverse-l2",
       "passed": true,
       "actual": "greg.base.eth",
       "error": null,
-      "durationMs": 3481
+      "durationMs": 1020
     }
   ]
 }

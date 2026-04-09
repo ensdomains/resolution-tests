@@ -32,6 +32,22 @@
     }
   },
   {
+    "id": "forward-wildcard",
+    "category": "forward",
+    "description": "Resolution of an onchain wildcard ETH address",
+    "status": "ready",
+    "input": {
+      "name": "moo331.nft-owner.eth"
+    },
+    "expected": {
+      "address": "0x51050ec063d393217B436747617aD1C2285Aeeee"
+    },
+    "method": "addr",
+    "params": {
+      "coinType": 60
+    }
+  },
+  {
     "id": "forward-eth-offchain",
     "category": "forward",
     "description": "Resolution of an offchain address (ETH) via CCIP-Read",
