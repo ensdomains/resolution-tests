@@ -13,6 +13,8 @@ import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 
 import {
+  getExpectedErrorResult,
+  getExpectedValue,
   getTestCasesByCategory,
   type TestResult,
   type LibraryResults,
@@ -51,17 +53,6 @@ function recordResult(
   results.push({ caseId, passed, actual, error, durationMs });
 }
 
-function getExpectedValue(testCase: {
-  expected: { address?: string; value?: string; name?: string };
-}) {
-  return (
-    testCase.expected.address ||
-    testCase.expected.value ||
-    testCase.expected.name ||
-    null
-  );
-}
-
 const unsupportedMethods = ["contenthash"];
 
 describe("ENS Resolution Tests - viem v2", () => {
@@ -82,7 +73,6 @@ describe("ENS Resolution Tests - viem v2", () => {
     for (const testCase of forwardCases) {
       test(testCase.description, async () => {
         const start = Date.now();
-        const expectsError = testCase.expected.error === true;
 
         try {
           let actual: string | null = null;
@@ -112,17 +102,23 @@ describe("ENS Resolution Tests - viem v2", () => {
           }
 
           const durationMs = Date.now() - start;
+          const expectedErrorResult = getExpectedErrorResult(
+            testCase,
+            actual,
+            null,
+            durationMs
+          );
 
-          if (expectsError) {
+          if (expectedErrorResult) {
             recordResult(
-              testCase.id,
-              false,
-              actual,
-              `Expected an error, got ${actual}`,
-              durationMs
+              expectedErrorResult.caseId,
+              expectedErrorResult.passed,
+              expectedErrorResult.actual,
+              expectedErrorResult.error,
+              expectedErrorResult.durationMs
             );
 
-            expect(false).toBe(true);
+            expect(expectedErrorResult.passed).toBe(true);
             return;
           }
 
@@ -142,10 +138,23 @@ describe("ENS Resolution Tests - viem v2", () => {
           const durationMs = Date.now() - start;
           const errorMsg =
             error instanceof Error ? error.message : String(error);
+          const expectedErrorResult = getExpectedErrorResult(
+            testCase,
+            null,
+            errorMsg,
+            durationMs
+          );
 
-          if (expectsError) {
-            recordResult(testCase.id, true, errorMsg, null, durationMs);
-            expect(true).toBe(true);
+          if (expectedErrorResult) {
+            recordResult(
+              expectedErrorResult.caseId,
+              expectedErrorResult.passed,
+              expectedErrorResult.actual,
+              expectedErrorResult.error,
+              expectedErrorResult.durationMs
+            );
+
+            expect(expectedErrorResult.passed).toBe(true);
             return;
           }
 
