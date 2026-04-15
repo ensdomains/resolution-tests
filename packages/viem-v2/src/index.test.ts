@@ -57,7 +57,6 @@ const unsupportedMethods = ["contenthash"];
 describe("ENS Resolution Tests - viem v2", () => {
   afterAll(() => {
     const output: LibraryResults = {
-      timestamp: new Date().toISOString(),
       results,
     };
 

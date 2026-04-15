@@ -134,7 +134,6 @@ function generateFeatureTable(
 
   // Markdown header
   mdLines.push("# ENS Resolution Test Results\n");
-  mdLines.push(`Generated: ${new Date().toISOString()}\n`);
   mdLines.push("## Feature Support\n");
   mdLines.push(
     "| Test Case | " + packages.map((p) => p.name).join(" | ") + " |"

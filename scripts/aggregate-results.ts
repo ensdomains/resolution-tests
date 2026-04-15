@@ -43,7 +43,6 @@ function generateMarkdown(
   packages: PackageResults[]
 ): string {
   let md = "# ENS Resolution Test Results\n\n";
-  md += `Generated: ${new Date().toISOString()}\n\n`;
 
   // Summary table
   md += "## Summary\n\n";
@@ -77,7 +76,6 @@ function generateMarkdown(
   md += "\n## Detailed Results\n\n";
   for (const pkg of packages) {
     md += `### ${pkg.name}\n\n`;
-    md += `Tested: ${pkg.data.timestamp}\n\n`;
 
     const passed = pkg.data.results.filter((r) => r.passed).length;
     md += `**${passed}/${testCases.length} tests passed**\n\n`;

@@ -1,5 +1,4 @@
 {
-  "timestamp": "2026-04-15T07:11:32.461Z",
   "results": [
     {
       "caseId": "universal-resolver",
@@ -65,6 +64,12 @@
       "caseId": "reverse-eth",
       "passed": true,
       "actual": "devrel.enslabs.eth",
+      "error": null
+    },
+    {
+      "caseId": "reverse-l2",
+      "passed": true,
+      "actual": "greg.base.eth",
       "error": null
     }
   ]

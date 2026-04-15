@@ -86,7 +86,6 @@ Each library must output a `results.json` file:
   "library": "viem",
   "version": "2.21.0",
   "language": "typescript",
-  "timestamp": "2025-01-16T12:00:00Z",
   "results": [
     {
       "caseId": "forward-eth-onchain",

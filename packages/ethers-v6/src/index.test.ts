@@ -49,7 +49,6 @@ const unsupportedMethods = ["reverse-l2"];
 describe("ENS Resolution Tests - ethers v6", () => {
   afterAll(() => {
     const output: LibraryResults = {
-      timestamp: new Date().toISOString(),
       results,
     };
 
