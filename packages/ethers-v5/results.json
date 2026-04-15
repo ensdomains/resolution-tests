@@ -77,6 +77,12 @@
       "passed": true,
       "actual": "devrel.enslabs.eth",
       "error": null
+    },
+    {
+      "caseId": "reverse-falsy-primary-name",
+      "passed": true,
+      "actual": null,
+      "error": null
     }
   ]
 }

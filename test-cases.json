@@ -189,6 +189,20 @@
     }
   },
   {
+    "id": "reverse-falsy-primary-name",
+    "category": "reverse",
+    "description": "Reverse resolution returns null when the claimed primary name does not forward-resolve back to the address",
+    "status": "ready",
+    "input": {
+      "address": "0xa66E90D515F576f49Af2dF40952476D56F72A420"
+    },
+    "expected": {
+      "name": null
+    },
+    "method": "reverse",
+    "params": {}
+  },
+  {
     "id": "forward-dns-offchain",
     "category": "forward",
     "description": "Resolution of an offchain DNS name via CCIP-Read",

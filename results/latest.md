@@ -16,8 +16,9 @@
 | forward-contenthash              |    ✅     |     -     |    ✅     |
 | reverse-eth                      |    ✅     |    ✅     |    ✅     |
 | reverse-l2                       |     -     |    ✅     |     -     |
+| reverse-falsy-primary-name       |    ✅     |    ✅     |    ✅     |
 | forward-dns-offchain             |    ✅     |    ❌     |    ✅     |
-| **TOTAL**                        | **10/13** | **11/13** | **11/13** |
+| **TOTAL**                        | **11/14** | **12/14** | **12/14** |
 
 ### Legend
 

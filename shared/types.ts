@@ -7,9 +7,9 @@ export interface TestCaseInput {
 
 // Test case expected output types
 export interface TestCaseExpected {
-  address?: string;
-  name?: string;
-  value?: string;
+  address?: string | null;
+  name?: string | null;
+  value?: string | null;
   error?: boolean;
 }
 
