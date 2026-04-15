@@ -10,6 +10,7 @@ export interface TestCaseExpected {
   address?: string;
   name?: string;
   value?: string;
+  error?: boolean;
 }
 
 // Individual test case definition

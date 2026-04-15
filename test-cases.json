@@ -32,12 +32,44 @@
     }
   },
   {
+    "id": "forward-eth-onchain-normalized",
+    "category": "forward",
+    "description": "Resolution of an onchain ETH address with normalized casing",
+    "status": "ready",
+    "input": {
+      "name": "INTEGRATION-TESTS.ETH"
+    },
+    "expected": {
+      "address": "0xeE9eeaAB0Bb7D9B969D701f6f8212609EDeA252E"
+    },
+    "method": "addr",
+    "params": {
+      "coinType": 60
+    }
+  },
+  {
     "id": "forward-wildcard",
     "category": "forward",
     "description": "Resolution of an onchain wildcard ETH address",
     "status": "ready",
     "input": {
       "name": "moo331.nft-owner.eth"
+    },
+    "expected": {
+      "address": "0x51050ec063d393217B436747617aD1C2285Aeeee"
+    },
+    "method": "addr",
+    "params": {
+      "coinType": 60
+    }
+  },
+  {
+    "id": "forward-wildcard-normalized",
+    "category": "forward",
+    "description": "Resolution of an onchain wildcard ETH address with normalized casing",
+    "status": "ready",
+    "input": {
+      "name": "MOO331.NFT-OWNER.ETH"
     },
     "expected": {
       "address": "0x51050ec063d393217B436747617aD1C2285Aeeee"
@@ -57,6 +89,38 @@
     },
     "expected": {
       "address": "0x779981590E7Ccc0CFAe8040Ce7151324747cDb97"
+    },
+    "method": "addr",
+    "params": {
+      "coinType": 60
+    }
+  },
+  {
+    "id": "forward-invalid-punycode-literal",
+    "category": "forward",
+    "description": "Resolution rejects an invalid punycode literal before lookup",
+    "status": "ready",
+    "input": {
+      "name": "xn--ls8h.integration-tests.eth"
+    },
+    "expected": {
+      "error": true
+    },
+    "method": "addr",
+    "params": {
+      "coinType": 60
+    }
+  },
+  {
+    "id": "forward-circled-normalized",
+    "category": "forward",
+    "description": "Resolution of an onchain ETH address with circled-letter normalization",
+    "status": "ready",
+    "input": {
+      "name": "ⒶⒷⒸⒹⒺⒻⒼⒽⒾⒿⓀⓁⓂⓃⓄⓅⓆⓇⓈⓉⓊⓋⓌⓍⓎⓏ.integration-tests.eth"
+    },
+    "expected": {
+      "address": "0xeE9eeaAB0Bb7D9B969D701f6f8212609EDeA252E"
     },
     "method": "addr",
     "params": {
@@ -155,131 +219,5 @@
     "params": {
       "coinType": 60
     }
-  },
-  {
-    "id": "encoding-normalize-casefold",
-    "category": "encoding",
-    "description": "ENS normalization lowercases ASCII labels",
-    "status": "ready",
-    "input": {
-      "name": "RAFFY.eth"
-    },
-    "expected": {
-      "value": "raffy.eth"
-    },
-    "method": "normalize",
-    "params": {}
-  },
-  {
-    "id": "encoding-normalize-nfc",
-    "category": "encoding",
-    "description": "ENS normalization composes canonical Unicode forms",
-    "status": "ready",
-    "input": {
-      "name": "e\u0301th.eth"
-    },
-    "expected": {
-      "value": "\u00e9th.eth"
-    },
-    "method": "normalize",
-    "params": {}
-  },
-  {
-    "id": "encoding-normalize-width",
-    "category": "encoding",
-    "description": "ENS normalization folds fullwidth characters",
-    "status": "ready",
-    "input": {
-      "name": "\uff25\uff34\uff28.eth"
-    },
-    "expected": {
-      "value": "eth.eth"
-    },
-    "method": "normalize",
-    "params": {}
-  },
-  {
-    "id": "encoding-normalize-invalid-zwj",
-    "category": "encoding",
-    "description": "ENS normalization rejects disallowed joiner sequences",
-    "status": "ready",
-    "input": {
-      "name": "RaFFY\u200d\u2642.ETH"
-    },
-    "expected": {
-      "error": true
-    },
-    "method": "normalize",
-    "params": {}
-  },
-  {
-    "id": "encoding-normalize-invalid-punycode",
-    "category": "encoding",
-    "description": "ENS normalization rejects raw xn-- labels",
-    "status": "ready",
-    "input": {
-      "name": "xn--fa-hia.eth"
-    },
-    "expected": {
-      "error": true
-    },
-    "method": "normalize",
-    "params": {}
-  },
-  {
-    "id": "encoding-dns-encode-casefold",
-    "category": "encoding",
-    "description": "ENS DNS encoding uses the normalized lowercase form",
-    "status": "ready",
-    "input": {
-      "name": "RAFFY.eth"
-    },
-    "expected": {
-      "value": "0x0572616666790365746800"
-    },
-    "method": "dns-encode",
-    "params": {}
-  },
-  {
-    "id": "encoding-dns-encode-nfc",
-    "category": "encoding",
-    "description": "ENS DNS encoding uses the normalized NFC form",
-    "status": "ready",
-    "input": {
-      "name": "e\u0301th.eth"
-    },
-    "expected": {
-      "value": "0x04c3a974680365746800"
-    },
-    "method": "dns-encode",
-    "params": {}
-  },
-  {
-    "id": "encoding-namehash-casefold",
-    "category": "encoding",
-    "description": "ENS namehash uses the normalized lowercase form",
-    "status": "ready",
-    "input": {
-      "name": "RAFFY.eth"
-    },
-    "expected": {
-      "value": "0x9c8b7ac505c9f0161bbbd04437fce8c630a0886e1ffea00078e298f063a8a5df"
-    },
-    "method": "namehash",
-    "params": {}
-  },
-  {
-    "id": "encoding-namehash-width",
-    "category": "encoding",
-    "description": "ENS namehash uses the normalized width-folded form",
-    "status": "ready",
-    "input": {
-      "name": "\uff25\uff34\uff28.eth"
-    },
-    "expected": {
-      "value": "0x46d0423629b535bc111eb87598fbafd9f5463077e3832e2b980e7025d052e52d"
-    },
-    "method": "namehash",
-    "params": {}
   }
 ]

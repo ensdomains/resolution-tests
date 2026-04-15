@@ -7,7 +7,7 @@ import {
   toCoinType,
 } from "viem";
 import { mainnet } from "viem/chains";
-import { normalize } from "viem/ens";
+import { normalize as normalizeName } from "viem/ens";
 import { writeFileSync } from "node:fs";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -25,14 +25,20 @@ const results: TestResult[] = [];
 
 // Setup client
 const RPC_URL = process.env.RPC_URL;
-if (!RPC_URL) {
-  throw new Error("RPC_URL environment variable is required");
-}
+let client: ReturnType<typeof createPublicClient> | undefined;
 
-const client = createPublicClient({
-  chain: mainnet,
-  transport: http(RPC_URL),
-});
+function getClient() {
+  if (!RPC_URL) {
+    throw new Error("RPC_URL environment variable is required");
+  }
+
+  client ??= createPublicClient({
+    chain: mainnet,
+    transport: http(RPC_URL),
+  });
+
+  return client;
+}
 
 // Helper to record result
 function recordResult(
@@ -43,6 +49,17 @@ function recordResult(
   durationMs: number
 ) {
   results.push({ caseId, passed, actual, error, durationMs });
+}
+
+function getExpectedValue(testCase: {
+  expected: { address?: string; value?: string; name?: string };
+}) {
+  return (
+    testCase.expected.address ||
+    testCase.expected.value ||
+    testCase.expected.name ||
+    null
+  );
 }
 
 const unsupportedMethods = ["contenthash"];
@@ -65,15 +82,20 @@ describe("ENS Resolution Tests - viem v2", () => {
     for (const testCase of forwardCases) {
       test(testCase.description, async () => {
         const start = Date.now();
+        const expectsError = testCase.expected.error === true;
 
         try {
           let actual: string | null = null;
+          // Viem expects callers to normalize ENS names before resolution,
+          // so we do it in the test. Apps should generally normalize at the
+          // input/app layer before calling ENS resolution helpers.
+          const name = normalizeName(testCase.input.name!);
 
           if (testCase.method === "addr") {
             const coinType = testCase.params.coinType as number;
 
-            actual = await client.getEnsAddress({
-              name: normalize(testCase.input.name!),
+            actual = await getClient().getEnsAddress({
+              name,
               coinType: BigInt(coinType),
             });
 
@@ -83,15 +105,28 @@ describe("ENS Resolution Tests - viem v2", () => {
             }
           } else if (testCase.method === "text") {
             const key = testCase.params.key as string;
-            actual = await client.getEnsText({
-              name: normalize(testCase.input.name!),
+            actual = await getClient().getEnsText({
+              name,
               key,
             });
           }
 
           const durationMs = Date.now() - start;
-          const expected =
-            testCase.expected.address || testCase.expected.value || null;
+
+          if (expectsError) {
+            recordResult(
+              testCase.id,
+              false,
+              actual,
+              `Expected an error, got ${actual}`,
+              durationMs
+            );
+
+            expect(false).toBe(true);
+            return;
+          }
+
+          const expected = getExpectedValue(testCase);
 
           const passed = actual === expected;
           recordResult(
@@ -107,6 +142,13 @@ describe("ENS Resolution Tests - viem v2", () => {
           const durationMs = Date.now() - start;
           const errorMsg =
             error instanceof Error ? error.message : String(error);
+
+          if (expectsError) {
+            recordResult(testCase.id, true, errorMsg, null, durationMs);
+            expect(true).toBe(true);
+            return;
+          }
+
           if (!results.some((r) => r.caseId === testCase.id)) {
             recordResult(testCase.id, false, null, errorMsg, durationMs);
           }
@@ -126,7 +168,7 @@ describe("ENS Resolution Tests - viem v2", () => {
         try {
           let actual: string | null = null;
 
-          actual = await client.getEnsName({
+          actual = await getClient().getEnsName({
             address: testCase.input.address as `0x${string}`,
             coinType: testCase.input.chainId
               ? toCoinType(Number(testCase.input.chainId))
@@ -134,7 +176,7 @@ describe("ENS Resolution Tests - viem v2", () => {
           });
 
           const durationMs = Date.now() - start;
-          const expected = testCase.expected.name || null;
+          const expected = getExpectedValue(testCase);
 
           const passed = actual === expected;
           recordResult(
