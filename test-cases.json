@@ -32,44 +32,12 @@
     }
   },
   {
-    "id": "forward-eth-onchain-normalized",
-    "category": "forward",
-    "description": "Resolution of an onchain ETH address with normalized casing",
-    "status": "ready",
-    "input": {
-      "name": "INTEGRATION-TESTS.ETH"
-    },
-    "expected": {
-      "address": "0xeE9eeaAB0Bb7D9B969D701f6f8212609EDeA252E"
-    },
-    "method": "addr",
-    "params": {
-      "coinType": 60
-    }
-  },
-  {
     "id": "forward-wildcard",
     "category": "forward",
     "description": "Resolution of an onchain wildcard ETH address",
     "status": "ready",
     "input": {
       "name": "moo331.nft-owner.eth"
-    },
-    "expected": {
-      "address": "0x51050ec063d393217B436747617aD1C2285Aeeee"
-    },
-    "method": "addr",
-    "params": {
-      "coinType": 60
-    }
-  },
-  {
-    "id": "forward-wildcard-normalized",
-    "category": "forward",
-    "description": "Resolution of an onchain wildcard ETH address with normalized casing",
-    "status": "ready",
-    "input": {
-      "name": "MOO331.NFT-OWNER.ETH"
     },
     "expected": {
       "address": "0x51050ec063d393217B436747617aD1C2285Aeeee"
@@ -89,6 +57,22 @@
     },
     "expected": {
       "address": "0x779981590E7Ccc0CFAe8040Ce7151324747cDb97"
+    },
+    "method": "addr",
+    "params": {
+      "coinType": 60
+    }
+  },
+  {
+    "id": "forward-eth-onchain-normalized",
+    "category": "forward",
+    "description": "Resolution of an onchain ETH address with normalized casing",
+    "status": "ready",
+    "input": {
+      "name": "INTEGRATION-TESTS.ETH"
+    },
+    "expected": {
+      "address": "0xeE9eeaAB0Bb7D9B969D701f6f8212609EDeA252E"
     },
     "method": "addr",
     "params": {
