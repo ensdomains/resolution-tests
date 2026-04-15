@@ -1,68 +1,77 @@
 {
-  "timestamp": "2026-04-09T18:40:56.993Z",
+  "timestamp": "2026-04-15T07:11:35.355Z",
   "results": [
     {
       "caseId": "universal-resolver",
       "passed": false,
       "actual": "0x1111111111111111111111111111111111111111",
-      "error": "Expected 0x2222222222222222222222222222222222222222, got 0x1111111111111111111111111111111111111111",
-      "durationMs": 290
+      "error": "Expected 0x2222222222222222222222222222222222222222, got 0x1111111111111111111111111111111111111111"
     },
     {
       "caseId": "forward-base-onchain",
       "passed": true,
       "actual": "0xeE9eeaAB0Bb7D9B969D701f6f8212609EDeA252E",
-      "error": null,
-      "durationMs": 179
+      "error": null
     },
     {
       "caseId": "forward-wildcard",
       "passed": true,
       "actual": "0x51050ec063d393217B436747617aD1C2285Aeeee",
-      "error": null,
-      "durationMs": 256
+      "error": null
     },
     {
       "caseId": "forward-eth-offchain",
       "passed": true,
       "actual": "0x779981590E7Ccc0CFAe8040Ce7151324747cDb97",
-      "error": null,
-      "durationMs": 492
+      "error": null
+    },
+    {
+      "caseId": "forward-eth-onchain-normalized",
+      "passed": true,
+      "actual": "0xeE9eeaAB0Bb7D9B969D701f6f8212609EDeA252E",
+      "error": null
+    },
+    {
+      "caseId": "forward-invalid-punycode-literal",
+      "passed": true,
+      "actual": null,
+      "error": "invalid ENS name (Invalid label \"xn--ls8h\"‎: invalid label extension: \"xn--\") (argument=\"name\", value=\"xn--ls8h.integration-tests.eth\", code=INVALID_ARGUMENT, version=6.16.0)"
+    },
+    {
+      "caseId": "forward-circled-normalized",
+      "passed": true,
+      "actual": "0xeE9eeaAB0Bb7D9B969D701f6f8212609EDeA252E",
+      "error": null
     },
     {
       "caseId": "forward-text-onchain",
       "passed": true,
       "actual": "https://raw.githubusercontent.com/ensdomains/resolution-tests/refs/heads/main/assets/avatar.svg",
-      "error": null,
-      "durationMs": 168
+      "error": null
     },
     {
       "caseId": "forward-text-offchain",
       "passed": true,
       "actual": "asdflkjasdflkjasdf",
-      "error": null,
-      "durationMs": 324
+      "error": null
     },
     {
       "caseId": "forward-contenthash",
       "passed": true,
       "actual": "ipfs://Qmaisz6NMhDB51cCvNWa1GMS7LU1pAxdF4Ld6Ft9kZEP2a",
-      "error": null,
-      "durationMs": 170
+      "error": null
     },
     {
       "caseId": "forward-dns-offchain",
       "passed": true,
       "actual": "0x534631Bcf33BDb069fB20A93d2fdb9e4D4dD42CF",
-      "error": null,
-      "durationMs": 953
+      "error": null
     },
     {
       "caseId": "reverse-eth",
       "passed": true,
       "actual": "devrel.enslabs.eth",
-      "error": null,
-      "durationMs": 297
+      "error": null
     }
   ]
 }

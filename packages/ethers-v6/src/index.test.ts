@@ -39,10 +39,9 @@ function recordResult(
   caseId: string,
   passed: boolean,
   actual: string | null,
-  error: string | null,
-  durationMs: number
+  error: string | null
 ) {
-  results.push({ caseId, passed, actual, error, durationMs });
+  results.push({ caseId, passed, actual, error });
 }
 
 const unsupportedMethods = ["reverse-l2"];
@@ -64,8 +63,6 @@ describe("ENS Resolution Tests - ethers v6", () => {
 
     for (const testCase of forwardCases) {
       test(testCase.description, async () => {
-        const start = Date.now();
-
         try {
           let actual: string | null = null;
           // Ethers v6 normalizes ENS names internally on this provider resolver path.
@@ -100,21 +97,14 @@ describe("ENS Resolution Tests - ethers v6", () => {
             }
           }
 
-          const durationMs = Date.now() - start;
-          const expectedErrorResult = getExpectedErrorResult(
-            testCase,
-            actual,
-            null,
-            durationMs
-          );
+          const expectedErrorResult = getExpectedErrorResult(testCase, actual, null);
 
           if (expectedErrorResult) {
             recordResult(
               expectedErrorResult.caseId,
               expectedErrorResult.passed,
               expectedErrorResult.actual,
-              expectedErrorResult.error,
-              expectedErrorResult.durationMs
+              expectedErrorResult.error
             );
 
             expect(expectedErrorResult.passed).toBe(true);
@@ -141,29 +131,21 @@ describe("ENS Resolution Tests - ethers v6", () => {
             testCase.id,
             passed,
             actual,
-            passed ? null : `Expected ${expected}, got ${actual}`,
-            durationMs
+            passed ? null : `Expected ${expected}, got ${actual}`
           );
 
           expect(passed).toBe(true);
         } catch (error) {
-          const durationMs = Date.now() - start;
           const errorMsg =
             error instanceof Error ? error.message : String(error);
-          const expectedErrorResult = getExpectedErrorResult(
-            testCase,
-            null,
-            errorMsg,
-            durationMs
-          );
+          const expectedErrorResult = getExpectedErrorResult(testCase, null, errorMsg);
 
           if (expectedErrorResult) {
             recordResult(
               expectedErrorResult.caseId,
               expectedErrorResult.passed,
               expectedErrorResult.actual,
-              expectedErrorResult.error,
-              expectedErrorResult.durationMs
+              expectedErrorResult.error
             );
 
             expect(expectedErrorResult.passed).toBe(true);
@@ -171,7 +153,7 @@ describe("ENS Resolution Tests - ethers v6", () => {
           }
 
           if (!results.some((r) => r.caseId === testCase.id)) {
-            recordResult(testCase.id, false, null, errorMsg, durationMs);
+            recordResult(testCase.id, false, null, errorMsg);
           }
           throw error;
         }
@@ -184,8 +166,6 @@ describe("ENS Resolution Tests - ethers v6", () => {
 
     for (const testCase of reverseCases) {
       test(testCase.description, async () => {
-        const start = Date.now();
-
         try {
           let actual: string | null = null;
 
@@ -193,7 +173,6 @@ describe("ENS Resolution Tests - ethers v6", () => {
             actual = await getProvider().lookupAddress(testCase.input.address!);
           }
 
-          const durationMs = Date.now() - start;
           const expected = getExpectedValue(testCase);
 
           const passed = actual === expected;
@@ -201,17 +180,15 @@ describe("ENS Resolution Tests - ethers v6", () => {
             testCase.id,
             passed,
             actual,
-            passed ? null : `Expected ${expected}, got ${actual}`,
-            durationMs
+            passed ? null : `Expected ${expected}, got ${actual}`
           );
 
           expect(actual).toBe(expected);
         } catch (error) {
-          const durationMs = Date.now() - start;
           const errorMsg =
             error instanceof Error ? error.message : String(error);
           if (!results.some((r) => r.caseId === testCase.id)) {
-            recordResult(testCase.id, false, null, errorMsg, durationMs);
+            recordResult(testCase.id, false, null, errorMsg);
           }
           throw error;
         }

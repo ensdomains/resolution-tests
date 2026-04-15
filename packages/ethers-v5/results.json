@@ -1,68 +1,83 @@
 {
-  "timestamp": "2026-04-09T18:40:51.679Z",
+  "timestamp": "2026-04-15T07:11:26.616Z",
   "results": [
     {
       "caseId": "universal-resolver",
       "passed": false,
       "actual": "0x1111111111111111111111111111111111111111",
-      "error": "Expected 0x2222222222222222222222222222222222222222, got 0x1111111111111111111111111111111111111111",
-      "durationMs": 458
+      "error": "Expected 0x2222222222222222222222222222222222222222, got 0x1111111111111111111111111111111111111111"
     },
     {
       "caseId": "forward-base-onchain",
       "passed": false,
       "actual": null,
-      "error": "unsupported coin type: 2147492101 (operation=\"getAddress(2147492101)\", code=UNSUPPORTED_OPERATION, version=providers/5.8.0)",
-      "durationMs": 285
+      "error": "unsupported coin type: 2147492101 (operation=\"getAddress(2147492101)\", code=UNSUPPORTED_OPERATION, version=providers/5.8.0)"
     },
     {
       "caseId": "forward-wildcard",
       "passed": true,
       "actual": "0x51050ec063d393217B436747617aD1C2285Aeeee",
-      "error": null,
-      "durationMs": 338
+      "error": null
     },
     {
       "caseId": "forward-eth-offchain",
       "passed": true,
       "actual": "0x779981590E7Ccc0CFAe8040Ce7151324747cDb97",
-      "error": null,
-      "durationMs": 791
+      "error": null
+    },
+    {
+      "caseId": "forward-eth-onchain-normalized",
+      "passed": true,
+      "actual": "0xeE9eeaAB0Bb7D9B969D701f6f8212609EDeA252E",
+      "error": null
+    },
+    {
+      "caseId": "forward-invalid-punycode-literal",
+      "passed": false,
+      "actual": null,
+      "error": "Expected an error, got null"
+    },
+    {
+      "caseId": "forward-invalid-punycode-literal",
+      "passed": true,
+      "actual": null,
+      "error": "\u001b[2mexpect(\u001b[0m\u001b[31mreceived\u001b[0m\u001b[2m).\u001b[0mtoBe\u001b[2m(\u001b[0m\u001b[32mexpected\u001b[0m\u001b[2m)\u001b[0m\n\nExpected: \u001b[32mtrue\u001b[0m\nReceived: \u001b[31mfalse\u001b[0m\n"
+    },
+    {
+      "caseId": "forward-circled-normalized",
+      "passed": true,
+      "actual": "0xeE9eeaAB0Bb7D9B969D701f6f8212609EDeA252E",
+      "error": null
     },
     {
       "caseId": "forward-text-onchain",
       "passed": true,
       "actual": "https://raw.githubusercontent.com/ensdomains/resolution-tests/refs/heads/main/assets/avatar.svg",
-      "error": null,
-      "durationMs": 232
+      "error": null
     },
     {
       "caseId": "forward-text-offchain",
       "passed": true,
       "actual": "asdflkjasdflkjasdf",
-      "error": null,
-      "durationMs": 421
+      "error": null
     },
     {
       "caseId": "forward-contenthash",
       "passed": true,
       "actual": "ipfs://Qmaisz6NMhDB51cCvNWa1GMS7LU1pAxdF4Ld6Ft9kZEP2a",
-      "error": null,
-      "durationMs": 219
+      "error": null
     },
     {
       "caseId": "forward-dns-offchain",
       "passed": true,
       "actual": "0x534631Bcf33BDb069fB20A93d2fdb9e4D4dD42CF",
-      "error": null,
-      "durationMs": 541
+      "error": null
     },
     {
       "caseId": "reverse-eth",
       "passed": true,
       "actual": "devrel.enslabs.eth",
-      "error": null,
-      "durationMs": 385
+      "error": null
     }
   ]
 }

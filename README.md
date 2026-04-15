@@ -93,7 +93,6 @@ Each library must output a `results.json` file:
       "passed": true,
       "actual": "0xeE9eeaAB0Bb7D9B969D701f6f8212609EDeA252E",
       "error": null,
-      "durationMs": 150
     }
   ]
 }

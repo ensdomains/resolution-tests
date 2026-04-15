@@ -42,8 +42,7 @@ export function getExpectedValue(testCase: Pick<TestCase, "expected">) {
 export function getExpectedErrorResult(
   testCase: Pick<TestCase, "id" | "expected">,
   actual: string | null,
-  error: string | null,
-  durationMs: number
+  error: string | null
 ): TestResult | null {
   if (testCase.expected.error !== true) {
     return null;
@@ -55,7 +54,6 @@ export function getExpectedErrorResult(
       passed: true,
       actual: null,
       error,
-      durationMs,
     };
   }
 
@@ -64,6 +62,5 @@ export function getExpectedErrorResult(
     passed: false,
     actual,
     error: `Expected an error, got ${actual}`,
-    durationMs,
   };
 }

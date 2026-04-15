@@ -31,7 +31,6 @@ export interface TestResult {
   passed: boolean;
   actual: string | null;
   error: string | null;
-  durationMs: number;
 }
 
 // Library results output format
