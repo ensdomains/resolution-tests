@@ -1,68 +1,82 @@
 {
-  "timestamp": "2026-04-09T18:40:53.791Z",
   "results": [
     {
       "caseId": "universal-resolver",
       "passed": true,
       "actual": "0x2222222222222222222222222222222222222222",
-      "error": null,
-      "durationMs": 178
+      "error": null
     },
     {
       "caseId": "forward-base-onchain",
       "passed": true,
       "actual": "0xeE9eeaAB0Bb7D9B969D701f6f8212609EDeA252E",
-      "error": null,
-      "durationMs": 31
+      "error": null
     },
     {
       "caseId": "forward-wildcard",
       "passed": true,
       "actual": "0x51050ec063d393217B436747617aD1C2285Aeeee",
-      "error": null,
-      "durationMs": 25
+      "error": null
     },
     {
       "caseId": "forward-eth-offchain",
       "passed": true,
       "actual": "0x779981590E7Ccc0CFAe8040Ce7151324747cDb97",
-      "error": null,
-      "durationMs": 310
+      "error": null
+    },
+    {
+      "caseId": "forward-eth-onchain-normalized",
+      "passed": true,
+      "actual": "0xeE9eeaAB0Bb7D9B969D701f6f8212609EDeA252E",
+      "error": null
+    },
+    {
+      "caseId": "forward-invalid-punycode-literal",
+      "passed": true,
+      "actual": null,
+      "error": "Invalid label \"xn--ls8h\"‎: invalid label extension: \"xn--\""
+    },
+    {
+      "caseId": "forward-circled-normalized",
+      "passed": true,
+      "actual": "0xeE9eeaAB0Bb7D9B969D701f6f8212609EDeA252E",
+      "error": null
     },
     {
       "caseId": "forward-text-onchain",
       "passed": true,
       "actual": "https://raw.githubusercontent.com/ensdomains/resolution-tests/refs/heads/main/assets/avatar.svg",
-      "error": null,
-      "durationMs": 29
+      "error": null
     },
     {
       "caseId": "forward-text-offchain",
       "passed": true,
       "actual": "asdflkjasdflkjasdf",
-      "error": null,
-      "durationMs": 106
+      "error": null
     },
     {
       "caseId": "forward-dns-offchain",
       "passed": false,
       "actual": null,
-      "error": "Number \"475411618940684652382658899876961866559843549903n\" is not in safe integer range (-9007199254740991 to 9007199254740991)\n\nVersion: viem@2.44.4",
-      "durationMs": 201
+      "error": "Number \"475411618940684652382658899876961866559843549903n\" is not in safe integer range (-9007199254740991 to 9007199254740991)\n\nVersion: viem@2.44.4"
     },
     {
       "caseId": "reverse-eth",
       "passed": true,
       "actual": "devrel.enslabs.eth",
-      "error": null,
-      "durationMs": 28
+      "error": null
     },
     {
       "caseId": "reverse-l2",
       "passed": true,
       "actual": "greg.base.eth",
-      "error": null,
-      "durationMs": 1020
+      "error": null
+    },
+    {
+      "caseId": "reverse-falsy-primary-name",
+      "passed": true,
+      "actual": null,
+      "error": null
     }
   ]
 }

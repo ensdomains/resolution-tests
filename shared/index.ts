@@ -3,7 +3,7 @@ export * from "./types";
 import { readFileSync } from "node:fs";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
-import type { TestCase } from "./types";
+import type { TestCase, TestResult } from "./types";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -28,4 +28,39 @@ export function getTestCasesByCategory(
       c.category === category &&
       (!unsupportedMethods || !unsupportedMethods.includes(c.method))
   );
+}
+
+export function getExpectedValue(testCase: Pick<TestCase, "expected">) {
+  return (
+    testCase.expected.address ||
+    testCase.expected.value ||
+    testCase.expected.name ||
+    null
+  );
+}
+
+export function getExpectedErrorResult(
+  testCase: Pick<TestCase, "id" | "expected">,
+  actual: string | null,
+  error: string | null
+): TestResult | null {
+  if (testCase.expected.error !== true) {
+    return null;
+  }
+
+  if (error !== null) {
+    return {
+      caseId: testCase.id,
+      passed: true,
+      actual: null,
+      error,
+    };
+  }
+
+  return {
+    caseId: testCase.id,
+    passed: false,
+    actual,
+    error: `Expected an error, got ${actual}`,
+  };
 }

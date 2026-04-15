@@ -1,11 +1,16 @@
 import { describe, test, expect, afterAll } from "bun:test";
-import { JsonRpcProvider, getAddress } from "ethers";
+import {
+  JsonRpcProvider,
+  getAddress,
+} from "ethers";
 import { writeFileSync } from "node:fs";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 import { CID } from "multiformats/cid";
 
 import {
+  getExpectedErrorResult,
+  getExpectedValue,
   getTestCasesByCategory,
   type TestResult,
   type LibraryResults,
@@ -18,21 +23,25 @@ const results: TestResult[] = [];
 
 // Setup provider
 const RPC_URL = process.env.RPC_URL;
-if (!RPC_URL) {
-  throw new Error("RPC_URL environment variable is required");
-}
+let provider: JsonRpcProvider | undefined;
 
-const provider = new JsonRpcProvider(RPC_URL);
+function getProvider() {
+  if (!RPC_URL) {
+    throw new Error("RPC_URL environment variable is required");
+  }
+
+  provider ??= new JsonRpcProvider(RPC_URL);
+  return provider;
+}
 
 // Helper to record result
 function recordResult(
   caseId: string,
   passed: boolean,
   actual: string | null,
-  error: string | null,
-  durationMs: number
+  error: string | null
 ) {
-  results.push({ caseId, passed, actual, error, durationMs });
+  results.push({ caseId, passed, actual, error });
 }
 
 const unsupportedMethods = ["reverse-l2"];
@@ -40,7 +49,6 @@ const unsupportedMethods = ["reverse-l2"];
 describe("ENS Resolution Tests - ethers v6", () => {
   afterAll(() => {
     const output: LibraryResults = {
-      timestamp: new Date().toISOString(),
       results,
     };
 
@@ -54,19 +62,18 @@ describe("ENS Resolution Tests - ethers v6", () => {
 
     for (const testCase of forwardCases) {
       test(testCase.description, async () => {
-        const start = Date.now();
-
         try {
           let actual: string | null = null;
+          // Ethers v6 normalizes ENS names internally on this provider resolver path.
+          const name = testCase.input.name!;
 
           if (testCase.method === "addr") {
             const coinType = testCase.params.coinType as number;
             // ethers v6 getAddress() expects chain ID for EVM chains, not ENSIP-11 coinType
             const chainId =
               coinType >= 0x80000000 ? coinType & 0x7fffffff : coinType;
-            const name = testCase.input.name!;
 
-            const resolver = await provider.getResolver(name);
+            const resolver = await getProvider().getResolver(name);
             if (resolver) {
               actual = await resolver.getAddress(chainId);
             }
@@ -77,24 +84,33 @@ describe("ENS Resolution Tests - ethers v6", () => {
             }
           } else if (testCase.method === "text") {
             const key = testCase.params.key as string;
-            const name = testCase.input.name!;
 
-            const resolver = await provider.getResolver(name);
+            const resolver = await getProvider().getResolver(name);
             if (resolver) {
               actual = await resolver.getText(key);
             }
           } else if (testCase.method === "contenthash") {
-            const name = testCase.input.name!;
-
-            const resolver = await provider.getResolver(name);
+            const resolver = await getProvider().getResolver(name);
             if (resolver) {
               actual = await resolver.getContentHash();
             }
           }
 
-          const durationMs = Date.now() - start;
-          const expected =
-            testCase.expected.address || testCase.expected.value || null;
+          const expectedErrorResult = getExpectedErrorResult(testCase, actual, null);
+
+          if (expectedErrorResult) {
+            recordResult(
+              expectedErrorResult.caseId,
+              expectedErrorResult.passed,
+              expectedErrorResult.actual,
+              expectedErrorResult.error
+            );
+
+            expect(expectedErrorResult.passed).toBe(true);
+            return;
+          }
+
+          const expected = getExpectedValue(testCase);
 
           // For contenthash, compare CIDs to handle v0/v1 differences
           let passed = actual === expected;
@@ -114,17 +130,29 @@ describe("ENS Resolution Tests - ethers v6", () => {
             testCase.id,
             passed,
             actual,
-            passed ? null : `Expected ${expected}, got ${actual}`,
-            durationMs
+            passed ? null : `Expected ${expected}, got ${actual}`
           );
 
           expect(passed).toBe(true);
         } catch (error) {
-          const durationMs = Date.now() - start;
           const errorMsg =
             error instanceof Error ? error.message : String(error);
+          const expectedErrorResult = getExpectedErrorResult(testCase, null, errorMsg);
+
+          if (expectedErrorResult) {
+            recordResult(
+              expectedErrorResult.caseId,
+              expectedErrorResult.passed,
+              expectedErrorResult.actual,
+              expectedErrorResult.error
+            );
+
+            expect(expectedErrorResult.passed).toBe(true);
+            return;
+          }
+
           if (!results.some((r) => r.caseId === testCase.id)) {
-            recordResult(testCase.id, false, null, errorMsg, durationMs);
+            recordResult(testCase.id, false, null, errorMsg);
           }
           throw error;
         }
@@ -137,34 +165,29 @@ describe("ENS Resolution Tests - ethers v6", () => {
 
     for (const testCase of reverseCases) {
       test(testCase.description, async () => {
-        const start = Date.now();
-
         try {
           let actual: string | null = null;
 
           if (testCase.method === "reverse") {
-            actual = await provider.lookupAddress(testCase.input.address!);
+            actual = await getProvider().lookupAddress(testCase.input.address!);
           }
 
-          const durationMs = Date.now() - start;
-          const expected = testCase.expected.name || null;
+          const expected = getExpectedValue(testCase);
 
           const passed = actual === expected;
           recordResult(
             testCase.id,
             passed,
             actual,
-            passed ? null : `Expected ${expected}, got ${actual}`,
-            durationMs
+            passed ? null : `Expected ${expected}, got ${actual}`
           );
 
           expect(actual).toBe(expected);
         } catch (error) {
-          const durationMs = Date.now() - start;
           const errorMsg =
             error instanceof Error ? error.message : String(error);
           if (!results.some((r) => r.caseId === testCase.id)) {
-            recordResult(testCase.id, false, null, errorMsg, durationMs);
+            recordResult(testCase.id, false, null, errorMsg);
           }
           throw error;
         }

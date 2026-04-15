@@ -7,9 +7,10 @@ export interface TestCaseInput {
 
 // Test case expected output types
 export interface TestCaseExpected {
-  address?: string;
-  name?: string;
-  value?: string;
+  address?: string | null;
+  name?: string | null;
+  value?: string | null;
+  error?: boolean;
 }
 
 // Individual test case definition
@@ -30,11 +31,9 @@ export interface TestResult {
   passed: boolean;
   actual: string | null;
   error: string | null;
-  durationMs: number;
 }
 
 // Library results output format
 export interface LibraryResults {
-  timestamp: string;
   results: TestResult[];
 }

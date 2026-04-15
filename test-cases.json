@@ -64,6 +64,54 @@
     }
   },
   {
+    "id": "forward-eth-onchain-normalized",
+    "category": "forward",
+    "description": "Resolution of an onchain ETH address with normalized casing",
+    "status": "ready",
+    "input": {
+      "name": "INTEGRATION-TESTS.ETH"
+    },
+    "expected": {
+      "address": "0xeE9eeaAB0Bb7D9B969D701f6f8212609EDeA252E"
+    },
+    "method": "addr",
+    "params": {
+      "coinType": 60
+    }
+  },
+  {
+    "id": "forward-invalid-punycode-literal",
+    "category": "forward",
+    "description": "Resolution rejects an invalid punycode literal before lookup",
+    "status": "ready",
+    "input": {
+      "name": "xn--ls8h.integration-tests.eth"
+    },
+    "expected": {
+      "error": true
+    },
+    "method": "addr",
+    "params": {
+      "coinType": 60
+    }
+  },
+  {
+    "id": "forward-circled-normalized",
+    "category": "forward",
+    "description": "Resolution of an onchain ETH address with circled-letter normalization",
+    "status": "ready",
+    "input": {
+      "name": "ⒶⒷⒸⒹⒺⒻⒼⒽⒾⒿⓀⓁⓂⓃⓄⓅⓆⓇⓈⓉⓊⓋⓌⓍⓎⓏ.integration-tests.eth"
+    },
+    "expected": {
+      "address": "0xeE9eeaAB0Bb7D9B969D701f6f8212609EDeA252E"
+    },
+    "method": "addr",
+    "params": {
+      "coinType": 60
+    }
+  },
+  {
     "id": "forward-text-onchain",
     "category": "forward",
     "description": "Resolution of an onchain text record",
@@ -139,6 +187,20 @@
     "params": {
       "chainId": 8453
     }
+  },
+  {
+    "id": "reverse-falsy-primary-name",
+    "category": "reverse",
+    "description": "Reverse resolution returns null when the claimed primary name does not forward-resolve back to the address",
+    "status": "ready",
+    "input": {
+      "address": "0xa66E90D515F576f49Af2dF40952476D56F72A420"
+    },
+    "expected": {
+      "name": null
+    },
+    "method": "reverse",
+    "params": {}
   },
   {
     "id": "forward-dns-offchain",
