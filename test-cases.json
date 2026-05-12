@@ -21,10 +21,10 @@
     "description": "Resolution of an onchain L2 address (Base)",
     "status": "ready",
     "input": {
-      "name": "integration-tests.eth"
+      "name": "coins.integration-tests.eth"
     },
     "expected": {
-      "address": "0xeE9eeaAB0Bb7D9B969D701f6f8212609EDeA252E"
+      "address": "0xa66E90D515F576f49Af2dF40952476D56F72A420"
     },
     "method": "addr",
     "params": {
@@ -129,11 +129,11 @@
     "description": "Reverse resolution of a Base address to an L2 primary name",
     "status": "ready",
     "input": {
-      "address": "0x179A862703a4adfb29896552DF9e307980D19285",
+      "address": "0xa66E90D515F576f49Af2dF40952476D56F72A420",
       "chainId": 8453
     },
     "expected": {
-      "name": "greg.base.eth"
+      "name": "coins.integration-tests.eth"
     },
     "method": "reverse-l2",
     "params": {
