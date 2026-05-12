@@ -7,7 +7,7 @@
     "test": "bun test"
   },
   "dependencies": {
-    "viem": "^2.21.0"
+    "viem": "^2.48.11"
   },
   "devDependencies": {
     "@types/bun": "latest"
