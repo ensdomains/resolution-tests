@@ -127,7 +127,7 @@
     "id": "reverse-l2",
     "category": "reverse",
     "description": "Reverse resolution of a Base address to an L2 primary name",
-    "status": "ready",
+    "status": "disabled 20260531 due to https://status.base.org/incidents/lj9f7jhbb2ys",
     "input": {
       "address": "0xa66E90D515F576f49Af2dF40952476D56F72A420",
       "chainId": 8453
@@ -155,5 +155,19 @@
     "params": {
       "coinType": 60
     }
+  },
+  {
+    "id": "reverse-eth-offchain",
+    "category": "reverse",
+    "description": "Reverse resolution of a Ethereum address with an offchain resolver",
+    "status": "ready",
+    "input": {
+      "address": "0xEB4200f750335eFb67E726485445d302D64B1c8A"
+    },
+    "expected": {
+      "name": "test.antistupid.com"
+    },
+    "method": "reverse",
+    "params": {}
   }
 ]
