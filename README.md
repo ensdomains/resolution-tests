@@ -43,6 +43,14 @@ Any library and app can use the above tests. For organization, we also run the t
 
 - [ ] `go-ens`
 
+## Deployments
+
+Custom resolvers are deployed to test specific resolution scenarios. These addresses are the same across Mainnet and Sepolia unless otherwise noted.
+
+| Name               | Address                                    |
+| ------------------ | ------------------------------------------ |
+| URTestResolver.sol | 0xd7D4eA9bc4BeA48778e9F4cAD89b65306FA3eAd9 |
+
 ## Local Development
 
 ```bash
