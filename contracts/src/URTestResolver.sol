@@ -19,9 +19,10 @@ contract URTestResolver is IExtendedResolver, IAddressResolver, IAddrResolver, I
     address public constant UNIVERSAL_RESOLVER = 0xeEeEEEeE14D718C2B47D9923Deab1335E144EeEe;
 
     function supportsInterface(bytes4 interfaceId) external view returns (bool) {
-        return msg.sender == IProxy(UNIVERSAL_RESOLVER).implementation()
+        return msg.sender == _findImplementation()
             ? interfaceId == type(IExtendedResolver).interfaceId
-            : (interfaceId == type(IAddressResolver).interfaceId || interfaceId == type(IAddrResolver).interfaceId
+            : (interfaceId == type(IAddressResolver).interfaceId
+                    || interfaceId == type(IAddrResolver).interfaceId
                     || interfaceId == type(ITextResolver).interfaceId
                     || interfaceId == type(IContentHashResolver).interfaceId);
     }
@@ -84,5 +85,16 @@ contract URTestResolver is IExtendedResolver, IAddressResolver, IAddrResolver, I
         // IPFS CID: bafybeifx7yeb55armcsxwwitkymga5xf53dxiarykms3ygqic223w5sk3m
         bytes memory cid = hex"e30101701220b7fe081ef41160a57b591356186076e5eec77402385325bc1a0816b5bb764adb";
         return ok ? cid : bytes("");
+    }
+
+    function _findImplementation() internal view returns (address impl) {
+        impl = UNIVERSAL_RESOLVER;
+        for (; ; ) {
+            try IProxy(impl).implementation() returns (address a) {
+                impl = a;
+            } catch {
+                break;
+            }
+        }
     }
 }
