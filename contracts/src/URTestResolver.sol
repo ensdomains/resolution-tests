@@ -17,9 +17,10 @@ contract URTestResolver is IExtendedResolver, IAddressResolver, IAddrResolver, I
     error UnsupportedResolverProfile(bytes4);
 
     address public constant UNIVERSAL_RESOLVER = 0xeEeEEEeE14D718C2B47D9923Deab1335E144EeEe;
+    address public constant FALLBACK_RESOLVER = 0x422484c2D51f92830bFB563fa5e172aa2D8B884b;
 
     function supportsInterface(bytes4 interfaceId) external view returns (bool) {
-        return msg.sender == _findImplementation()
+        return isV2(msg.sender)
             ? interfaceId == type(IExtendedResolver).interfaceId
             : (interfaceId == type(IAddressResolver).interfaceId
                     || interfaceId == type(IAddrResolver).interfaceId
@@ -59,6 +60,24 @@ contract URTestResolver is IExtendedResolver, IAddressResolver, IAddrResolver, I
         }
     }
 
+    function isV2(address sender) public view returns (bool) {
+        if (sender == FALLBACK_RESOLVER) {
+            return true;
+        }
+        address impl = UNIVERSAL_RESOLVER;
+        for (; ; ) {
+            try IProxy(impl).implementation() returns (address a) {
+                if (a == sender) {
+                    return true;
+                }
+                impl = a;
+            } catch {
+                break;
+            }
+        }
+        return false;
+    }
+
     function _text(string memory key, bool ok) internal pure returns (string memory) {
         if (keccak256(bytes(key)) == keccak256(bytes("description"))) {
             return ok ? unicode"✅️ Universal Resolver" : unicode"❌️ Universal Resolver";
@@ -85,16 +104,5 @@ contract URTestResolver is IExtendedResolver, IAddressResolver, IAddrResolver, I
         // IPFS CID: bafybeifx7yeb55armcsxwwitkymga5xf53dxiarykms3ygqic223w5sk3m
         bytes memory cid = hex"e30101701220b7fe081ef41160a57b591356186076e5eec77402385325bc1a0816b5bb764adb";
         return ok ? cid : bytes("");
-    }
-
-    function _findImplementation() internal view returns (address impl) {
-        impl = UNIVERSAL_RESOLVER;
-        for (; ; ) {
-            try IProxy(impl).implementation() returns (address a) {
-                impl = a;
-            } catch {
-                break;
-            }
-        }
     }
 }
