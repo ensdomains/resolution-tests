@@ -17,11 +17,13 @@ contract URTestResolver is IExtendedResolver, IAddressResolver, IAddrResolver, I
     error UnsupportedResolverProfile(bytes4);
 
     address public constant UNIVERSAL_RESOLVER = 0xeEeEEEeE14D718C2B47D9923Deab1335E144EeEe;
+    address public constant FALLBACK_RESOLVER = 0x422484c2D51f92830bFB563fa5e172aa2D8B884b;
 
     function supportsInterface(bytes4 interfaceId) external view returns (bool) {
-        return msg.sender == IProxy(UNIVERSAL_RESOLVER).implementation()
+        return isV2(msg.sender)
             ? interfaceId == type(IExtendedResolver).interfaceId
-            : (interfaceId == type(IAddressResolver).interfaceId || interfaceId == type(IAddrResolver).interfaceId
+            : (interfaceId == type(IAddressResolver).interfaceId
+                    || interfaceId == type(IAddrResolver).interfaceId
                     || interfaceId == type(ITextResolver).interfaceId
                     || interfaceId == type(IContentHashResolver).interfaceId);
     }
@@ -56,6 +58,24 @@ contract URTestResolver is IExtendedResolver, IAddressResolver, IAddrResolver, I
         } else {
             revert UnsupportedResolverProfile(bytes4(data));
         }
+    }
+
+    function isV2(address sender) public view returns (bool) {
+        if (sender == FALLBACK_RESOLVER) {
+            return true;
+        }
+        address impl = UNIVERSAL_RESOLVER;
+        for (; ; ) {
+            try IProxy(impl).implementation() returns (address a) {
+                if (a == sender) {
+                    return true;
+                }
+                impl = a;
+            } catch {
+                break;
+            }
+        }
+        return false;
     }
 
     function _text(string memory key, bool ok) internal pure returns (string memory) {
