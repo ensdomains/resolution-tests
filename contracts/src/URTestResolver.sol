@@ -4,6 +4,7 @@ pragma solidity ^0.8.20;
 import {IExtendedResolver} from "@ens/resolvers/profiles/IExtendedResolver.sol";
 import {IAddressResolver} from "@ens/resolvers/profiles/IAddressResolver.sol";
 import {IAddrResolver} from "@ens/resolvers/profiles/IAddrResolver.sol";
+import {INameResolver} from "@ens/resolvers/profiles/INameResolver.sol";
 import {ITextResolver} from "@ens/resolvers/profiles/ITextResolver.sol";
 import {IContentHashResolver} from "@ens/resolvers/profiles/IContentHashResolver.sol";
 import {ENSIP19, COIN_TYPE_ETH} from "@ens/utils/ENSIP19.sol";
@@ -36,6 +37,10 @@ contract URTestResolver is IExtendedResolver, IAddressResolver, IAddrResolver, I
         return _addr(coinType, false);
     }
 
+    function name(bytes32) external pure returns (string memory) {
+        return _name(false);
+    }
+
     function text(bytes32, string calldata key) external pure returns (string memory) {
         return _text(key, false);
     }
@@ -55,6 +60,8 @@ contract URTestResolver is IExtendedResolver, IAddressResolver, IAddrResolver, I
             return abi.encode(_text(key, true));
         } else if (bytes4(data) == IContentHashResolver.contenthash.selector) {
             return abi.encode(_contenthash(true));
+        } else if (bytes4(data) == INameResolver.name.selector) {
+            return abi.encode(_name(true));
         } else {
             revert UnsupportedResolverProfile(bytes4(data));
         }
@@ -104,5 +111,9 @@ contract URTestResolver is IExtendedResolver, IAddressResolver, IAddrResolver, I
         // IPFS CID: bafybeifx7yeb55armcsxwwitkymga5xf53dxiarykms3ygqic223w5sk3m
         bytes memory cid = hex"e30101701220b7fe081ef41160a57b591356186076e5eec77402385325bc1a0816b5bb764adb";
         return ok ? cid : bytes("");
+    }
+
+    function _name(bool ok) internal pure returns (string memory) {
+        return ok ? "reverse2.integration-tests.eth" : "reverse1.integration-tests.eth";
     }
 }

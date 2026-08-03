@@ -7,3 +7,7 @@
 [submodule "contracts/lib/openzeppelin-contracts"]
 	path = contracts/lib/openzeppelin-contracts
 	url = https://github.com/OpenZeppelin/openzeppelin-contracts
+[submodule "contracts/lib/openzeppelin-contracts-v5"]
+	path = contracts/lib/openzeppelin-contracts-v5
+	url = https://github.com/openzeppelin/openzeppelin-contracts
+	branch = release-v5.0

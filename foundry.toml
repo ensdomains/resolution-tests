@@ -9,7 +9,11 @@ broadcast = "contracts/broadcast"
 remappings = [
   "forge-std=contracts/lib/forge-std/src",
   "@ens=contracts/lib/ens-contracts/contracts",
-  "@openzeppelin=contracts/lib/openzeppelin-contracts"
+  "@oz-v4=contracts/lib/openzeppelin-contracts/contracts",
+  "@oz-v5=contracts/lib/openzeppelin-contracts-v5/contracts",
+  "contracts/lib/ens-contracts/:@openzeppelin/contracts=contracts/lib/openzeppelin-contracts/contracts",
+  "contracts/lib/ens-contracts/:@openzeppelin/contracts-v5=contracts/lib/openzeppelin-contracts-v5/contracts"
 ]
+ignored_warnings_from = ["contracts/lib"]
 
 # See more config options https://github.com/foundry-rs/foundry/blob/master/crates/config/README.md#all-options
