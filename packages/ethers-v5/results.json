@@ -1,68 +1,75 @@
 {
-  "timestamp": "2026-05-12T01:52:14.570Z",
+  "timestamp": "2026-06-02T16:42:55.560Z",
   "results": [
     {
       "caseId": "universal-resolver",
       "passed": false,
       "actual": "0x1111111111111111111111111111111111111111",
       "error": "Expected 0x2222222222222222222222222222222222222222, got 0x1111111111111111111111111111111111111111",
-      "durationMs": 325
+      "durationMs": 780
     },
     {
       "caseId": "forward-base-onchain",
       "passed": false,
       "actual": null,
       "error": "unsupported coin type: 2147492101 (operation=\"getAddress(2147492101)\", code=UNSUPPORTED_OPERATION, version=providers/5.8.0)",
-      "durationMs": 266
+      "durationMs": 595
     },
     {
       "caseId": "forward-wildcard",
       "passed": true,
       "actual": "0x51050ec063d393217B436747617aD1C2285Aeeee",
       "error": null,
-      "durationMs": 274
+      "durationMs": 842
     },
     {
       "caseId": "forward-eth-offchain",
       "passed": true,
       "actual": "0x779981590E7Ccc0CFAe8040Ce7151324747cDb97",
       "error": null,
-      "durationMs": 808
+      "durationMs": 1514
     },
     {
       "caseId": "forward-text-onchain",
       "passed": true,
       "actual": "https://raw.githubusercontent.com/ensdomains/resolution-tests/refs/heads/main/assets/avatar.svg",
       "error": null,
-      "durationMs": 207
+      "durationMs": 591
     },
     {
       "caseId": "forward-text-offchain",
       "passed": true,
       "actual": "asdflkjasdflkjasdf",
       "error": null,
-      "durationMs": 424
+      "durationMs": 1034
     },
     {
       "caseId": "forward-contenthash",
       "passed": true,
       "actual": "ipfs://Qmaisz6NMhDB51cCvNWa1GMS7LU1pAxdF4Ld6Ft9kZEP2a",
       "error": null,
-      "durationMs": 190
+      "durationMs": 622
     },
     {
       "caseId": "forward-dns-offchain",
       "passed": true,
       "actual": "0x534631Bcf33BDb069fB20A93d2fdb9e4D4dD42CF",
       "error": null,
-      "durationMs": 505
+      "durationMs": 1234
     },
     {
       "caseId": "reverse-eth",
       "passed": true,
       "actual": "devrel.enslabs.eth",
       "error": null,
-      "durationMs": 403
+      "durationMs": 1032
+    },
+    {
+      "caseId": "reverse-eth-offchain",
+      "passed": false,
+      "actual": null,
+      "error": "Expected test.antistupid.com, got null",
+      "durationMs": 417
     }
   ]
 }
