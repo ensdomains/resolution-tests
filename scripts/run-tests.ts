@@ -113,7 +113,8 @@ function runTests(pkg: PackageInfo): boolean {
     }
     case "rust":
       command = "cargo";
-      args = ["test"];
+      // Single-threaded so packages can safely aggregate results.json
+      args = ["test", "--", "--test-threads=1"];
       break;
     case "go":
       command = "go";
