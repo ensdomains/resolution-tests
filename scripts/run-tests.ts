@@ -136,8 +136,9 @@ function runTests(pkg: PackageInfo): boolean {
       break;
     case "csharp":
       command = "dotnet";
-      // Single-threaded so packages can safely aggregate results.json
-      args = ["test", "--", "xunit.parallelizeAssembly=false", "xunit.parallelizeTestCollections=false"];
+      // Disable collection parallelization so packages can safely aggregate results.json
+      // (RunSettings keys are case-sensitive: xUnit.*)
+      args = ["test", "--", "xUnit.ParallelizeTestCollections=false"];
       break;
     default:
       console.log(`Unknown language: ${pkg.language}`);
