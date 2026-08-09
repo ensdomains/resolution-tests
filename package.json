@@ -12,6 +12,7 @@
     "test:rust": "bun run scripts/run-tests.ts rust",
     "test:go": "bun run scripts/run-tests.ts go",
     "test:zig": "bun run scripts/run-tests.ts zig",
+    "test:csharp": "bun run scripts/run-tests.ts csharp",
     "aggregate": "bun run scripts/aggregate-results.ts"
   },
   "devDependencies": {
