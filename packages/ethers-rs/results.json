@@ -1,0 +1,61 @@
+{
+  "results": [
+    {
+      "actual": null,
+      "caseId": "forward-dns-offchain",
+      "durationMs": 253,
+      "error": "ens name not found: pokersback.com",
+      "passed": false
+    },
+    {
+      "actual": null,
+      "caseId": "forward-eth-offchain",
+      "durationMs": 303,
+      "error": "ens name not found: test.offchaindemo.eth",
+      "passed": false
+    },
+    {
+      "actual": null,
+      "caseId": "forward-text-offchain",
+      "durationMs": 253,
+      "error": "ens name not found: test.offchaindemo.eth",
+      "passed": false
+    },
+    {
+      "actual": "https://raw.githubusercontent.com/ensdomains/resolution-tests/refs/heads/main/assets/avatar.svg",
+      "caseId": "forward-text-onchain",
+      "durationMs": 397,
+      "error": null,
+      "passed": true
+    },
+    {
+      "actual": null,
+      "caseId": "forward-wildcard",
+      "durationMs": 294,
+      "error": "ens name not found: moo331.nft-owner.eth",
+      "passed": false
+    },
+    {
+      "actual": "devrel.enslabs.eth",
+      "caseId": "reverse-eth",
+      "durationMs": 609,
+      "error": null,
+      "passed": true
+    },
+    {
+      "actual": "v1-reverse.integration-tests.eth",
+      "caseId": "reverse-universal-resolver",
+      "durationMs": 597,
+      "error": "Expected ur-reverse.integration-tests.eth, got v1-reverse.integration-tests.eth",
+      "passed": false
+    },
+    {
+      "actual": "0x1111111111111111111111111111111111111111",
+      "caseId": "universal-resolver",
+      "durationMs": 473,
+      "error": "Expected 0x2222222222222222222222222222222222222222, got 0x1111111111111111111111111111111111111111",
+      "passed": false
+    }
+  ],
+  "timestamp": "2026-08-09T20:21:23.874773+00:00"
+}
