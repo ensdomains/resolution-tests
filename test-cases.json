@@ -110,6 +110,20 @@
     "params": {}
   },
   {
+    "id": "reverse-universal-resolver",
+    "category": "reverse",
+    "description": "Reverse resolution of an ETH address via the Universal Resolver",
+    "status": "ready",
+    "input": {
+      "address": "0x3AF5CFc7C7f29Da9d7758339b8eaB6a78550Cbed"
+    },
+    "expected": {
+      "name": "ur-reverse.integration-tests.eth"
+    },
+    "method": "reverse",
+    "params": {}
+  },
+  {
     "id": "reverse-eth",
     "category": "reverse",
     "description": "Reverse resolution of an ETH address to an L1 primary name",

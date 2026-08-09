@@ -49,7 +49,7 @@ Custom resolvers are deployed to test specific resolution scenarios.
 
 | Name               | Chain   | Address                                    |
 | ------------------ | ------- | ------------------------------------------ |
-| URTestResolver.sol | Mainnet | 0xDE0c1269547dba2233f833DC1d9A7E586b4b199c |
+| URTestResolver.sol | Mainnet | 0x1c7B2739AaA9ea0Fc79deB45e0Bb25A1fbb058df |
 | URTestResolver.sol | Sepolia | 0x0887c5f652e81b8fb95359b04058a14b0fd0a9a9 |
 
 ## Local Development
