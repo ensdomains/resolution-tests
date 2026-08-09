@@ -26,9 +26,6 @@ build/
 npm-debug.log*
 contracts/broadcast/
 
-# Rust
-Cargo.lock
-
 # Python
 *.egg-info/
 .pytest_cache/
