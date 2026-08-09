@@ -41,6 +41,10 @@ Any library and app can use the above tests. For organization, we also run the t
 
 - [x] `go-ens` v3.x
 
+### Zig
+
+- [x] `eth.zig`
+
 ### Outside Current Coverage
 
 The following libraries and versions are not currently covered by this suite:
