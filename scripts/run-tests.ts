@@ -44,6 +44,51 @@ function discoverPackages(filterLanguage?: string): PackageInfo[] {
   return packages;
 }
 
+function resolvePythonCommand(pkgPath: string): { command: string; args: string[] } {
+  // Prefer uv when available for reproducible local envs
+  const uvCheck = spawnSync("uv", ["--version"], { stdio: "ignore" });
+  if (uvCheck.status === 0) {
+    const sync = spawnSync("uv", ["sync"], {
+      cwd: pkgPath,
+      stdio: "inherit",
+      env: process.env,
+    });
+    if (sync.status !== 0) {
+      throw new Error(`Failed to sync Python dependencies for ${pkgPath}`);
+    }
+    return { command: "uv", args: ["run", "pytest", "-v"] };
+  }
+
+  const pythonCheck = spawnSync("python3", ["--version"], { stdio: "ignore" });
+  const python = pythonCheck.status === 0 ? "python3" : "python";
+  const venvPython = join(pkgPath, ".venv", "bin", "python");
+  if (!existsSync(venvPython)) {
+    const venv = spawnSync(python, ["-m", "venv", ".venv"], {
+      cwd: pkgPath,
+      stdio: "inherit",
+      env: process.env,
+    });
+    if (venv.status !== 0) {
+      throw new Error(`Failed to create Python venv for ${pkgPath}`);
+    }
+  }
+
+  const install = spawnSync(
+    venvPython,
+    ["-m", "pip", "install", "-e", "."],
+    {
+      cwd: pkgPath,
+      stdio: "inherit",
+      env: process.env,
+    }
+  );
+  if (install.status !== 0) {
+    throw new Error(`Failed to install Python dependencies for ${pkgPath}`);
+  }
+
+  return { command: venvPython, args: ["-m", "pytest", "-v"] };
+}
+
 function runTests(pkg: PackageInfo): boolean {
   console.log(`\n${"=".repeat(60)}`);
   console.log(`Running tests for ${pkg.name} (${pkg.language})`);
@@ -57,10 +102,15 @@ function runTests(pkg: PackageInfo): boolean {
       command = "bun";
       args = ["test"];
       break;
-    case "python":
-      command = "python";
-      args = ["-m", "pytest"];
+    case "python": {
+      try {
+        ({ command, args } = resolvePythonCommand(pkg.path));
+      } catch (error) {
+        console.error(error instanceof Error ? error.message : String(error));
+        return false;
+      }
       break;
+    }
     case "rust":
       command = "cargo";
       args = ["test"];
@@ -228,16 +278,14 @@ function main() {
     results.push({ pkg, passed });
   }
 
-  // Summary
+  // Summary — always include every library so filtered runs
+  // (e.g. test:python) don't wipe other columns from the table
   console.log(`\n${"=".repeat(60)}`);
   console.log("FEATURE SUPPORT TABLE");
   console.log("=".repeat(60));
 
   const testCases = loadTestCases();
-  const featureTable = generateFeatureTable(
-    results.map((r) => r.pkg),
-    testCases
-  );
+  const featureTable = generateFeatureTable(discoverPackages(), testCases);
 
   console.log(featureTable.console);
   console.log("\nLegend: ✅ Pass | ❌ Fail | - Not tested");
