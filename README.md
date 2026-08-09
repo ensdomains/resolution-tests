@@ -38,7 +38,7 @@ Any library and app can use the above tests. For organization, we also run the t
 
 ### Rust
 
-- [ ] `alloy`
+- [x] `alloy`
 - [ ] `ethers-rs`
 
 ### Go

@@ -1,0 +1,61 @@
+{
+  "results": [
+    {
+      "actual": null,
+      "caseId": "forward-dns-offchain",
+      "durationMs": 981,
+      "error": "Failed to resolve ENS name to an address: server returned an error response: error code 3: execution reverted, data: \"0x556f1830000000000000000000000000eeeeeeee14d718c2b47d9923deab1335e144eeee00000000000000000000000000000000000000000000000000000000000000a00000000000000000000000000000000000000000000000000000000000000180ef46c0b80000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000003e00000000000000000000000000000000000000000000000000000…",
+      "passed": false
+    },
+    {
+      "actual": null,
+      "caseId": "forward-eth-offchain",
+      "durationMs": 307,
+      "error": "Failed to resolve ENS name to an address: server returned an error response: error code 3: execution reverted, data: \"0x556f1830000000000000000000000000eeeeeeee14d718c2b47d9923deab1335e144eeee00000000000000000000000000000000000000000000000000000000000000a00000000000000000000000000000000000000000000000000000000000000180ef46c0b80000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000004600000000000000000000000000000000000000000000000000000…",
+      "passed": false
+    },
+    {
+      "actual": null,
+      "caseId": "forward-text-offchain",
+      "durationMs": 565,
+      "error": "ENS resolver not found for name \"test.offchaindemo.eth\"",
+      "passed": false
+    },
+    {
+      "actual": "https://raw.githubusercontent.com/ensdomains/resolution-tests/refs/heads/main/assets/avatar.svg",
+      "caseId": "forward-text-onchain",
+      "durationMs": 575,
+      "error": null,
+      "passed": true
+    },
+    {
+      "actual": "0x51050ec063d393217B436747617aD1C2285Aeeee",
+      "caseId": "forward-wildcard",
+      "durationMs": 404,
+      "error": null,
+      "passed": true
+    },
+    {
+      "actual": "devrel.enslabs.eth",
+      "caseId": "reverse-eth",
+      "durationMs": 1056,
+      "error": null,
+      "passed": true
+    },
+    {
+      "actual": "v1-reverse.integration-tests.eth",
+      "caseId": "reverse-universal-resolver",
+      "durationMs": 1024,
+      "error": "Expected ur-reverse.integration-tests.eth, got v1-reverse.integration-tests.eth",
+      "passed": false
+    },
+    {
+      "actual": "0x2222222222222222222222222222222222222222",
+      "caseId": "universal-resolver",
+      "durationMs": 352,
+      "error": null,
+      "passed": true
+    }
+  ],
+  "timestamp": "2026-08-09T20:12:53.309887+00:00"
+}
