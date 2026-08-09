@@ -125,7 +125,7 @@ fn record_result(
         error,
         duration_ms,
     });
-    // Stable order matching test-cases.json ids where possible
+    // Stable lexicographic order by case id
     results.sort_by(|a, b| a.case_id.cmp(&b.case_id));
 
     let output = json!({
@@ -232,10 +232,14 @@ where
             Err(err) => {
                 let duration_ms = start.elapsed().as_millis() as u64;
                 // Truncate huge OffchainLookup revert payloads for results.json
-                let short_err = if err.len() > 500 {
-                    format!("{}…", &err[..500])
-                } else {
-                    err.clone()
+                // (char-based so we never slice mid–UTF-8 codepoint)
+                let short_err = {
+                    let truncated: String = err.chars().take(500).collect();
+                    if truncated.len() < err.len() {
+                        format!("{truncated}…")
+                    } else {
+                        truncated
+                    }
                 };
                 record_result(&case_id, false, None, Some(short_err.clone()), duration_ms);
                 failures.push(format!("{case_id}: {short_err}"));
