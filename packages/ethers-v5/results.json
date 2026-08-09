@@ -1,75 +1,75 @@
 {
-  "timestamp": "2026-08-09T18:36:38.301Z",
+  "timestamp": "2026-08-09T18:39:03.145Z",
   "results": [
     {
       "caseId": "universal-resolver",
       "passed": false,
       "actual": "0x1111111111111111111111111111111111111111",
       "error": "Expected 0x2222222222222222222222222222222222222222, got 0x1111111111111111111111111111111111111111",
-      "durationMs": 866
+      "durationMs": 1034
     },
     {
       "caseId": "forward-base-onchain",
       "passed": false,
       "actual": null,
       "error": "unsupported coin type: 2147492101 (operation=\"getAddress(2147492101)\", code=UNSUPPORTED_OPERATION, version=providers/5.8.0)",
-      "durationMs": 563
+      "durationMs": 689
     },
     {
       "caseId": "forward-wildcard",
       "passed": true,
       "actual": "0x51050ec063d393217B436747617aD1C2285Aeeee",
       "error": null,
-      "durationMs": 805
+      "durationMs": 977
     },
     {
       "caseId": "forward-eth-offchain",
       "passed": true,
       "actual": "0x779981590E7Ccc0CFAe8040Ce7151324747cDb97",
       "error": null,
-      "durationMs": 1810
+      "durationMs": 1945
     },
     {
       "caseId": "forward-text-onchain",
       "passed": true,
       "actual": "https://raw.githubusercontent.com/ensdomains/resolution-tests/refs/heads/main/assets/avatar.svg",
       "error": null,
-      "durationMs": 561
+      "durationMs": 702
     },
     {
       "caseId": "forward-text-offchain",
       "passed": true,
       "actual": "asdflkjasdflkjasdf",
       "error": null,
-      "durationMs": 1221
+      "durationMs": 1457
     },
     {
       "caseId": "forward-contenthash",
       "passed": true,
       "actual": "ipfs://Qmaisz6NMhDB51cCvNWa1GMS7LU1pAxdF4Ld6Ft9kZEP2a",
       "error": null,
-      "durationMs": 845
+      "durationMs": 683
     },
     {
       "caseId": "forward-dns-offchain",
       "passed": true,
       "actual": "0x534631Bcf33BDb069fB20A93d2fdb9e4D4dD42CF",
       "error": null,
-      "durationMs": 1190
+      "durationMs": 1157
     },
     {
       "caseId": "reverse-universal-resolver",
       "passed": false,
       "actual": "v1-reverse.integration-tests.eth",
       "error": "Expected ur-reverse.integration-tests.eth, got v1-reverse.integration-tests.eth",
-      "durationMs": 951
+      "durationMs": 1183
     },
     {
       "caseId": "reverse-eth",
       "passed": true,
       "actual": "devrel.enslabs.eth",
       "error": null,
-      "durationMs": 956
+      "durationMs": 1165
     }
   ]
 }
