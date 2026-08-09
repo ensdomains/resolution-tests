@@ -23,6 +23,7 @@ Any library and app can use the above tests. For organization, we also run the t
 ### TypeScript
 
 - [x] `viem` v2.x
+- [x] `viem` v3.x
 - [ ] `viem` v1.x
 - [x] `ethers` v6.x
 - [x] `ethers` v5.x
