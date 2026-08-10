@@ -73,7 +73,7 @@ contract URTestResolverTest is Test {
 
     function test_reverse_good() external {
         (, bytes32 node) = _register("integration-tests");
-        bytes32 labelHash = keccak256("reverse2");
+        bytes32 labelHash = keccak256("ur-reverse");
         registry.setSubnodeRecord(node, labelHash, address(this), address(ssResolver), 0);
         ssResolver.setResponse(
             abi.encodeCall(IAddrResolver.addr, (NameCoder.namehash(node, labelHash))), abi.encode(address(this))
@@ -82,14 +82,14 @@ contract URTestResolverTest is Test {
 
         (string memory primary, address addrResolver, address nameResolver) =
             universalResolver.reverse(abi.encodePacked(address(this)), 60);
-        assertEq(primary, "reverse2.integration-tests.eth");
+        assertEq(primary, "ur-reverse.integration-tests.eth");
         assertEq(addrResolver, address(ssResolver));
         assertEq(nameResolver, address(testResolver));
     }
 
     function test_reverse_bad() external {
         (, bytes32 node) = _register("integration-tests");
-        bytes32 labelHash = keccak256("reverse1");
+        bytes32 labelHash = keccak256("v1-reverse");
         registry.setSubnodeRecord(node, labelHash, address(this), address(ssResolver), 0);
         ssResolver.setResponse(
             abi.encodeCall(IAddrResolver.addr, (NameCoder.namehash(node, labelHash))), abi.encode(address(this))
@@ -98,7 +98,7 @@ contract URTestResolverTest is Test {
 
         (string memory primary, address addrResolver, address nameResolver) =
             universalResolverImpl.reverse(abi.encodePacked(address(this)), 60);
-        assertEq(primary, "reverse1.integration-tests.eth");
+        assertEq(primary, "v1-reverse.integration-tests.eth");
         assertEq(addrResolver, address(ssResolver));
         assertEq(nameResolver, address(testResolver));
     }

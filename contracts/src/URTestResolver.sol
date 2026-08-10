@@ -114,6 +114,6 @@ contract URTestResolver is IExtendedResolver, IAddressResolver, IAddrResolver, I
     }
 
     function _name(bool ok) internal pure returns (string memory) {
-        return ok ? "reverse2.integration-tests.eth" : "reverse1.integration-tests.eth";
+        return ok ? "ur-reverse.integration-tests.eth" : "v1-reverse.integration-tests.eth";
     }
 }
