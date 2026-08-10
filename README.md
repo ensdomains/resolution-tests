@@ -39,7 +39,7 @@ Any library and app can use the above tests. For organization, we also run the t
 
 ### Go
 
-- [ ] `go-ens`
+- [x] `go-ens` v3.x
 
 ### Deprecated
 

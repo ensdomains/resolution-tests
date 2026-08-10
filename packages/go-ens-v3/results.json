@@ -1,0 +1,75 @@
+{
+  "timestamp": "2026-08-09T20:29:00.545231Z",
+  "results": [
+    {
+      "caseId": "universal-resolver",
+      "passed": false,
+      "actual": "0x1111111111111111111111111111111111111111",
+      "error": "Expected 0x2222222222222222222222222222222222222222, got 0x1111111111111111111111111111111111111111",
+      "durationMs": 541
+    },
+    {
+      "caseId": "forward-base-onchain",
+      "passed": true,
+      "actual": "0xa66E90D515F576f49Af2dF40952476D56F72A420",
+      "error": null,
+      "durationMs": 340
+    },
+    {
+      "caseId": "forward-wildcard",
+      "passed": false,
+      "actual": null,
+      "error": "unregistered name",
+      "durationMs": 84
+    },
+    {
+      "caseId": "forward-eth-offchain",
+      "passed": false,
+      "actual": null,
+      "error": "unregistered name",
+      "durationMs": 85
+    },
+    {
+      "caseId": "forward-text-onchain",
+      "passed": true,
+      "actual": "https://raw.githubusercontent.com/ensdomains/resolution-tests/refs/heads/main/assets/avatar.svg",
+      "error": null,
+      "durationMs": 332
+    },
+    {
+      "caseId": "forward-text-offchain",
+      "passed": false,
+      "actual": null,
+      "error": "unregistered name",
+      "durationMs": 82
+    },
+    {
+      "caseId": "forward-contenthash",
+      "passed": true,
+      "actual": "/ipfs/k2jmtxvy76tpcfb6iat7fhchqln0khf7dva7s3qir75k6wfnmuyjtrdn",
+      "error": null,
+      "durationMs": 334
+    },
+    {
+      "caseId": "forward-dns-offchain",
+      "passed": false,
+      "actual": null,
+      "error": "unregistered name",
+      "durationMs": 81
+    },
+    {
+      "caseId": "reverse-universal-resolver",
+      "passed": false,
+      "actual": "v1-reverse.integration-tests.eth",
+      "error": "Expected ur-reverse.integration-tests.eth, got v1-reverse.integration-tests.eth",
+      "durationMs": 246
+    },
+    {
+      "caseId": "reverse-eth",
+      "passed": true,
+      "actual": "devrel.enslabs.eth",
+      "error": null,
+      "durationMs": 247
+    }
+  ]
+}
