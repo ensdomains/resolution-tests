@@ -1,0 +1,20 @@
+[build-system]
+requires = ["setuptools>=61", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ens-tests-web3py"
+version = "1.0.0"
+description = "ENS resolution tests for web3.py"
+requires-python = ">=3.10"
+dependencies = [
+    "web3>=7.16.0",
+    "pytest>=8.0.0",
+]
+
+[tool.uv]
+package = false
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
