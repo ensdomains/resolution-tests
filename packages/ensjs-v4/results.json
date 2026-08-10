@@ -1,0 +1,82 @@
+{
+  "timestamp": "2026-08-09T19:59:39.257Z",
+  "results": [
+    {
+      "caseId": "universal-resolver",
+      "passed": true,
+      "actual": "0x2222222222222222222222222222222222222222",
+      "error": null,
+      "durationMs": 386
+    },
+    {
+      "caseId": "forward-base-onchain",
+      "passed": true,
+      "actual": "0xa66E90D515F576f49Af2dF40952476D56F72A420",
+      "error": null,
+      "durationMs": 84
+    },
+    {
+      "caseId": "forward-wildcard",
+      "passed": true,
+      "actual": "0x51050ec063d393217B436747617aD1C2285Aeeee",
+      "error": null,
+      "durationMs": 87
+    },
+    {
+      "caseId": "forward-eth-offchain",
+      "passed": true,
+      "actual": "0x779981590E7Ccc0CFAe8040Ce7151324747cDb97",
+      "error": null,
+      "durationMs": 1061
+    },
+    {
+      "caseId": "forward-text-onchain",
+      "passed": true,
+      "actual": "https://raw.githubusercontent.com/ensdomains/resolution-tests/refs/heads/main/assets/avatar.svg",
+      "error": null,
+      "durationMs": 85
+    },
+    {
+      "caseId": "forward-text-offchain",
+      "passed": true,
+      "actual": "asdflkjasdflkjasdf",
+      "error": null,
+      "durationMs": 543
+    },
+    {
+      "caseId": "forward-contenthash",
+      "passed": true,
+      "actual": "ipfs://bafybeifx7yeb55armcsxwwitkymga5xf53dxiarykms3ygqic223w5sk3m",
+      "error": null,
+      "durationMs": 87
+    },
+    {
+      "caseId": "forward-dns-offchain",
+      "passed": true,
+      "actual": "0x534631Bcf33BDb069fB20A93d2fdb9e4D4dD42CF",
+      "error": null,
+      "durationMs": 263
+    },
+    {
+      "caseId": "reverse-universal-resolver",
+      "passed": true,
+      "actual": "ur-reverse.integration-tests.eth",
+      "error": null,
+      "durationMs": 190
+    },
+    {
+      "caseId": "reverse-eth",
+      "passed": true,
+      "actual": "devrel.enslabs.eth",
+      "error": null,
+      "durationMs": 85
+    },
+    {
+      "caseId": "reverse-l2",
+      "passed": false,
+      "actual": null,
+      "error": "Expected coins.integration-tests.eth, got null",
+      "durationMs": 86
+    }
+  ]
+}

@@ -42,15 +42,18 @@ function generateMarkdown(
   testCases: TestCase[],
   packages: PackageResults[]
 ): string {
-  let md = "# ENS Resolution Test Results\n\n";
-  md += `Generated: ${new Date().toISOString()}\n\n`;
+  const readyCases = testCases.filter((tc) => tc.status === "ready");
+  const lines: string[] = [];
 
-  // Summary table
-  md += "## Summary\n\n";
-  md += "| Test Case | " + packages.map((p) => p.name).join(" | ") + " |\n";
-  md += "|-----------|" + packages.map(() => "---").join("|") + "|\n";
+  lines.push("# ENS Resolution Test Results\n");
+  lines.push(`Generated: ${new Date().toISOString()}\n`);
+  lines.push("## Feature Support\n");
+  lines.push(
+    "| Test Case | " + packages.map((p) => p.name).join(" | ") + " |"
+  );
+  lines.push("|-----------|" + packages.map(() => ":---:").join("|") + "|");
 
-  for (const testCase of testCases) {
+  for (const testCase of readyCases) {
     const row = [testCase.id];
 
     for (const pkg of packages) {
@@ -58,53 +61,38 @@ function generateMarkdown(
       if (!result) {
         row.push("-");
       } else if (result.passed) {
-        row.push("\u2705");
+        row.push("✅");
       } else {
-        row.push("\u274c");
+        row.push("❌");
       }
     }
 
-    md += "| " + row.join(" | ") + " |\n";
+    lines.push("| " + row.join(" | ") + " |");
   }
 
-  // Legend
-  md += "\n### Legend\n";
-  md += "- \u2705 Pass\n";
-  md += "- \u274c Fail\n";
-  md += "- `-` Not tested\n";
-
-  // Detailed results per library
-  md += "\n## Detailed Results\n\n";
+  const totals = ["**TOTAL**"];
   for (const pkg of packages) {
-    md += `### ${pkg.name}\n\n`;
-    md += `Tested: ${pkg.data.timestamp}\n\n`;
-
     const passed = pkg.data.results.filter((r) => r.passed).length;
-    md += `**${passed}/${testCases.length} tests passed**\n\n`;
-
-    const failures = pkg.data.results.filter((r) => !r.passed);
-    if (failures.length > 0) {
-      md += "#### Failures\n\n";
-      for (const failure of failures) {
-        md += `- **${failure.caseId}**: ${failure.error || "Unexpected result"}\n`;
-        if (failure.actual) {
-          md += `  - Actual: \`${failure.actual}\`\n`;
-        }
-      }
-      md += "\n";
-    }
+    totals.push(`**${passed}/${readyCases.length}**`);
   }
+  lines.push("| " + totals.join(" | ") + " |");
 
-  return md;
+  lines.push("\n### Legend\n");
+  lines.push("- ✅ Pass");
+  lines.push("- ❌ Fail");
+  lines.push("- `-` Not tested");
+
+  return lines.join("\n");
 }
 
 function generateCSV(
   testCases: TestCase[],
   packages: PackageResults[]
 ): string {
+  const readyCases = testCases.filter((tc) => tc.status === "ready");
   let csv = "test_case," + packages.map((p) => p.name).join(",") + "\n";
 
-  for (const testCase of testCases) {
+  for (const testCase of readyCases) {
     const row = [testCase.id];
 
     for (const pkg of packages) {
