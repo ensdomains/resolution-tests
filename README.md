@@ -45,6 +45,10 @@ Any library and app can use the above tests. For organization, we also run the t
 
 - [x] `eth.zig`
 
+### C#
+
+- [x] `Nethereum`
+
 ### Deprecated
 
 The following libraries are deprecated and are not covered by this suite:
@@ -82,6 +86,7 @@ bun run test
 
 # Run tests for specific language
 bun run test:typescript
+bun run test:csharp
 ```
 
 After tests complete, a feature support table is displayed showing pass/fail status for each test case across all libraries. Results are automatically saved to `results/latest.md`.

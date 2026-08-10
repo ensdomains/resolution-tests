@@ -8,12 +8,20 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, "..");
 const PACKAGES_DIR = join(ROOT, "packages");
 
-type Language = "typescript" | "python" | "rust" | "go" | "zig";
+type Language = "typescript" | "python" | "rust" | "go" | "zig" | "csharp";
 
 interface PackageInfo {
   name: string;
   path: string;
   language: Language;
+}
+
+function hasCsproj(pkgPath: string): boolean {
+  try {
+    return readdirSync(pkgPath).some((f) => f.endsWith(".csproj"));
+  } catch {
+    return false;
+  }
 }
 
 function detectLanguage(pkgPath: string): Language | null {
@@ -22,6 +30,7 @@ function detectLanguage(pkgPath: string): Language | null {
   if (existsSync(join(pkgPath, "pyproject.toml"))) return "python";
   if (existsSync(join(pkgPath, "go.mod"))) return "go";
   if (existsSync(join(pkgPath, "build.zig"))) return "zig";
+  if (hasCsproj(pkgPath)) return "csharp";
   return null;
 }
 
@@ -124,6 +133,12 @@ function runTests(pkg: PackageInfo): boolean {
     case "zig":
       command = "zig";
       args = ["build", "test"];
+      break;
+    case "csharp":
+      command = "dotnet";
+      // Disable collection parallelization so packages can safely aggregate results.json
+      // (RunSettings keys are case-sensitive: xUnit.*)
+      args = ["test", "--", "xUnit.ParallelizeTestCollections=false"];
       break;
     default:
       console.log(`Unknown language: ${pkg.language}`);
