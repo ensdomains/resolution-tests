@@ -80,7 +80,15 @@ function detectOffchainLookup(text: string): string | null {
 
 // No coinType / contenthash public APIs in thirdweb ENS extensions
 const unsupportedMethods = ["contenthash"];
-const unsupportedCaseIds = new Set(["forward-base-onchain"]);
+
+function isUnsupportedAddrCase(testCase: {
+  method: string;
+  params: Record<string, unknown>;
+}): boolean {
+  if (testCase.method !== "addr") return false;
+  const coinType = testCase.params.coinType;
+  return typeof coinType === "number" && coinType !== 60;
+}
 
 describe("ENS Resolution Tests - thirdweb v5", () => {
   afterAll(() => {
@@ -98,7 +106,8 @@ describe("ENS Resolution Tests - thirdweb v5", () => {
     const forwardCases = getTestCasesByCategory("forward", unsupportedMethods);
 
     for (const testCase of forwardCases) {
-      if (unsupportedCaseIds.has(testCase.id)) {
+      // resolveAddress only resolves ETH (coin type 60)
+      if (isUnsupportedAddrCase(testCase)) {
         // Leave unrecorded so the feature table shows `-`
         test.skip(testCase.description, () => {});
         continue;
