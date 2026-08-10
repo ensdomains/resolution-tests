@@ -1,22 +1,23 @@
 # ENS Resolution Test Results
 
-Generated: 2026-05-12T01:52:18.934Z
+Generated: 2026-08-09T18:39:10.438Z
 
 ## Feature Support
 
-| Test Case             | ethers-v5 | viem-v2  | ethers-v6 |
-| --------------------- | :-------: | :------: | :-------: |
-| universal-resolver    |    ❌     |    ✅    |    ❌     |
-| forward-base-onchain  |    ❌     |    ✅    |    ✅     |
-| forward-wildcard      |    ✅     |    ✅    |    ✅     |
-| forward-eth-offchain  |    ✅     |    ✅    |    ✅     |
-| forward-text-onchain  |    ✅     |    ✅    |    ✅     |
-| forward-text-offchain |    ✅     |    ✅    |    ✅     |
-| forward-contenthash   |    ✅     |    -     |    ✅     |
-| reverse-eth           |    ✅     |    ✅    |    ✅     |
-| reverse-l2            |     -     |    ✅    |     -     |
-| forward-dns-offchain  |    ✅     |    ❌    |    ✅     |
-| **TOTAL**             | **7/10**  | **8/10** | **8/10**  |
+| Test Case                  | ethers-v5 | viem-v2  | ethers-v6 |
+| -------------------------- | :-------: | :------: | :-------: |
+| universal-resolver         |    ❌     |    ✅    |    ✅     |
+| forward-base-onchain       |    ❌     |    ✅    |    ✅     |
+| forward-wildcard           |    ✅     |    ✅    |    ✅     |
+| forward-eth-offchain       |    ✅     |    ✅    |    ✅     |
+| forward-text-onchain       |    ✅     |    ✅    |    ✅     |
+| forward-text-offchain      |    ✅     |    ✅    |    ✅     |
+| forward-contenthash        |    ✅     |    -     |    ✅     |
+| reverse-universal-resolver |    ❌     |    ✅    |    ✅     |
+| reverse-eth                |    ✅     |    ✅    |    ✅     |
+| reverse-l2                 |     -     |    ❌    |     -     |
+| forward-dns-offchain       |    ✅     |    ❌    |    ✅     |
+| **TOTAL**                  | **7/11**  | **8/11** | **10/11** |
 
 ### Legend
 

@@ -1,68 +1,75 @@
 {
-  "timestamp": "2026-05-12T01:52:15.947Z",
+  "timestamp": "2026-08-09T18:39:05.918Z",
   "results": [
     {
       "caseId": "universal-resolver",
       "passed": true,
       "actual": "0x2222222222222222222222222222222222222222",
       "error": null,
-      "durationMs": 201
+      "durationMs": 343
     },
     {
       "caseId": "forward-base-onchain",
       "passed": true,
       "actual": "0xa66E90D515F576f49Af2dF40952476D56F72A420",
       "error": null,
-      "durationMs": 29
+      "durationMs": 85
     },
     {
       "caseId": "forward-wildcard",
       "passed": true,
       "actual": "0x51050ec063d393217B436747617aD1C2285Aeeee",
       "error": null,
-      "durationMs": 35
+      "durationMs": 85
     },
     {
       "caseId": "forward-eth-offchain",
       "passed": true,
       "actual": "0x779981590E7Ccc0CFAe8040Ce7151324747cDb97",
       "error": null,
-      "durationMs": 298
+      "durationMs": 779
     },
     {
       "caseId": "forward-text-onchain",
       "passed": true,
       "actual": "https://raw.githubusercontent.com/ensdomains/resolution-tests/refs/heads/main/assets/avatar.svg",
       "error": null,
-      "durationMs": 114
+      "durationMs": 85
     },
     {
       "caseId": "forward-text-offchain",
       "passed": true,
       "actual": "asdflkjasdflkjasdf",
       "error": null,
-      "durationMs": 107
+      "durationMs": 534
     },
     {
       "caseId": "forward-dns-offchain",
       "passed": false,
       "actual": null,
       "error": "Number \"475411618940684652382658899876961866559843549903n\" is not in safe integer range (-9007199254740991 to 9007199254740991)\n\nVersion: viem@2.48.11",
-      "durationMs": 167
+      "durationMs": 249
+    },
+    {
+      "caseId": "reverse-universal-resolver",
+      "passed": true,
+      "actual": "ur-reverse.integration-tests.eth",
+      "error": null,
+      "durationMs": 84
     },
     {
       "caseId": "reverse-eth",
       "passed": true,
       "actual": "devrel.enslabs.eth",
       "error": null,
-      "durationMs": 33
+      "durationMs": 86
     },
     {
       "caseId": "reverse-l2",
-      "passed": true,
-      "actual": "coins.integration-tests.eth",
-      "error": null,
-      "durationMs": 215
+      "passed": false,
+      "actual": null,
+      "error": "Expected coins.integration-tests.eth, got null",
+      "durationMs": 94
     }
   ]
 }
