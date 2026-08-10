@@ -1,0 +1,68 @@
+{
+  "timestamp": "2026-08-10T00:42:32.082Z",
+  "results": [
+    {
+      "caseId": "universal-resolver",
+      "passed": true,
+      "actual": "0x2222222222222222222222222222222222222222",
+      "error": null,
+      "durationMs": 636
+    },
+    {
+      "caseId": "forward-wildcard",
+      "passed": true,
+      "actual": "0x51050ec063d393217B436747617aD1C2285Aeeee",
+      "error": null,
+      "durationMs": 207
+    },
+    {
+      "caseId": "forward-eth-offchain",
+      "passed": false,
+      "actual": null,
+      "error": "OffchainLookup not handled (CCIP-Read)",
+      "durationMs": 206
+    },
+    {
+      "caseId": "forward-text-onchain",
+      "passed": true,
+      "actual": "https://raw.githubusercontent.com/ensdomains/resolution-tests/refs/heads/main/assets/avatar.svg",
+      "error": null,
+      "durationMs": 206
+    },
+    {
+      "caseId": "forward-text-offchain",
+      "passed": false,
+      "actual": null,
+      "error": "OffchainLookup not handled (CCIP-Read)",
+      "durationMs": 207
+    },
+    {
+      "caseId": "forward-dns-offchain",
+      "passed": false,
+      "actual": null,
+      "error": "OffchainLookup not handled (CCIP-Read)",
+      "durationMs": 206
+    },
+    {
+      "caseId": "reverse-universal-resolver",
+      "passed": true,
+      "actual": "ur-reverse.integration-tests.eth",
+      "error": null,
+      "durationMs": 205
+    },
+    {
+      "caseId": "reverse-eth",
+      "passed": true,
+      "actual": "devrel.enslabs.eth",
+      "error": null,
+      "durationMs": 208
+    },
+    {
+      "caseId": "reverse-l2",
+      "passed": false,
+      "actual": null,
+      "error": "Expected coins.integration-tests.eth, got null",
+      "durationMs": 322
+    }
+  ]
+}
