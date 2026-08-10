@@ -9,4 +9,4 @@ forward-contenthash,,pass,,pass,,,pass,pass,pass,pass,pass,
 reverse-universal-resolver,pass,fail,fail,fail,pass,pass,pass,fail,fail,pass,pass,pass
 reverse-eth,pass,pass,pass,pass,pass,pass,pass,pass,pass,pass,pass,pass
 reverse-l2,fail,,,,fail,fail,fail,,,,,
-forward-dns-offchain,fail,fail,fail,pass,pass,fail,pass,fail,pass,pass,fail,fail
+forward-dns-offchain,fail,fail,fail,pass,pass,pass,pass,fail,pass,pass,fail,fail
