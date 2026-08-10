@@ -8,7 +8,7 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, "..");
 const PACKAGES_DIR = join(ROOT, "packages");
 
-type Language = "typescript" | "python" | "rust" | "go";
+type Language = "typescript" | "python" | "rust" | "go" | "zig";
 
 interface PackageInfo {
   name: string;
@@ -21,6 +21,7 @@ function detectLanguage(pkgPath: string): Language | null {
   if (existsSync(join(pkgPath, "Cargo.toml"))) return "rust";
   if (existsSync(join(pkgPath, "pyproject.toml"))) return "python";
   if (existsSync(join(pkgPath, "go.mod"))) return "go";
+  if (existsSync(join(pkgPath, "build.zig"))) return "zig";
   return null;
 }
 
@@ -119,6 +120,10 @@ function runTests(pkg: PackageInfo): boolean {
     case "go":
       command = "go";
       args = ["test", "./..."];
+      break;
+    case "zig":
+      command = "zig";
+      args = ["build", "test"];
       break;
     default:
       console.log(`Unknown language: ${pkg.language}`);

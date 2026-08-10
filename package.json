@@ -11,6 +11,7 @@
     "test:python": "bun run scripts/run-tests.ts python",
     "test:rust": "bun run scripts/run-tests.ts rust",
     "test:go": "bun run scripts/run-tests.ts go",
+    "test:zig": "bun run scripts/run-tests.ts zig",
     "aggregate": "bun run scripts/aggregate-results.ts"
   },
   "devDependencies": {

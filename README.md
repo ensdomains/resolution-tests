@@ -41,6 +41,10 @@ Any library and app can use the above tests. For organization, we also run the t
 
 - [x] `go-ens` v3.x
 
+### Zig
+
+- [x] `eth.zig`
+
 ### Deprecated
 
 The following libraries are deprecated and are not covered by this suite:

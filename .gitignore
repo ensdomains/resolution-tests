@@ -38,3 +38,9 @@ venv/
 # Compiler files
 cache/
 out/
+
+# Zig
+zig-cache/
+.zig-cache/
+zig-out/
+zig-pkg/
