@@ -40,6 +40,7 @@ Any library and app can use the above tests. For organization, we also run the t
 
 ### Go
 
+- [x] `go-ens` v4.x
 - [x] `go-ens` v3.x
 
 ### Zig
