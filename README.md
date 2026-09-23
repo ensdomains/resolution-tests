@@ -31,7 +31,7 @@ Any library and app can use the above tests. For organization, we also run the t
 
 ### Python
 
-- [ ] `web3.py`
+- [x] `web3.py`
 - [ ] `ens-py`
 
 ### Rust

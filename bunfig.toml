@@ -1,0 +1,3 @@
+[test]
+# Foundry libs ship their own *.test.js suites; don't pick them up via `bun test`
+pathIgnorePatterns = ["contracts/**"]
