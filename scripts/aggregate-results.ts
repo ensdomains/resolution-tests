@@ -9,7 +9,7 @@ const ROOT = join(__dirname, "..");
 
 interface PackageResults {
   name: string;
-  data: LibraryResults;
+  data: LibraryResults & { runFailed?: boolean };
 }
 
 function loadPackageResults(): PackageResults[] {
@@ -57,6 +57,10 @@ function generateMarkdown(
     const row = [testCase.id];
 
     for (const pkg of packages) {
+      if (pkg.data.runFailed) {
+        row.push("⚠️");
+        continue;
+      }
       const result = pkg.data.results.find((r) => r.caseId === testCase.id);
       if (!result) {
         row.push("-");
@@ -72,8 +76,14 @@ function generateMarkdown(
 
   const totals = ["**TOTAL**"];
   for (const pkg of packages) {
-    const passed = pkg.data.results.filter((r) => r.passed).length;
-    totals.push(`**${passed}/${readyCases.length}**`);
+    if (pkg.data.runFailed) {
+      totals.push("**RUN FAILED**");
+    } else {
+      const passed = readyCases.filter((testCase) =>
+        pkg.data.results.find((r) => r.caseId === testCase.id)?.passed
+      ).length;
+      totals.push(`**${passed}/${readyCases.length}**`);
+    }
   }
   lines.push("| " + totals.join(" | ") + " |");
 
@@ -81,6 +91,7 @@ function generateMarkdown(
   lines.push("- ✅ Pass");
   lines.push("- ❌ Fail");
   lines.push("- `-` Not tested");
+  lines.push("- ⚠️ Run failed; case results are not scored");
 
   return lines.join("\n");
 }
@@ -96,6 +107,10 @@ function generateCSV(
     const row = [testCase.id];
 
     for (const pkg of packages) {
+      if (pkg.data.runFailed) {
+        row.push("run_failed");
+        continue;
+      }
       const result = pkg.data.results.find((r) => r.caseId === testCase.id);
       if (!result) {
         row.push("");
@@ -133,7 +148,7 @@ function main() {
   const mdPath = join(resultsDir, "latest.md");
   writeFileSync(mdPath, markdown);
   writeFileSync(join(resultsDir, "latest.csv"), csv);
-  spawnSync("npx", ["prettier", "--write", mdPath], {
+  spawnSync("bunx", ["--no-install", "prettier", "--write", mdPath], {
     cwd: ROOT,
     stdio: "ignore",
   });
