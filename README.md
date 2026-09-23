@@ -27,7 +27,7 @@ Any library and app can use the above tests. For organization, we also run the t
 - [ ] `viem` v1.x
 - [x] `ethers` v6.x
 - [x] `ethers` v5.x
-- [ ] `@ensdomains/ensjs` v3.x
+- [x] `@ensdomains/ensjs` v4.x
 - [ ] `web3.js` v4.x
 
 ### Python
