@@ -55,6 +55,9 @@ def _load_test_cases(category: str) -> list[dict[str, Any]]:
 @pytest.fixture(scope="session")
 def ens() -> ENS:
     w3 = Web3(Web3.HTTPProvider(_load_rpc_url()))
+    chain_id = w3.eth.chain_id
+    if chain_id != 1:
+        raise RuntimeError(f"RPC_URL must target Ethereum mainnet (chain ID 1), got {chain_id}")
     return ENS.from_web3(w3)
 
 

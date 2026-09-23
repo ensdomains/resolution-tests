@@ -1,4 +1,4 @@
-import { readdirSync, existsSync, readFileSync, writeFileSync } from "node:fs";
+import { readdirSync, existsSync, readFileSync, writeFileSync, rmSync } from "node:fs";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 import { spawnSync } from "node:child_process";
@@ -48,7 +48,7 @@ function resolvePythonCommand(pkgPath: string): { command: string; args: string[
   // Prefer uv when available for reproducible local envs
   const uvCheck = spawnSync("uv", ["--version"], { stdio: "ignore" });
   if (uvCheck.status === 0) {
-    const sync = spawnSync("uv", ["sync"], {
+    const sync = spawnSync("uv", ["sync", "--locked"], {
       cwd: pkgPath,
       stdio: "inherit",
       env: process.env,
@@ -56,7 +56,7 @@ function resolvePythonCommand(pkgPath: string): { command: string; args: string[
     if (sync.status !== 0) {
       throw new Error(`Failed to sync Python dependencies for ${pkgPath}`);
     }
-    return { command: "uv", args: ["run", "pytest", "-v"] };
+    return { command: "uv", args: ["run", "--locked", "pytest", "-v", "--tb=short"] };
   }
 
   const pythonCheck = spawnSync("python3", ["--version"], { stdio: "ignore" });
@@ -75,7 +75,7 @@ function resolvePythonCommand(pkgPath: string): { command: string; args: string[
 
   const install = spawnSync(
     venvPython,
-    ["-m", "pip", "install", "-e", "."],
+    ["-m", "pip", "install", "-c", "constraints.txt", "-e", "."],
     {
       cwd: pkgPath,
       stdio: "inherit",
@@ -86,13 +86,16 @@ function resolvePythonCommand(pkgPath: string): { command: string; args: string[
     throw new Error(`Failed to install Python dependencies for ${pkgPath}`);
   }
 
-  return { command: venvPython, args: ["-m", "pytest", "-v"] };
+  return { command: venvPython, args: ["-m", "pytest", "-v", "--tb=short"] };
 }
 
 function runTests(pkg: PackageInfo): boolean {
   console.log(`\n${"=".repeat(60)}`);
   console.log(`Running tests for ${pkg.name} (${pkg.language})`);
   console.log("=".repeat(60));
+
+  // A failed setup or test run must not reuse a checked-in result from an earlier run.
+  rmSync(join(pkg.path, "results.json"), { force: true });
 
   let command: string;
   let args: string[];
@@ -140,23 +143,28 @@ function loadTestCases(): TestCase[] {
   return data;
 }
 
-function loadLibraryResults(pkgPath: string): LibraryResults | null {
+type LibraryRunResults = LibraryResults & { runFailed?: boolean };
+
+function loadLibraryResults(pkgPath: string): LibraryRunResults | null {
   const resultsPath = join(pkgPath, "results.json");
   if (!existsSync(resultsPath)) {
     return null;
   }
   const content = readFileSync(resultsPath, "utf-8");
-  return JSON.parse(content) as LibraryResults;
+  return JSON.parse(content) as LibraryRunResults;
 }
 
 function generateFeatureTable(
   packages: PackageInfo[],
-  testCases: TestCase[]
+  testCases: TestCase[],
+  failedPackages: ReadonlySet<string>
 ): { console: string; markdown: string } {
   // Load results for each package
-  const allResults: { pkg: PackageInfo; results: LibraryResults | null }[] = [];
+  const allResults: { pkg: PackageInfo; results: LibraryRunResults | null; runFailed: boolean }[] = [];
   for (const pkg of packages) {
-    allResults.push({ pkg, results: loadLibraryResults(pkg.path) });
+    const results = loadLibraryResults(pkg.path);
+    const runFailed = results?.runFailed === true || (failedPackages.has(pkg.name) && !results);
+    allResults.push({ pkg, results, runFailed });
   }
 
   // Filter to only "ready" test cases
@@ -226,8 +234,11 @@ function generateFeatureTable(
   const consoleTotals = ["TOTAL".padEnd(idWidth)];
   const mdTotals = ["**TOTAL**"];
 
-  for (const { results } of allResults) {
-    if (!results) {
+  for (const { results, runFailed } of allResults) {
+    if (runFailed) {
+      consoleTotals.push("RUN FAILED".padEnd(libWidth));
+      mdTotals.push("**RUN FAILED**");
+    } else if (!results) {
       consoleTotals.push("-".padEnd(libWidth));
       mdTotals.push("-");
     } else {
@@ -244,6 +255,7 @@ function generateFeatureTable(
   mdLines.push("- ✅ Pass");
   mdLines.push("- ❌ Fail");
   mdLines.push("- `-` Not tested");
+  mdLines.push("- `RUN FAILED` Test execution or setup failed; no total is reported");
 
   return {
     console: consoleLines.join("\n"),
@@ -285,15 +297,16 @@ function main() {
   console.log("=".repeat(60));
 
   const testCases = loadTestCases();
-  const featureTable = generateFeatureTable(discoverPackages(), testCases);
+  const failedPackages = new Set(results.filter((r) => !r.passed).map((r) => r.pkg.name));
+  const featureTable = generateFeatureTable(discoverPackages(), testCases, failedPackages);
 
   console.log(featureTable.console);
-  console.log("\nLegend: ✅ Pass | ❌ Fail | - Not tested");
+  console.log("\nLegend: ✅ Pass | ❌ Fail | - Not tested | RUN FAILED: setup or tests failed");
 
   // Save markdown to results/latest.md
   const resultsPath = join(ROOT, "results", "latest.md");
   writeFileSync(resultsPath, featureTable.markdown);
-  spawnSync("npx", ["prettier", "--write", resultsPath], {
+  spawnSync("bunx", ["--no-install", "prettier", "--write", resultsPath], {
     cwd: ROOT,
     stdio: "ignore",
   });

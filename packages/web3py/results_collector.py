@@ -5,3 +5,4 @@ from __future__ import annotations
 from typing import Any
 
 results: list[dict[str, Any]] = []
+setup_failures: list[str] = []
