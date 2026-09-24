@@ -41,9 +41,9 @@ Any library and app can use the above tests. For organization, we also run the t
 
 - [ ] `go-ens`
 
-### Deprecated
+### Outside Current Coverage
 
-The following libraries are deprecated and are not covered by this suite:
+The following libraries and versions are not currently covered by this suite:
 
 - `viem` v1.x
 - `web3.js`
