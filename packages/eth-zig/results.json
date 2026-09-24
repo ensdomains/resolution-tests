@@ -1,0 +1,68 @@
+{
+  "timestamp": "1786307864",
+  "results": [
+  {
+    "caseId": "universal-resolver",
+    "passed": true,
+    "actual": "0x2222222222222222222222222222222222222222",
+    "error": null,
+    "durationMs": 6581
+  },
+  {
+    "caseId": "forward-wildcard",
+    "passed": true,
+    "actual": "0x51050ec063d393217B436747617aD1C2285Aeeee",
+    "error": null,
+    "durationMs": 591
+  },
+  {
+    "caseId": "forward-eth-offchain",
+    "passed": false,
+    "actual": null,
+    "error": "OffchainLookupRequired",
+    "durationMs": 564
+  },
+  {
+    "caseId": "forward-text-onchain",
+    "passed": true,
+    "actual": "https://raw.githubusercontent.com/ensdomains/resolution-tests/refs/heads/main/assets/avatar.svg",
+    "error": null,
+    "durationMs": 593
+  },
+  {
+    "caseId": "forward-text-offchain",
+    "passed": false,
+    "actual": null,
+    "error": "OffchainLookupRequired",
+    "durationMs": 590
+  },
+  {
+    "caseId": "forward-contenthash",
+    "passed": true,
+    "actual": "ipfs://Qmaisz6NMhDB51cCvNWa1GMS7LU1pAxdF4Ld6Ft9kZEP2a",
+    "error": null,
+    "durationMs": 594
+  },
+  {
+    "caseId": "reverse-universal-resolver",
+    "passed": true,
+    "actual": "ur-reverse.integration-tests.eth",
+    "error": null,
+    "durationMs": 576
+  },
+  {
+    "caseId": "reverse-eth",
+    "passed": true,
+    "actual": "devrel.enslabs.eth",
+    "error": null,
+    "durationMs": 598
+  },
+  {
+    "caseId": "forward-dns-offchain",
+    "passed": false,
+    "actual": null,
+    "error": "OffchainLookupRequired",
+    "durationMs": 708
+  }
+]
+}
