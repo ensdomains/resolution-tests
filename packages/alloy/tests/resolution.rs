@@ -1,17 +1,8 @@
 //! ENS resolution tests for alloy (`ProviderEnsExt`).
 
-use std::{
-    env, fs,
-    path::PathBuf,
-    sync::Mutex,
-    time::Instant,
-};
+use std::{env, fs, path::PathBuf, sync::Mutex, time::Instant};
 
-use alloy::{
-    ens::ProviderEnsExt,
-    primitives::Address,
-    providers::ProviderBuilder,
-};
+use alloy::{ens::ProviderEnsExt, primitives::Address, providers::ProviderBuilder};
 use chrono::Utc;
 use serde::{Deserialize, Serialize};
 use serde_json::json;
@@ -60,34 +51,17 @@ fn package_dir() -> PathBuf {
 }
 
 fn root_dir() -> PathBuf {
-    package_dir().join("../..").canonicalize().expect("repo root")
+    package_dir()
+        .join("../..")
+        .canonicalize()
+        .expect("repo root")
 }
 
 fn load_rpc_url() -> String {
-    if let Ok(url) = env::var("RPC_URL") {
-        if !url.is_empty() {
-            return url;
-        }
-    }
-
-    let env_path = root_dir().join(".env");
-    if env_path.exists() {
-        for line in fs::read_to_string(env_path).unwrap().lines() {
-            let line = line.trim();
-            if line.is_empty() || line.starts_with('#') || !line.contains('=') {
-                continue;
-            }
-            let (key, value) = line.split_once('=').unwrap();
-            if key.trim() == "RPC_URL" {
-                let value = value.trim().trim_matches('"').trim_matches('\'');
-                if !value.is_empty() {
-                    return value.to_string();
-                }
-            }
-        }
-    }
-
-    panic!("RPC_URL environment variable is required");
+    env::var("RPC_URL")
+        .ok()
+        .filter(|url| !url.is_empty())
+        .expect("RPC_URL environment variable is required")
 }
 
 fn load_ready_cases(category: &str) -> Vec<TestCase> {
@@ -157,7 +131,10 @@ async fn run_forward(case: &TestCase) -> Result<Option<String>, String> {
     match case.method.as_str() {
         "addr" => {
             let name = case.input.name.as_deref().ok_or("missing name")?;
-            let addr = provider.resolve_name(name).await.map_err(|e| e.to_string())?;
+            let addr = provider
+                .resolve_name(name)
+                .await
+                .map_err(|e| e.to_string())?;
             Ok(Some(format_address(addr)))
         }
         "text" => {
