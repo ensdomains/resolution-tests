@@ -268,34 +268,6 @@ public class ResolutionTests : IAsyncLifetime
         {
             return fromEnv.Trim();
         }
-
-        var envPath = Path.Combine(RootDir(), ".env");
-        if (!File.Exists(envPath))
-        {
-            throw new Exception("RPC_URL environment variable is required");
-        }
-
-        foreach (var rawLine in File.ReadAllLines(envPath))
-        {
-            var line = rawLine.Trim();
-            if (line.Length == 0 || line.StartsWith('#') || !line.Contains('='))
-            {
-                continue;
-            }
-
-            var parts = line.Split('=', 2);
-            if (parts[0].Trim() != "RPC_URL")
-            {
-                continue;
-            }
-
-            var value = parts[1].Trim().Trim('"', '\'');
-            if (value.Length > 0)
-            {
-                return value;
-            }
-        }
-
         throw new Exception("RPC_URL environment variable is required");
     }
 
