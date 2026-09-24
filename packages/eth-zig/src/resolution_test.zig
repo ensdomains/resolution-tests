@@ -42,32 +42,10 @@ const TestCase = struct {
     params: Params = .{},
 };
 
-fn loadRpcUrl(allocator: Allocator, io: std.Io) ![]u8 {
+fn loadRpcUrl(allocator: Allocator) ![]u8 {
     if (std.c.getenv("RPC_URL")) |raw| {
         const url = std.mem.span(raw);
         if (url.len > 0) return try allocator.dupe(u8, url);
-    }
-
-    // When run via `zig build test`, cwd is the package root.
-    const cwd = std.Io.Dir.cwd();
-    const contents = cwd.readFileAlloc(io, "../../.env", allocator, .limited(1024 * 1024)) catch {
-        return error.MissingRpcUrl;
-    };
-    defer allocator.free(contents);
-
-    var lines = std.mem.splitScalar(u8, contents, '\n');
-    while (lines.next()) |raw_line| {
-        const line = std.mem.trim(u8, raw_line, " \t\r");
-        if (line.len == 0 or line[0] == '#' or std.mem.indexOfScalar(u8, line, '=') == null) continue;
-        var parts = std.mem.splitScalar(u8, line, '=');
-        const key = std.mem.trim(u8, parts.next() orelse continue, " \t");
-        var value = std.mem.trim(u8, parts.rest(), " \t");
-        if (value.len >= 2 and ((value[0] == '"' and value[value.len - 1] == '"') or (value[0] == '\'' and value[value.len - 1] == '\''))) {
-            value = value[1 .. value.len - 1];
-        }
-        if (std.mem.eql(u8, key, "RPC_URL") and value.len > 0) {
-            return try allocator.dupe(u8, value);
-        }
     }
     return error.MissingRpcUrl;
 }
@@ -126,24 +104,72 @@ fn runReverse(allocator: Allocator, provider: *eth.provider.Provider, case: Test
     return try eth.ens_reverse.lookupAddress(allocator, provider, address);
 }
 
+fn decodeCidV0(cid: []const u8) ?[34]u8 {
+    if (cid.len != 46 or !std.mem.startsWith(u8, cid, "Qm")) return null;
+    var bytes: [34]u8 = @splat(0);
+    for (cid) |char| {
+        const digit = std.mem.indexOfScalar(u8, "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz", char) orelse return null;
+        var carry: usize = digit;
+        var i: usize = bytes.len;
+        while (i > 0) {
+            i -= 1;
+            carry += @as(usize, bytes[i]) * 58;
+            bytes[i] = @intCast(carry & 0xff);
+            carry >>= 8;
+        }
+        if (carry != 0) return null;
+    }
+    if (bytes[0] != 0x12 or bytes[1] != 0x20) return null;
+    return bytes;
+}
+
+fn decodeCidV1(cid: []const u8) ?[36]u8 {
+    if (cid.len != 59 or cid[0] != 'b') return null;
+    var bytes: [36]u8 = @splat(0);
+    var output_index: usize = 0;
+    var pending: u16 = 0;
+    var bit_count: u8 = 0;
+    for (cid[1..]) |char| {
+        const digit = std.mem.indexOfScalar(u8, "abcdefghijklmnopqrstuvwxyz234567", char) orelse return null;
+        pending = (pending << 5) | @as(u16, @intCast(digit));
+        bit_count += 5;
+        if (bit_count >= 8) {
+            bit_count -= 8;
+            if (output_index >= bytes.len) return null;
+            bytes[output_index] = @intCast((pending >> @intCast(bit_count)) & 0xff);
+            output_index += 1;
+            pending &= (@as(u16, 1) << @intCast(bit_count)) - 1;
+        }
+    }
+    if (output_index != bytes.len or bit_count != 2 or pending != 0) return null;
+    if (bytes[0] != 1 or bytes[1] != 0x70 or bytes[2] != 0x12 or bytes[3] != 0x20) return null;
+    return bytes;
+}
+
+fn equivalentIpfsCid(a: []const u8, b: []const u8) bool {
+    const a_cid = if (std.mem.startsWith(u8, a, "ipfs://")) a["ipfs://".len..] else a;
+    const b_cid = if (std.mem.startsWith(u8, b, "ipfs://")) b["ipfs://".len..] else b;
+    if (decodeCidV0(a_cid)) |v0| {
+        if (decodeCidV1(b_cid)) |v1| return std.mem.eql(u8, &v0, v1[2..]);
+    }
+    if (decodeCidV1(a_cid)) |v1| {
+        if (decodeCidV0(b_cid)) |v0| return std.mem.eql(u8, v1[2..], &v0);
+    }
+    return false;
+}
+
+test "CIDv0 and CIDv1 contenthashes match only for the same multihash" {
+    const v0 = "ipfs://Qmaisz6NMhDB51cCvNWa1GMS7LU1pAxdF4Ld6Ft9kZEP2a";
+    const v1 = "ipfs://bafybeifx7yeb55armcsxwwitkymga5xf53dxiarykms3ygqic223w5sk3m";
+    try std.testing.expect(equivalentIpfsCid(v0, v1));
+    try std.testing.expect(!equivalentIpfsCid(v0, "ipfs://bafybeifx7yeb55armcsxwwitkymga5xf53dxiarykms3ygqic223w5sk2m"));
+}
+
 fn valuesMatch(method: []const u8, actual: ?[]const u8, expected: ?[]const u8) bool {
     if (actual == null and expected == null) return true;
     if (actual == null or expected == null) return false;
     if (std.mem.eql(u8, actual.?, expected.?)) return true;
-    // eth.zig renders dag-pb/sha2-256 IPFS hashes as CIDv0 (`Qm...`); the suite
-    // expected value uses CIDv1 (`bafy...`). Both encode the same content.
-    if (std.mem.eql(u8, method, "contenthash")) {
-        const a = actual.?;
-        const e = expected.?;
-        const a_cid = if (std.mem.startsWith(u8, a, "ipfs://")) a["ipfs://".len..] else a;
-        const e_cid = if (std.mem.startsWith(u8, e, "ipfs://")) e["ipfs://".len..] else e;
-        const a_v0 = std.mem.startsWith(u8, a_cid, "Qm");
-        const e_v1 = std.mem.startsWith(u8, e_cid, "bafy");
-        const a_v1 = std.mem.startsWith(u8, a_cid, "bafy");
-        const e_v0 = std.mem.startsWith(u8, e_cid, "Qm");
-        if ((a_v0 and e_v1) or (a_v1 and e_v0)) return true;
-    }
-    return false;
+    return std.mem.eql(u8, method, "contenthash") and equivalentIpfsCid(actual.?, expected.?);
 }
 
 test "ENS resolution suite" {
@@ -162,7 +188,7 @@ test "ENS resolution suite" {
         results.deinit(allocator);
     }
 
-    const rpc_url = loadRpcUrl(allocator, io) catch {
+    const rpc_url = loadRpcUrl(allocator) catch {
         std.debug.print("RPC_URL environment variable is required\n", .{});
         return error.MissingRpcUrl;
     };
