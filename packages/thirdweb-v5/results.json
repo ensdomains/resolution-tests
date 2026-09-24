@@ -56,13 +56,6 @@
       "actual": "devrel.enslabs.eth",
       "error": null,
       "durationMs": 208
-    },
-    {
-      "caseId": "reverse-l2",
-      "passed": false,
-      "actual": null,
-      "error": "Expected coins.integration-tests.eth, got null",
-      "durationMs": 322
     }
   ]
 }

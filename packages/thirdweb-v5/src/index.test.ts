@@ -4,8 +4,6 @@ import {
   resolveAddress,
   resolveName,
   resolveText,
-  resolveL2Name,
-  BASENAME_RESOLVER_ADDRESS,
 } from "thirdweb/extensions/ens";
 import { writeFileSync } from "node:fs";
 import { join, dirname } from "node:path";
@@ -21,15 +19,8 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 
 const results: TestResult[] = [];
 
-const THIRDWEB_SECRET_KEY = process.env.THIRDWEB_SECRET_KEY;
-const THIRDWEB_CLIENT_ID = process.env.THIRDWEB_CLIENT_ID;
-// Client credentials are required by the SDK; when custom RPCs are set below,
-// a placeholder clientId is enough because calls never hit thirdweb's gateway.
-const client = createThirdwebClient(
-  THIRDWEB_SECRET_KEY
-    ? { secretKey: THIRDWEB_SECRET_KEY }
-    : { clientId: THIRDWEB_CLIENT_ID || "ens-resolution-tests" }
-);
+// All calls use the supplied RPC, so no thirdweb gateway credentials are needed.
+const client = createThirdwebClient({ clientId: "ens-resolution-tests" });
 
 // Prefer suite / public RPCs so results don't depend on thirdweb gateway auth
 const RPC_URL = process.env.RPC_URL;
@@ -37,10 +28,6 @@ if (!RPC_URL) {
   throw new Error("RPC_URL environment variable is required");
 }
 const mainnet = defineChain({ id: 1, rpc: RPC_URL });
-const baseChain = defineChain({
-  id: 8453,
-  rpc: process.env.BASE_RPC_URL || "https://mainnet.base.org",
-});
 
 function recordResult(
   caseId: string,
@@ -78,8 +65,8 @@ function detectOffchainLookup(text: string): string | null {
   return null;
 }
 
-// No coinType / contenthash public APIs in thirdweb ENS extensions
-const unsupportedMethods = ["contenthash"];
+// No multi-coin, contenthash, or ENS V2 L2 primary-name public API.
+const unsupportedMethods = ["contenthash", "reverse-l2"];
 
 function isUnsupportedAddrCase(testCase: {
   method: string;
@@ -180,14 +167,6 @@ describe("ENS Resolution Tests - thirdweb v5", () => {
               client,
               address: testCase.input.address as `0x${string}`,
               resolverChain: mainnet,
-            });
-          } else if (testCase.method === "reverse-l2") {
-            // Public L2 reverse API is Basename-oriented (not ENS V2 L2 primary)
-            actual = await resolveL2Name({
-              client,
-              address: testCase.input.address as `0x${string}`,
-              resolverAddress: BASENAME_RESOLVER_ADDRESS,
-              resolverChain: baseChain,
             });
           }
 
