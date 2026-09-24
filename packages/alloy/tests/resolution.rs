@@ -73,12 +73,6 @@ fn load_ready_cases(category: &str) -> Vec<TestCase> {
             c.status == "ready"
                 && c.category == category
                 && !UNSUPPORTED_METHODS.contains(&c.method.as_str())
-                // alloy resolve_name only resolves ETH (coin type 60)
-                && !(c.method == "addr"
-                    && c.params
-                        .get("coinType")
-                        .and_then(|v| v.as_u64())
-                        .is_some_and(|ct| ct != 60))
         })
         .collect()
 }
@@ -131,10 +125,29 @@ async fn run_forward(case: &TestCase) -> Result<Option<String>, String> {
     match case.method.as_str() {
         "addr" => {
             let name = case.input.name.as_deref().ok_or("missing name")?;
-            let addr = provider
-                .resolve_name(name)
-                .await
-                .map_err(|e| e.to_string())?;
+            let coin_type = case
+                .params
+                .get("coinType")
+                .and_then(|v| v.as_u64())
+                .ok_or("missing coinType")?;
+            let addr = if coin_type == 60 {
+                provider
+                    .resolve_name(name)
+                    .await
+                    .map_err(|e| e.to_string())?
+            } else {
+                let raw = provider
+                    .resolve_name_for_coin_type(name, coin_type)
+                    .await
+                    .map_err(|e| e.to_string())?;
+                if raw.len() != 20 {
+                    return Err(format!(
+                        "expected 20-byte EVM address, got {} bytes",
+                        raw.len()
+                    ));
+                }
+                Address::from_slice(raw.as_ref())
+            };
             Ok(Some(format_address(addr)))
         }
         "text" => {

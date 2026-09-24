@@ -1,61 +1,68 @@
 {
   "results": [
     {
-      "actual": null,
+      "actual": "0xa66E90D515F576f49Af2dF40952476D56F72A420",
+      "caseId": "forward-base-onchain",
+      "durationMs": 104,
+      "error": null,
+      "passed": true
+    },
+    {
+      "actual": "0x534631Bcf33BDb069fB20A93d2fdb9e4D4dD42CF",
       "caseId": "forward-dns-offchain",
-      "durationMs": 981,
-      "error": "Failed to resolve ENS name to an address: server returned an error response: error code 3: execution reverted, data: \"0x556f1830000000000000000000000000eeeeeeee14d718c2b47d9923deab1335e144eeee00000000000000000000000000000000000000000000000000000000000000a00000000000000000000000000000000000000000000000000000000000000180ef46c0b80000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000003e00000000000000000000000000000000000000000000000000000…",
-      "passed": false
+      "durationMs": 538,
+      "error": null,
+      "passed": true
     },
     {
-      "actual": null,
+      "actual": "0x779981590E7Ccc0CFAe8040Ce7151324747cDb97",
       "caseId": "forward-eth-offchain",
-      "durationMs": 307,
-      "error": "Failed to resolve ENS name to an address: server returned an error response: error code 3: execution reverted, data: \"0x556f1830000000000000000000000000eeeeeeee14d718c2b47d9923deab1335e144eeee00000000000000000000000000000000000000000000000000000000000000a00000000000000000000000000000000000000000000000000000000000000180ef46c0b80000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000004600000000000000000000000000000000000000000000000000000…",
-      "passed": false
+      "durationMs": 539,
+      "error": null,
+      "passed": true
     },
     {
-      "actual": null,
+      "actual": "asdflkjasdflkjasdf",
       "caseId": "forward-text-offchain",
-      "durationMs": 565,
-      "error": "ENS resolver not found for name \"test.offchaindemo.eth\"",
-      "passed": false
+      "durationMs": 280,
+      "error": null,
+      "passed": true
     },
     {
       "actual": "https://raw.githubusercontent.com/ensdomains/resolution-tests/refs/heads/main/assets/avatar.svg",
       "caseId": "forward-text-onchain",
-      "durationMs": 575,
+      "durationMs": 86,
       "error": null,
       "passed": true
     },
     {
       "actual": "0x51050ec063d393217B436747617aD1C2285Aeeee",
       "caseId": "forward-wildcard",
-      "durationMs": 404,
+      "durationMs": 117,
       "error": null,
       "passed": true
     },
     {
       "actual": "devrel.enslabs.eth",
       "caseId": "reverse-eth",
-      "durationMs": 1056,
+      "durationMs": 104,
       "error": null,
       "passed": true
     },
     {
-      "actual": "v1-reverse.integration-tests.eth",
+      "actual": "ur-reverse.integration-tests.eth",
       "caseId": "reverse-universal-resolver",
-      "durationMs": 1024,
-      "error": "Expected ur-reverse.integration-tests.eth, got v1-reverse.integration-tests.eth",
-      "passed": false
+      "durationMs": 181,
+      "error": null,
+      "passed": true
     },
     {
       "actual": "0x2222222222222222222222222222222222222222",
       "caseId": "universal-resolver",
-      "durationMs": 352,
+      "durationMs": 174,
       "error": null,
       "passed": true
     }
   ],
-  "timestamp": "2026-08-09T20:12:53.309887+00:00"
+  "timestamp": "2026-09-14T08:25:50.509007+00:00"
 }
