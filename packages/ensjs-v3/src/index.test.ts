@@ -23,7 +23,17 @@ if (!RPC_URL) {
 }
 
 const client = createEnsPublicClient({
-  chain: mainnet,
+  // ensjs v3 requires the registry in the chain contract map; recent viem
+  // mainnet definitions omit it even though the contract is still deployed.
+  chain: {
+    ...mainnet,
+    contracts: {
+      ...mainnet.contracts,
+      ensRegistry: {
+        address: "0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e",
+      },
+    },
+  },
   transport: http(RPC_URL),
 });
 
