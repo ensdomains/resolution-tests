@@ -76,26 +76,6 @@ func loadRPCURL() string {
 	if url := os.Getenv("RPC_URL"); url != "" {
 		return url
 	}
-
-	envPath := filepath.Join(rootDir(), ".env")
-	data, err := os.ReadFile(envPath)
-	if err != nil {
-		panic("RPC_URL environment variable is required")
-	}
-	for _, line := range strings.Split(string(data), "\n") {
-		line = strings.TrimSpace(line)
-		if line == "" || strings.HasPrefix(line, "#") || !strings.Contains(line, "=") {
-			continue
-		}
-		key, value, _ := strings.Cut(line, "=")
-		if strings.TrimSpace(key) == "RPC_URL" {
-			value = strings.TrimSpace(value)
-			value = strings.Trim(value, `"'`)
-			if value != "" {
-				return value
-			}
-		}
-	}
 	panic("RPC_URL environment variable is required")
 }
 
