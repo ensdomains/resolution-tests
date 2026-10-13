@@ -3,6 +3,7 @@ using System.Numerics;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using NetCid;
+using Nethereum.Contracts;
 using Nethereum.Contracts.Standards.ENS;
 using Nethereum.Contracts.Standards.ENS.PublicResolver.ContractDefinition;
 using Nethereum.Hex.HexConvertors.Extensions;
@@ -12,9 +13,6 @@ namespace Nethereum.Ens.Tests;
 
 public class ResolutionTests : IAsyncLifetime
 {
-    // Registry-based ENSService has no L2 primary-name API.
-    private static readonly HashSet<string> UnsupportedMethods = new() { "reverse-l2" };
-
     private static readonly object ResultsLock = new();
     private static readonly List<TestResult> Results = new();
 
@@ -24,6 +22,10 @@ public class ResolutionTests : IAsyncLifetime
         PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
         DefaultIgnoreCondition = JsonIgnoreCondition.Never,
     };
+
+    /// <summary>ENSIP-11 coin type for an EVM chain ID.</summary>
+    private static BigInteger Ensip11CoinType(ulong chainId) =>
+        new BigInteger(0x80000000UL | chainId);
 
     public async Task InitializeAsync() => await Task.CompletedTask;
 
@@ -108,6 +110,7 @@ public class ResolutionTests : IAsyncLifetime
     private static ENSService CreateEnsService()
     {
         var web3 = new Nethereum.Web3.Web3(LoadRpcUrl());
+        // Nethereum 7.0 GetEnsService defaults to the Universal Resolver (+ CCIP-Read).
         return web3.Eth.GetEnsService();
     }
 
@@ -133,6 +136,8 @@ public class ResolutionTests : IAsyncLifetime
                     Node = node,
                     CoinType = new BigInteger(coinType),
                 };
+                // ResolveAsync still walks the registry for arbitrary profiles;
+                // on-chain multicoin records work. Prefer UR for ETH via ResolveAddressAsync.
                 var result = await ens.ResolveAsync<AddrFunction2, AddrOutputDTO2>(fn, name);
                 var raw = result.ReturnValue1;
                 if (raw == null || raw.Length == 0)
@@ -173,14 +178,27 @@ public class ResolutionTests : IAsyncLifetime
 
     private static async Task<string?> RunReverseAsync(ENSService ens, TestCase testCase)
     {
-        if (testCase.Method != "reverse")
-        {
-            throw new Exception($"unexpected method: {testCase.Method}");
-        }
-
         var address = testCase.Input.Address ?? throw new Exception("missing address");
-        var name = await ens.ReverseResolveAsync(address);
-        return string.IsNullOrEmpty(name) ? null : name;
+
+        switch (testCase.Method)
+        {
+            case "reverse":
+            {
+                var name = await ens.ReverseResolveAsync(address);
+                return string.IsNullOrEmpty(name) ? null : name;
+            }
+            case "reverse-l2":
+            {
+                var chainId = ParamUInt64(testCase.Params, "chainId")
+                    ?? throw new Exception("missing chainId");
+                var ur = ens.UniversalResolverService
+                    ?? throw new Exception("Universal Resolver service not available");
+                var name = await ur.ReverseResolveAsync(address, Ensip11CoinType(chainId));
+                return string.IsNullOrEmpty(name) ? null : name;
+            }
+            default:
+                throw new Exception($"unexpected method: {testCase.Method}");
+        }
     }
 
     private static string ContentHashToUri(byte[] contentHash)
@@ -304,8 +322,7 @@ public class ResolutionTests : IAsyncLifetime
 
         return cases.Where(c =>
             c.Status == "ready"
-            && c.Category == category
-            && !UnsupportedMethods.Contains(c.Method));
+            && c.Category == category);
     }
 
     private static void RecordResult(
@@ -349,7 +366,10 @@ public class ResolutionTests : IAsyncLifetime
 
     private static string TruncateErr(Exception ex)
     {
-        var msg = ex.Message;
+        var msg = ex is SmartContractCustomErrorRevertException custom
+            && !string.IsNullOrEmpty(custom.ExceptionEncodedData)
+            ? $"{custom.Message}: {custom.ExceptionEncodedData}"
+            : ex.Message;
         return msg.Length > 500 ? msg[..500] + "…" : msg;
     }
 
