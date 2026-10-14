@@ -1,75 +1,82 @@
 {
-  "timestamp": "2026-08-09T20:46:04.3651430Z",
+  "timestamp": "2026-10-13T09:17:13.6308620Z",
   "results": [
     {
       "caseId": "reverse-universal-resolver",
-      "passed": false,
-      "actual": "v1-reverse.integration-tests.eth",
-      "error": "Expected ur-reverse.integration-tests.eth, got v1-reverse.integration-tests.eth",
-      "durationMs": 649
+      "passed": true,
+      "actual": "ur-reverse.integration-tests.eth",
+      "error": null,
+      "durationMs": 127
     },
     {
       "caseId": "reverse-eth",
       "passed": true,
       "actual": "devrel.enslabs.eth",
       "error": null,
-      "durationMs": 297
+      "durationMs": 21
+    },
+    {
+      "caseId": "reverse-l2",
+      "passed": false,
+      "actual": null,
+      "error": "Smart contract error: 0x95c0c75200000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000004eb57ceb900000000000000000000000000000000000000000000000000000000",
+      "durationMs": 27
     },
     {
       "caseId": "universal-resolver",
-      "passed": false,
-      "actual": "0x1111111111111111111111111111111111111111",
-      "error": "Expected 0x2222222222222222222222222222222222222222, got 0x1111111111111111111111111111111111111111",
-      "durationMs": 506
+      "passed": true,
+      "actual": "0x2222222222222222222222222222222222222222",
+      "error": null,
+      "durationMs": 321
     },
     {
       "caseId": "forward-base-onchain",
       "passed": true,
       "actual": "0xa66E90D515F576f49Af2dF40952476D56F72A420",
       "error": null,
-      "durationMs": 255
+      "durationMs": 68
     },
     {
       "caseId": "forward-wildcard",
       "passed": true,
       "actual": "0x51050ec063d393217B436747617aD1C2285Aeeee",
       "error": null,
-      "durationMs": 368
+      "durationMs": 52
     },
     {
       "caseId": "forward-eth-offchain",
       "passed": true,
       "actual": "0x779981590E7Ccc0CFAe8040Ce7151324747cDb97",
       "error": null,
-      "durationMs": 1084
+      "durationMs": 391
     },
     {
       "caseId": "forward-text-onchain",
       "passed": true,
       "actual": "https://raw.githubusercontent.com/ensdomains/resolution-tests/refs/heads/main/assets/avatar.svg",
       "error": null,
-      "durationMs": 254
+      "durationMs": 23
     },
     {
       "caseId": "forward-text-offchain",
       "passed": true,
       "actual": "asdflkjasdflkjasdf",
       "error": null,
-      "durationMs": 1126
+      "durationMs": 210
     },
     {
       "caseId": "forward-contenthash",
       "passed": true,
       "actual": "ipfs://bafybeifx7yeb55armcsxwwitkymga5xf53dxiarykms3ygqic223w5sk3m",
       "error": null,
-      "durationMs": 255
+      "durationMs": 31
     },
     {
       "caseId": "forward-dns-offchain",
       "passed": false,
       "actual": null,
-      "error": "Resolver address not found for: pokersback.com",
-      "durationMs": 84
+      "error": "execution reverted: eth_call",
+      "durationMs": 259
     }
   ]
 }
