@@ -64,10 +64,32 @@ The following libraries and versions are not currently covered by this suite:
 
 Custom resolvers are deployed to test specific resolution scenarios.
 
-| Name               | Chain   | Address                                    |
-| ------------------ | ------- | ------------------------------------------ |
-| URTestResolver.sol | Mainnet | 0x1c7B2739AaA9ea0Fc79deB45e0Bb25A1fbb058df |
-| URTestResolver.sol | Sepolia | 0x0887c5f652e81b8fb95359b04058a14b0fd0a9a9 |
+| Name               | Chain   | Address                                    | Notes |
+| ------------------ | ------- | ------------------------------------------ | ----- |
+| URTestResolver.sol | Mainnet | 0x1c7B2739AaA9ea0Fc79deB45e0Bb25A1fbb058df | pre-ENSv2 build: answers `0x1111…` through `UniversalResolverV2`, must be redeployed |
+| URTestResolver.sol | Sepolia | 0x0887c5f652e81b8fb95359b04058a14b0fd0a9a9 | pre-ENSv2 build, same caveat |
+
+### Redeploying `URTestResolver` for ENSv2
+
+`UniversalResolverV2` does not call v1 resolvers itself: unmigrated `.eth` names are delegated to `ENSV1Resolver`
+(`0x394D8EB4a4fDF599384DeAb25F31d111d755c398` on mainnet), which becomes the `msg.sender` the test resolver sees.
+The resolver therefore takes a list of trusted mirror senders in its constructor; the deploy script fills it per chain.
+
+```bash
+source .env
+# 1. deploy (any funded key)
+forge script contracts/script/URTestResolver.s.sol:ResolverScript --chain mainnet --rpc-url "$RPC_URL" --broadcast --private-key "$PRIVATE_KEY"
+# 2. point ur.integration-tests.eth at it. The name is owned by the Safe 0xeE9eeaAB0Bb7D9B969D701f6f8212609EDeA252E,
+#    so generate the calldata and submit it as a Safe transaction (to: the ENS registry, value: 0):
+cast calldata 'setResolver(bytes32,address)' $(cast namehash ur.integration-tests.eth) <resolver>
+#    registry: 0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e
+# 3. the reverse case: <0x3AF5CFc7C7f29Da9d7758339b8eaB6a78550Cbed>.addr.reverse is owned by the EOA 0x3AF5…Cbed itself
+cast send --rpc-url "$RPC_URL" --private-key <key of 0x3AF5…Cbed> 0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e \
+  'setResolver(bytes32,address)' $(cast namehash 3af5cfc7c7f29da9d7758339b8eab6a78550cbed.addr.reverse) <resolver>
+```
+
+Expected after the switch: `ur.integration-tests.eth` → `0x2222…` through the UR (and through ENSV1Resolver), `0x1111…` through
+older UR deployments or a direct `addr()` call; `reverse(0x3AF5…Cbed)` → `ur-reverse.integration-tests.eth`.
 
 ## Local Development
 
