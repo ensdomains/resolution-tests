@@ -79,10 +79,13 @@ The resolver therefore takes a list of trusted mirror senders in its constructor
 source .env
 # 1. deploy (any funded key)
 forge script contracts/script/URTestResolver.s.sol:ResolverScript --chain mainnet --rpc-url "$RPC_URL" --broadcast --private-key "$PRIVATE_KEY"
-# 2. point the test names at it (must be sent by the name owner, 0xeE9eeaAB0Bb7D9B969D701f6f8212609EDeA252E)
-cast send 0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e 'setResolver(bytes32,address)' $(cast namehash ur.integration-tests.eth) <resolver>
-# 3. the reverse case: <0x3AF5CFc7C7f29Da9d7758339b8eaB6a78550Cbed>.addr.reverse, sent by 0x3AF5…Cbed
-cast send 0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e 'setResolver(bytes32,address)' $(cast namehash 3af5cfc7c7f29da9d7758339b8eab6a78550cbed.addr.reverse) <resolver>
+# 2. point ur.integration-tests.eth at it. The name is owned by the Safe 0xeE9eeaAB0Bb7D9B969D701f6f8212609EDeA252E,
+#    so generate the calldata and submit it as a Safe transaction (to: the ENS registry, value: 0):
+cast calldata 'setResolver(bytes32,address)' $(cast namehash ur.integration-tests.eth) <resolver>
+#    registry: 0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e
+# 3. the reverse case: <0x3AF5CFc7C7f29Da9d7758339b8eaB6a78550Cbed>.addr.reverse is owned by the EOA 0x3AF5…Cbed itself
+cast send --rpc-url "$RPC_URL" --private-key <key of 0x3AF5…Cbed> 0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e \
+  'setResolver(bytes32,address)' $(cast namehash 3af5cfc7c7f29da9d7758339b8eab6a78550cbed.addr.reverse) <resolver>
 ```
 
 Expected after the switch: `ur.integration-tests.eth` → `0x2222…` through the UR (and through ENSV1Resolver), `0x1111…` through
